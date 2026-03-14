@@ -28,55 +28,26 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 /* ═══════════════════════════════════════════════════════════════════
+   IDŐPONTOK — a data/schedule.json fájlból töltődnek be.
+   Az admin eszközzel szerkeszted, majd GitHubra tolod fel.
+   ═══════════════════════════════════════════════════════════════════ */
 
-   ██████╗  ███████╗ ██████╗  ██╗      █████╗  ██╗      █████╗  ███████╗
-   ██╔════╝ ██╔════╝ ██╔══██╗ ██║     ██╔══██╗ ██║     ██╔══██╗ ██╔════╝
-   █████╗   █████╗   ██║  ██║ ██║     ███████║ ██║     ███████║ ███████╗
-   ██╔══╝   ██╔══╝   ██║  ██║ ██║     ██╔══██║ ██║     ██╔══██║ ╚════██║
-   ██║      ███████╗ ██████╔╝ ███████╗██║  ██║ ███████╗██║  ██║ ███████║
-   ╚═╝      ╚══════╝ ╚═════╝  ╚══════╝╚═╝  ╚═╝ ╚══════╝╚═╝  ╚═╝ ╚══════╝
+let SZABAD  = {};
+let FOGLALT = {};
 
-   ─── SZABAD IDŐPONTOK BEÁLLÍTÁSA ──────────────────────────────────
-
-   Add meg napra lebontva, hogy melyik órákat szeretnéd elérhetővé tenni.
-
-   Formátum:
-     'ÉÉÉÉ-HH-NN': [kezdő_óra, kezdő_óra, ...]
-
-   Az óra a foglalás KEZDETÉT jelenti (pl. 10 = 10:00–11:00).
-   2 órás foglaláshoz két egymást követő óra is kell (pl. 10 és 11).
-
-   Példa:
-     '2026-04-10': [9, 10, 11, 14, 15, 16],
-     '2026-04-11': [10, 14, 15],
-
-   Ha egy napot nem tüntetsz fel (vagy üres a tömb), az nem foglalható.
-   ─────────────────────────────────────────────────────────────────*/
-
-const SZABAD = {
-  '2026-03-17': [9, 10, 11, 14, 15, 16],
-  '2026-03-18': [10, 11, 14, 15],
-  '2026-03-19': [9, 11, 14],
-  '2026-03-20': [9, 10, 14, 15, 16],
-  '2026-03-23': [10, 11, 13, 14, 15],
-  '2026-03-24': [9, 14, 15, 16],
-  '2026-03-25': [10, 11, 13, 14],
-  '2026-03-26': [9, 10, 11, 14, 15, 16],
-  '2026-03-27': [10, 14, 16],
-};
-
-/*  ─── FOGLALT időpontok ──────────────────────────────────────────
-    Ha valaki lefoglalt egy időpontot, add hozzá ide.
-    Ez az adott órát pirossal jelöli, de a nap többi szabad időpontja
-    marad zöld.
-
-    Formátum: ugyanaz mint SZABAD fölött.
-    ────────────────────────────────────────────────────────────────*/
-
-const FOGLALT = {
-  '2026-03-17': [10],
-  '2026-03-20': [15],
-};
+fetch('data/schedule.json')
+  .then(r => r.json())
+  .then(data => {
+    SZABAD  = data.szabad  || {};
+    FOGLALT = data.foglalt || {};
+    renderCalendar();
+    renderSlots();
+  })
+  .catch(() => {
+    // Ha a fájl nem elérhető (pl. lokális megnyitáskor), üres naptár
+    renderCalendar();
+    renderSlots();
+  });
 
 /* ═══════════════════════════════════════════════════════════════════
    BELSŐ LOGIKA — ezt nem kell szerkeszteni
