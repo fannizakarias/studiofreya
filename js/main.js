@@ -35,10 +35,6 @@ navLinks.querySelectorAll('a').forEach(link => {
 let SZABAD  = {};
 let FOGLALT = {};
 
-// Üres naptár azonnal látható, amíg a fetch fut
-renderCalendar();
-renderSlots();
-
 // schedule.json betöltése — no-cache hogy mindig a friss verziót kapjuk
 fetch('data/schedule.json', { cache: 'no-store' })
   .then(r => {
