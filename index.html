@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studio Freya — Photography</title>
-  <meta name="description" content="Studio Freya — Professional photography studio capturing life's most meaningful moments." />
+  <title>Studio Freya — Fotóstúdió</title>
+  <meta name="description" content="Studio Freya — Professzionális fotóstúdió, ahol az élet legszebb pillanatait örökítjük meg." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,18 +12,19 @@
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Navigáció -->
   <header class="site-header">
     <nav class="nav">
       <a href="#" class="logo">Studio Freya</a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <button class="nav-toggle" aria-label="Menü megnyitása" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#munkak">Munkák</a></li>
+        <li><a href="#szolgaltatasok">Szolgáltatások</a></li>
+        <li><a href="#rolunk">Rólunk</a></li>
+        <li><a href="#foglalas" class="nav-link-booking">Időpontfoglalás</a></li>
+        <li><a href="#kapcsolat">Kapcsolat</a></li>
       </ul>
     </nav>
   </header>
@@ -31,17 +32,20 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <p class="hero-eyebrow">Photography Studio</p>
-      <h1>Capturing light,<br /><em>telling stories.</em></h1>
-      <a href="#work" class="btn">View Work</a>
+      <p class="hero-eyebrow">Fotóstúdió</p>
+      <h1>Fényt fogunk,<br /><em>történeteket mesélünk.</em></h1>
+      <div class="hero-actions">
+        <a href="#munkak" class="btn">Munkáink</a>
+        <a href="#foglalas" class="btn btn--outline-light">Időpontot foglalok</a>
+      </div>
     </div>
     <div class="hero-overlay"></div>
   </section>
 
-  <!-- Work / Portfolio -->
-  <section class="section" id="work">
+  <!-- Munkák / Portfólió -->
+  <section class="section" id="munkak">
     <div class="container">
-      <h2 class="section-title">Selected Work</h2>
+      <h2 class="section-title">Válogatott munkák</h2>
       <div class="gallery">
         <div class="gallery-item tall">
           <div class="gallery-placeholder"></div>
@@ -65,75 +69,192 @@
     </div>
   </section>
 
-  <!-- Services -->
-  <section class="section section--dark" id="services">
+  <!-- Szolgáltatások -->
+  <section class="section section--dark" id="szolgaltatasok">
     <div class="container">
-      <h2 class="section-title">Services</h2>
+      <h2 class="section-title">Szolgáltatások</h2>
       <div class="services-grid">
         <div class="service-card">
           <span class="service-number">01</span>
-          <h3>Portraits</h3>
-          <p>Personal and professional portrait sessions crafted to reveal character and confidence.</p>
+          <h3>Portréfotózás</h3>
+          <p>Személyes és üzleti portréfotózás, amelyen a személyiséged és magabiztosságod kerül a középpontba.</p>
         </div>
         <div class="service-card">
           <span class="service-number">02</span>
-          <h3>Editorial</h3>
-          <p>Fashion and editorial photography with a refined, contemporary aesthetic.</p>
+          <h3>Divatfotózás</h3>
+          <p>Letisztult, kortárs esztétikájú divat- és szerkesztőségi fotózások.</p>
         </div>
         <div class="service-card">
           <span class="service-number">03</span>
-          <h3>Events</h3>
-          <p>Weddings, celebrations, and corporate events documented with care and discretion.</p>
+          <h3>Eseményfotózás</h3>
+          <p>Esküvők, ünnepek és céges rendezvények megörökítése gondossággal és eleganciával.</p>
         </div>
         <div class="service-card">
           <span class="service-number">04</span>
-          <h3>Commercial</h3>
-          <p>Brand and product photography that communicates quality and vision.</p>
+          <h3>Kereskedelmi fotózás</h3>
+          <p>Márkád és terméked fotózása, amely minőséget és egyedi látásmódot közvetít.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- About -->
-  <section class="section" id="about">
+  <!-- Rólunk -->
+  <section class="section" id="rolunk">
     <div class="container about-grid">
       <div class="about-image">
         <div class="gallery-placeholder"></div>
       </div>
       <div class="about-text">
-        <h2 class="section-title">About the Studio</h2>
-        <p>Studio Freya is a photography studio dedicated to the art of meaningful imagery. We believe every photograph should carry emotion, tell a story, and stand the test of time.</p>
-        <p>Based in [City], we work with individuals, brands, and publications to create images that resonate — built on trust, light, and an honest eye.</p>
-        <a href="#contact" class="btn btn--outline">Get in Touch</a>
+        <h2 class="section-title">A stúdióról</h2>
+        <p>A Studio Freya egy fotóstúdió, amely az érzelmes, időtálló képek iránt elkötelezett. Hisszük, hogy minden fotónak érzelmeket kell hordoznia, történetet kell mesélnie.</p>
+        <p>[Városban] dolgozunk magánszemélyekkel, márkákkal és kiadványokkal egyaránt — bizalomra, fényre és őszinte szemléletre építve.</p>
+        <a href="#kapcsolat" class="btn btn--outline">Írj nekünk</a>
       </div>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="section section--dark" id="contact">
+  <!-- Időpontfoglalás -->
+  <section class="section section--booking" id="foglalas">
+    <div class="container">
+      <h2 class="section-title">Időpontfoglalás</h2>
+      <p class="booking-lead">Válaszd ki a szolgáltatást, a dátumot és az időpontot — mi megerősítjük a foglalást 24 órán belül.</p>
+
+      <div class="booking-widget">
+
+        <!-- 1. lépés: Szolgáltatás -->
+        <div class="booking-step" id="step-1">
+          <h3 class="step-title"><span class="step-num">1</span>Szolgáltatás kiválasztása</h3>
+          <div class="service-options">
+            <label class="service-option">
+              <input type="radio" name="service" value="portré" />
+              <span class="option-card">
+                <span class="option-name">Portréfotózás</span>
+                <span class="option-duration">1–2 óra</span>
+              </span>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="service" value="divat" />
+              <span class="option-card">
+                <span class="option-name">Divatfotózás</span>
+                <span class="option-duration">2–4 óra</span>
+              </span>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="service" value="esemény" />
+              <span class="option-card">
+                <span class="option-name">Eseményfotózás</span>
+                <span class="option-duration">Egész nap</span>
+              </span>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="service" value="kereskedelmi" />
+              <span class="option-card">
+                <span class="option-name">Kereskedelmi fotózás</span>
+                <span class="option-duration">2–6 óra</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 2. lépés: Dátum -->
+        <div class="booking-step" id="step-2">
+          <h3 class="step-title"><span class="step-num">2</span>Dátum kiválasztása</h3>
+          <div class="calendar-wrapper">
+            <div class="calendar-header">
+              <button class="cal-nav" id="cal-prev" aria-label="Előző hónap">&#8249;</button>
+              <span id="cal-month-label"></span>
+              <button class="cal-nav" id="cal-next" aria-label="Következő hónap">&#8250;</button>
+            </div>
+            <div class="calendar-weekdays">
+              <span>H</span><span>K</span><span>Sz</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span>
+            </div>
+            <div class="calendar-grid" id="cal-grid"></div>
+          </div>
+        </div>
+
+        <!-- 3. lépés: Időpont -->
+        <div class="booking-step" id="step-3">
+          <h3 class="step-title"><span class="step-num">3</span>Időpont kiválasztása</h3>
+          <div class="time-slots" id="time-slots">
+            <!-- JS tölti fel -->
+          </div>
+        </div>
+
+        <!-- 4. lépés: Adatok -->
+        <div class="booking-step" id="step-4">
+          <h3 class="step-title"><span class="step-num">4</span>Személyes adatok</h3>
+          <form class="booking-form" id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="hidden" name="szolgaltatas" id="hidden-service" />
+            <input type="hidden" name="datum" id="hidden-date" />
+            <input type="hidden" name="idopont" id="hidden-time" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="b-nev">Teljes név *</label>
+                <input type="text" id="b-nev" name="nev" placeholder="Kovács Anna" required />
+              </div>
+              <div class="form-group">
+                <label for="b-email">E-mail cím *</label>
+                <input type="email" id="b-email" name="email" placeholder="anna@example.com" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="b-telefon">Telefonszám</label>
+                <input type="tel" id="b-telefon" name="telefon" placeholder="+36 30 123 4567" />
+              </div>
+              <div class="form-group">
+                <label for="b-szemelyek">Résztvevők száma</label>
+                <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="20" placeholder="1" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="b-megjegyzes">Megjegyzés</label>
+              <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
+            </div>
+
+            <div class="booking-summary" id="booking-summary"></div>
+
+            <button type="submit" class="btn" id="booking-submit">Foglalás elküldése</button>
+          </form>
+        </div>
+
+        <!-- Sikeres foglalás -->
+        <div class="booking-success" id="booking-success" hidden>
+          <div class="success-icon">✓</div>
+          <h3>Foglalás elküldve!</h3>
+          <p>Köszönjük! 24 órán belül e-mailben megerősítjük az időpontodat.</p>
+          <button class="btn btn--outline" id="booking-reset">Új foglalás</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Kapcsolat -->
+  <section class="section section--dark" id="kapcsolat">
     <div class="container contact-container">
-      <h2 class="section-title">Let's Work Together</h2>
-      <p class="contact-lead">Available for bookings worldwide. Reach out to discuss your project.</p>
+      <h2 class="section-title">Dolgozzunk együtt</h2>
+      <p class="contact-lead">Szívesen dolgozunk bármilyen projektben. Írj nekünk, és hamarosan felvesszük veled a kapcsolatot.</p>
       <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
         <div class="form-row">
-          <input type="text" name="name" placeholder="Your Name" required />
-          <input type="email" name="email" placeholder="Email Address" required />
+          <input type="text" name="name" placeholder="Neved" required />
+          <input type="email" name="email" placeholder="E-mail cím" required />
         </div>
-        <input type="text" name="subject" placeholder="Subject" />
-        <textarea name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
-        <button type="submit" class="btn">Send Message</button>
+        <input type="text" name="subject" placeholder="Tárgy" />
+        <textarea name="message" rows="5" placeholder="Meséld el a projektedet..." required></textarea>
+        <button type="submit" class="btn">Üzenet küldése</button>
       </form>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Lábléc -->
   <footer class="footer">
     <div class="container footer-inner">
       <span class="logo">Studio Freya</span>
-      <p>&copy; <span id="year"></span> Studio Freya. All rights reserved.</p>
+      <p>&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>
       <div class="footer-social">
         <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Facebook">Facebook</a>
       </div>
     </div>
   </footer>
