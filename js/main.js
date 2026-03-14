@@ -35,18 +35,24 @@ navLinks.querySelectorAll('a').forEach(link => {
 let SZABAD  = {};
 let FOGLALT = {};
 
-fetch('data/schedule.json')
-  .then(r => r.json())
+// Üres naptár azonnal látható, amíg a fetch fut
+renderCalendar();
+renderSlots();
+
+// schedule.json betöltése — no-cache hogy mindig a friss verziót kapjuk
+fetch('data/schedule.json', { cache: 'no-store' })
+  .then(r => {
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+  })
   .then(data => {
     SZABAD  = data.szabad  || {};
     FOGLALT = data.foglalt || {};
     renderCalendar();
-    renderSlots();
+    if (st.dateStr) renderSlots();
   })
   .catch(() => {
-    // Ha a fájl nem elérhető (pl. lokális megnyitáskor), üres naptár
-    renderCalendar();
-    renderSlots();
+    // Nincs elérhető fájl — üres naptár marad
   });
 
 /* ═══════════════════════════════════════════════════════════════════

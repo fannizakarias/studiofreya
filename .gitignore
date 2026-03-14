@@ -2,3 +2,7 @@
 admin.html
 js/admin.js
 css/admin.css
+
+# macOS
+.DS_Store
+**/.DS_Store
