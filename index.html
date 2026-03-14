@@ -117,116 +117,110 @@
   <section class="section section--booking" id="foglalas">
     <div class="container">
       <h2 class="section-title">Időpontfoglalás</h2>
-      <p class="booking-lead">Válaszd ki a szolgáltatást, a dátumot és az időpontot — mi megerősítjük a foglalást 24 órán belül.</p>
+      <p class="booking-lead">Válaszd ki a szolgáltatást, majd a naptárból egy szabad időpontot — mi 24 órán belül megerősítjük.</p>
 
-      <div class="booking-widget">
+      <div class="bk-widget" id="bk-widget">
 
-        <!-- 1. lépés: Szolgáltatás -->
-        <div class="booking-step" id="step-1">
-          <h3 class="step-title"><span class="step-num">1</span>Szolgáltatás kiválasztása</h3>
-          <div class="service-options">
-            <label class="service-option">
-              <input type="radio" name="service" value="portré" />
-              <span class="option-card">
-                <span class="option-name">Portréfotózás</span>
-                <span class="option-duration">1–2 óra</span>
-              </span>
-            </label>
-            <label class="service-option">
-              <input type="radio" name="service" value="divat" />
-              <span class="option-card">
-                <span class="option-name">Divatfotózás</span>
-                <span class="option-duration">2–4 óra</span>
-              </span>
-            </label>
-            <label class="service-option">
-              <input type="radio" name="service" value="esemény" />
-              <span class="option-card">
-                <span class="option-name">Eseményfotózás</span>
-                <span class="option-duration">Egész nap</span>
-              </span>
-            </label>
-            <label class="service-option">
-              <input type="radio" name="service" value="kereskedelmi" />
-              <span class="option-card">
-                <span class="option-name">Kereskedelmi fotózás</span>
-                <span class="option-duration">2–6 óra</span>
-              </span>
-            </label>
-          </div>
+        <!-- Szolgáltatás választó -->
+        <div class="bk-service-bar">
+          <button class="bk-svc-btn" data-value="Portréfotózás" data-duration="1–2 óra">
+            <span class="bk-svc-name">Portréfotózás</span>
+            <span class="bk-svc-dur">1–2 óra</span>
+          </button>
+          <button class="bk-svc-btn" data-value="Divatfotózás" data-duration="2–4 óra">
+            <span class="bk-svc-name">Divatfotózás</span>
+            <span class="bk-svc-dur">2–4 óra</span>
+          </button>
+          <button class="bk-svc-btn" data-value="Eseményfotózás" data-duration="Egész nap">
+            <span class="bk-svc-name">Eseményfotózás</span>
+            <span class="bk-svc-dur">Egész nap</span>
+          </button>
+          <button class="bk-svc-btn" data-value="Kereskedelmi fotózás" data-duration="2–6 óra">
+            <span class="bk-svc-name">Kereskedelmi fotózás</span>
+            <span class="bk-svc-dur">2–6 óra</span>
+          </button>
         </div>
 
-        <!-- 2. lépés: Dátum -->
-        <div class="booking-step" id="step-2">
-          <h3 class="step-title"><span class="step-num">2</span>Dátum kiválasztása</h3>
-          <div class="calendar-wrapper">
-            <div class="calendar-header">
-              <button class="cal-nav" id="cal-prev" aria-label="Előző hónap">&#8249;</button>
-              <span id="cal-month-label"></span>
-              <button class="cal-nav" id="cal-next" aria-label="Következő hónap">&#8250;</button>
+        <!-- Naptár + időpontok -->
+        <div class="bk-main">
+
+          <!-- Naptár -->
+          <div class="bk-calendar">
+            <div class="bk-cal-header">
+              <button class="bk-cal-nav" id="cal-prev" aria-label="Előző hónap">&#8249;</button>
+              <span id="cal-month-label" class="bk-cal-title"></span>
+              <button class="bk-cal-nav" id="cal-next" aria-label="Következő hónap">&#8250;</button>
             </div>
-            <div class="calendar-weekdays">
+            <div class="bk-cal-weekdays">
               <span>H</span><span>K</span><span>Sz</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span>
             </div>
-            <div class="calendar-grid" id="cal-grid"></div>
+            <div class="bk-cal-grid" id="cal-grid"></div>
           </div>
-        </div>
 
-        <!-- 3. lépés: Időpont -->
-        <div class="booking-step" id="step-3">
-          <h3 class="step-title"><span class="step-num">3</span>Időpont kiválasztása</h3>
-          <div class="time-slots" id="time-slots">
-            <!-- JS tölti fel -->
+          <!-- Időpontok -->
+          <div class="bk-slots-panel">
+            <div class="bk-slots-header" id="slots-header">
+              <span class="bk-slots-title">Válassz napot a naptárból</span>
+            </div>
+            <div class="bk-slots-list" id="time-slots">
+              <div class="bk-slots-placeholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <p>Kattints egy napra<br>az elérhető időpontok megtekintéséhez</p>
+              </div>
+            </div>
+            <div class="bk-legend">
+              <span class="bk-legend-dot bk-legend-dot--free"></span> Szabad
+              <span class="bk-legend-dot bk-legend-dot--taken"></span> Foglalt
+            </div>
           </div>
-        </div>
 
-        <!-- 4. lépés: Adatok -->
-        <div class="booking-step" id="step-4">
-          <h3 class="step-title"><span class="step-num">4</span>Személyes adatok</h3>
-          <form class="booking-form" id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        </div><!-- /.bk-main -->
+
+        <!-- Személyes adatok (megjelenik, ha időpont ki van választva) -->
+        <div class="bk-form-panel" id="bk-form-panel" hidden>
+          <div class="bk-form-header">
+            <div class="bk-selection-badge" id="bk-selection-badge"></div>
+            <button class="bk-change-btn" id="bk-change-btn">Módosítás</button>
+          </div>
+          <form class="bk-form" id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
             <input type="hidden" name="szolgaltatas" id="hidden-service" />
             <input type="hidden" name="datum" id="hidden-date" />
             <input type="hidden" name="idopont" id="hidden-time" />
-            <div class="form-row">
-              <div class="form-group">
+            <div class="bk-form-grid">
+              <div class="bk-field">
                 <label for="b-nev">Teljes név *</label>
                 <input type="text" id="b-nev" name="nev" placeholder="Kovács Anna" required />
               </div>
-              <div class="form-group">
+              <div class="bk-field">
                 <label for="b-email">E-mail cím *</label>
                 <input type="email" id="b-email" name="email" placeholder="anna@example.com" required />
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
+              <div class="bk-field">
                 <label for="b-telefon">Telefonszám</label>
                 <input type="tel" id="b-telefon" name="telefon" placeholder="+36 30 123 4567" />
               </div>
-              <div class="form-group">
+              <div class="bk-field">
                 <label for="b-szemelyek">Résztvevők száma</label>
                 <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="20" placeholder="1" />
               </div>
+              <div class="bk-field bk-field--full">
+                <label for="b-megjegyzes">Megjegyzés</label>
+                <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="b-megjegyzes">Megjegyzés</label>
-              <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
-            </div>
-
-            <div class="booking-summary" id="booking-summary"></div>
-
             <button type="submit" class="btn" id="booking-submit">Foglalás elküldése</button>
           </form>
         </div>
 
         <!-- Sikeres foglalás -->
-        <div class="booking-success" id="booking-success" hidden>
-          <div class="success-icon">✓</div>
+        <div class="bk-success" id="booking-success" hidden>
+          <div class="bk-success-icon">✓</div>
           <h3>Foglalás elküldve!</h3>
           <p>Köszönjük! 24 órán belül e-mailben megerősítjük az időpontodat.</p>
           <button class="btn btn--outline" id="booking-reset">Új foglalás</button>
         </div>
 
-      </div>
+      </div><!-- /.bk-widget -->
     </div>
   </section>
 

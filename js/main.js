@@ -27,263 +27,300 @@ navLinks.querySelectorAll('a').forEach(link => {
 
 /* ═══════════════════════════════════════════════════════════════════
    IDŐPONTFOGLALÓ MODUL
-   ═══════════════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════════════════
 
-// ── Foglalt időpontok (YYYY-MM-DD → ['HH:MM', ...]) ──────────────
-// Ide vehetitek fel a már foglalt időpontokat, vagy dinamikusan
-// tölthetitek be egy API-ból.
+   FOGLALT időpontok szerkesztése: add hozzá a dátumokat és az
+   adott napon foglalt órákat az alábbi objektumhoz.
+   Formátum: 'ÉÉÉÉ-HH-NN': [kezdőóra, kezdőóra, ...]
+   Példa: '2026-04-10': [9, 11, 14]
+   ─────────────────────────────────────────────────────────────────*/
 const FOGLALT = {
-  // Példa: '2026-03-20': ['10:00', '14:00'],
+  // '2026-03-20': [10, 14],
+  // '2026-03-25': [9, 10, 11, 13],
 };
 
-// ── Elérhető időpontok (minden munkanapon) ────────────────────────
-const IDOPONTOK = [
-  '09:00', '10:00', '11:00',
-  '13:00', '14:00', '15:00', '16:00',
-];
+// Nyitvatartás: 9–17 óra, 1 órás intervallumok (utolsó kezdés: 16:00)
+const NYITAS  = 9;
+const ZARAS   = 17;
 
-// ── Állapot ───────────────────────────────────────────────────────
-const state = {
-  service:  null,   // kiválasztott szolgáltatás
-  date:     null,   // kiválasztott dátum (Date objektum)
-  dateStr:  null,   // 'YYYY-MM-DD'
-  time:     null,   // 'HH:MM'
-  calYear:  null,
-  calMonth: null,
-};
-
-// ── Magyar hónapnevek ─────────────────────────────────────────────
+// Magyar hónapnevek
 const HONAPOK = [
   'Január','Február','Március','Április','Május','Június',
   'Július','Augusztus','Szeptember','Október','November','December',
 ];
 
-/* ── Naptár ────────────────────────────────────────────────────── */
-function initCalendar() {
-  const now = new Date();
-  state.calYear  = now.getFullYear();
-  state.calMonth = now.getMonth();
-  renderCalendar();
+/* ── Állapot ────────────────────────────────────────────────────── */
+const st = {
+  service:  null,
+  date:     null,   // Date
+  dateStr:  null,   // 'ÉÉÉÉ-HH-NN'
+  hour:     null,   // number (9–16)
+  calYear:  new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+};
+
+/* ── Segédfüggvények ────────────────────────────────────────────── */
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function toDateStr(d) {
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-function renderCalendar() {
-  const { calYear: yr, calMonth: mo } = state;
-  document.getElementById('cal-month-label').textContent =
-    `${HONAPOK[mo]} ${yr}`;
+function formatHour(h) {
+  return `${pad(h)}:00 – ${pad(h + 1)}:00`;
+}
 
-  const grid  = document.getElementById('cal-grid');
+function formatDateHU(d) {
+  return d.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SZOLGÁLTATÁS
+   ══════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.bk-svc-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bk-svc-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    st.service = btn.dataset.value;
+    updateBadge();
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   NAPTÁR
+   ══════════════════════════════════════════════════════════════════ */
+function renderCalendar() {
+  const { calYear: yr, calMonth: mo } = st;
+
+  document.getElementById('cal-month-label').textContent = `${HONAPOK[mo]} ${yr}`;
+
+  const grid    = document.getElementById('cal-grid');
   grid.innerHTML = '';
 
-  const today     = new Date();
-  today.setHours(0, 0, 0, 0);
-  const firstDay  = new Date(yr, mo, 1);
-  const lastDay   = new Date(yr, mo + 1, 0);
+  const today    = new Date(); today.setHours(0, 0, 0, 0);
+  const firstDay = new Date(yr, mo, 1);
+  const lastDay  = new Date(yr, mo + 1, 0);
 
-  // Hétfőtől számított eltolás (0=H … 6=V)
+  // Hétfőtől számított eltolás
   let offset = firstDay.getDay() - 1;
   if (offset < 0) offset = 6;
 
-  // Üres cellák a hónap eleje előtt
   for (let i = 0; i < offset; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'cal-day cal-day--empty';
-    grid.appendChild(empty);
+    const el = document.createElement('div');
+    el.className = 'bk-cal-day bk-cal-day--empty';
+    grid.appendChild(el);
   }
 
   for (let d = 1; d <= lastDay.getDate(); d++) {
     const date    = new Date(yr, mo, d);
     const dateStr = toDateStr(date);
-    const isToday = date.getTime() === today.getTime();
     const isPast  = date < today;
-    const isSun   = date.getDay() === 0; // vasárnap zárva
+    const isSun   = date.getDay() === 0;
 
     const el = document.createElement('div');
-    el.className = 'cal-day';
+    el.className = 'bk-cal-day';
     el.textContent = d;
 
     if (isPast || isSun) {
-      el.classList.add('cal-day--disabled');
+      el.classList.add('bk-cal-day--off');
     } else {
-      if (isToday) el.classList.add('cal-day--today');
-      if (state.dateStr === dateStr) el.classList.add('cal-day--selected');
+      if (date.getTime() === today.getTime()) el.classList.add('bk-cal-day--today');
+      if (st.dateStr === dateStr)              el.classList.add('bk-cal-day--selected');
 
-      el.addEventListener('click', () => selectDate(date, dateStr, el));
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.bk-cal-day--selected')
+          .forEach(x => x.classList.remove('bk-cal-day--selected'));
+        el.classList.add('bk-cal-day--selected');
+
+        st.date    = date;
+        st.dateStr = dateStr;
+        st.hour    = null;
+
+        renderSlots();
+        hideForms();
+      });
     }
 
     grid.appendChild(el);
   }
 }
 
-function selectDate(date, dateStr, el) {
-  state.date    = date;
-  state.dateStr = dateStr;
-  state.time    = null; // időpont nullázása dátumváltáskor
-
-  // Vizuális frissítés
-  document.querySelectorAll('.cal-day--selected')
-    .forEach(d => d.classList.remove('cal-day--selected'));
-  el.classList.add('cal-day--selected');
-
-  renderTimeSlots();
-  updateSummary();
-}
-
 document.getElementById('cal-prev').addEventListener('click', () => {
-  state.calMonth--;
-  if (state.calMonth < 0) { state.calMonth = 11; state.calYear--; }
+  st.calMonth--;
+  if (st.calMonth < 0) { st.calMonth = 11; st.calYear--; }
   renderCalendar();
 });
 
 document.getElementById('cal-next').addEventListener('click', () => {
-  state.calMonth++;
-  if (state.calMonth > 11) { state.calMonth = 0; state.calYear++; }
+  st.calMonth++;
+  if (st.calMonth > 11) { st.calMonth = 0; st.calYear++; }
   renderCalendar();
 });
 
-/* ── Időpontok ─────────────────────────────────────────────────── */
-function renderTimeSlots() {
+/* ══════════════════════════════════════════════════════════════════
+   IDŐPONTOK
+   ══════════════════════════════════════════════════════════════════ */
+function renderSlots() {
+  const header    = document.getElementById('slots-header');
   const container = document.getElementById('time-slots');
   container.innerHTML = '';
 
-  if (!state.dateStr) {
-    container.innerHTML = '<p class="time-slots-empty">Előbb válassz dátumot.</p>';
+  if (!st.dateStr) {
+    header.innerHTML = '<span class="bk-slots-title">Válassz napot a naptárból</span>';
+    container.innerHTML = `
+      <div class="bk-slots-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <p>Kattints egy napra<br>az elérhető időpontok megtekintéséhez</p>
+      </div>`;
     return;
   }
 
-  const foglalt = FOGLALT[state.dateStr] || [];
+  header.innerHTML = `<span class="bk-slots-title">${formatDateHU(st.date)}</span>`;
 
-  IDOPONTOK.forEach(t => {
+  const foglaltOrak = FOGLALT[st.dateStr] || [];
+
+  for (let h = NYITAS; h < ZARAS; h++) {
+    const isTaken = foglaltOrak.includes(h);
+
     const el = document.createElement('div');
-    el.className = 'time-slot';
-    el.textContent = t;
+    el.className = `bk-slot bk-slot--${isTaken ? 'taken' : 'free'}`;
+    if (!isTaken && st.hour === h) el.classList.add('bk-slot--selected');
 
-    if (foglalt.includes(t)) {
-      el.classList.add('time-slot--taken');
-      el.title = 'Foglalt';
-    } else {
-      if (state.time === t) el.classList.add('time-slot--selected');
-      el.addEventListener('click', () => selectTime(t, el));
+    el.innerHTML = `
+      <span class="bk-slot-dot"></span>
+      <span class="bk-slot-time">${formatHour(h)}</span>
+      <span class="bk-slot-label">${isTaken ? 'Foglalt' : 'Szabad'}</span>
+    `;
+
+    if (!isTaken) {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.bk-slot--selected')
+          .forEach(s => s.classList.remove('bk-slot--selected'));
+        el.classList.add('bk-slot--selected');
+        st.hour = h;
+        showFormPanel();
+      });
     }
 
     container.appendChild(el);
-  });
-}
-
-function selectTime(t, el) {
-  state.time = t;
-  document.querySelectorAll('.time-slot--selected')
-    .forEach(s => s.classList.remove('time-slot--selected'));
-  el.classList.add('time-slot--selected');
-  updateSummary();
-}
-
-/* ── Összefoglaló ──────────────────────────────────────────────── */
-function updateSummary() {
-  const summary = document.getElementById('booking-summary');
-
-  if (!state.service && !state.dateStr && !state.time) {
-    summary.classList.remove('visible');
-    return;
   }
-
-  const dateLabel = state.date
-    ? state.date.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' })
-    : '—';
-
-  summary.innerHTML = `
-    <strong>Foglalás összefoglalója</strong><br>
-    Szolgáltatás: ${state.service ?? '—'}<br>
-    Dátum: ${dateLabel}<br>
-    Időpont: ${state.time ?? '—'}
-  `;
-  summary.classList.add('visible');
-
-  // Rejtett mezők feltöltése
-  document.getElementById('hidden-service').value = state.service ?? '';
-  document.getElementById('hidden-date').value    = state.dateStr ?? '';
-  document.getElementById('hidden-time').value    = state.time    ?? '';
 }
 
-/* ── Szolgáltatás kiválasztása ─────────────────────────────────── */
-document.querySelectorAll('input[name="service"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    state.service = radio.value;
-    updateSummary();
-  });
+/* ══════════════════════════════════════════════════════════════════
+   FORM PANEL
+   ══════════════════════════════════════════════════════════════════ */
+function showFormPanel() {
+  updateBadge();
+  document.getElementById('hidden-service').value = st.service ?? '';
+  document.getElementById('hidden-date').value    = st.dateStr ?? '';
+  document.getElementById('hidden-time').value    = st.hour !== null ? `${pad(st.hour)}:00` : '';
+
+  const panel = document.getElementById('bk-form-panel');
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function hideForms() {
+  document.getElementById('bk-form-panel').hidden = true;
+}
+
+function updateBadge() {
+  const badge = document.getElementById('bk-selection-badge');
+  if (!badge) return;
+
+  const svc  = st.service  ? `<strong>${st.service}</strong>` : '–';
+  const dat  = st.dateStr  ? st.date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' }) : '–';
+  const time = st.hour !== null ? `${pad(st.hour)}:00 – ${pad(st.hour + 1)}:00` : '–';
+
+  badge.innerHTML = `${svc} &nbsp;·&nbsp; ${dat} &nbsp;·&nbsp; ${time}`;
+}
+
+// "Módosítás" gomb: form elrejtése, időpont nullázása
+document.getElementById('bk-change-btn').addEventListener('click', () => {
+  st.hour = null;
+  document.querySelectorAll('.bk-slot--selected')
+    .forEach(s => s.classList.remove('bk-slot--selected'));
+  hideForms();
+  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-/* ── Foglalás elküldése ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   KÜLDÉS
+   ══════════════════════════════════════════════════════════════════ */
 const bookingForm = document.getElementById('booking-form');
 
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  if (!state.service) { alert('Kérlek válassz szolgáltatást!'); return; }
-  if (!state.dateStr) { alert('Kérlek válassz dátumot!'); return; }
-  if (!state.time)    { alert('Kérlek válassz időpontot!'); return; }
+  if (!st.service)         { alert('Kérlek válassz szolgáltatást!'); return; }
+  if (!st.dateStr)         { alert('Kérlek válassz dátumot!'); return; }
+  if (st.hour === null)    { alert('Kérlek válassz időpontot!'); return; }
 
   const submitBtn = document.getElementById('booking-submit');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Küldés...';
+  submitBtn.disabled  = true;
+  submitBtn.textContent = 'Küldés…';
 
   try {
-    const formData = new FormData(bookingForm);
-    const action   = bookingForm.getAttribute('action');
+    const action = bookingForm.getAttribute('action');
 
-    // Ha még nincs Formspree ID beállítva, csak szimuláljuk a küldést
     if (action.includes('YOUR_FORM_ID')) {
-      await new Promise(r => setTimeout(r, 800)); // szimuláció
+      await new Promise(r => setTimeout(r, 900));
       showSuccess();
       return;
     }
 
     const res = await fetch(action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' },
+      method:  'POST',
+      body:    new FormData(bookingForm),
+      headers: { Accept: 'application/json' },
     });
 
     if (res.ok) {
       showSuccess();
     } else {
-      throw new Error('Hiba a küldés során.');
+      throw new Error();
     }
   } catch {
-    alert('Hiba történt a foglalás elküldésekor. Kérlek próbáld újra, vagy vedd fel velünk a kapcsolatot!');
-    submitBtn.disabled = false;
+    alert('Hiba történt. Kérlek próbáld újra, vagy írj nekünk e-mailt!');
+    submitBtn.disabled  = false;
     submitBtn.textContent = 'Foglalás elküldése';
   }
 });
 
 function showSuccess() {
-  document.querySelector('.booking-widget').querySelectorAll('.booking-step')
-    .forEach(s => s.style.display = 'none');
+  document.querySelector('.bk-main').hidden         = true;
+  document.querySelector('.bk-service-bar').hidden  = true;
+  document.getElementById('bk-form-panel').hidden   = true;
   document.getElementById('booking-success').hidden = false;
 }
 
 document.getElementById('booking-reset').addEventListener('click', () => {
-  // Állapot visszaállítása
-  state.service = state.date = state.dateStr = state.time = null;
+  // Állapot reset
+  Object.assign(st, { service: null, date: null, dateStr: null, hour: null });
 
-  document.querySelectorAll('input[name="service"]')
-    .forEach(r => r.checked = false);
-
-  document.querySelectorAll('.booking-step')
-    .forEach(s => s.style.display = '');
+  document.querySelector('.bk-main').hidden         = false;
+  document.querySelector('.bk-service-bar').hidden  = false;
   document.getElementById('booking-success').hidden = true;
 
+  document.querySelectorAll('.bk-svc-btn').forEach(b => b.classList.remove('active'));
   bookingForm.reset();
-  document.getElementById('booking-summary').classList.remove('visible');
 
   const submitBtn = document.getElementById('booking-submit');
-  submitBtn.disabled = false;
+  submitBtn.disabled  = false;
   submitBtn.textContent = 'Foglalás elküldése';
 
   renderCalendar();
-  renderTimeSlots();
-  window.scrollTo({ top: document.getElementById('foglalas').offsetTop - 80, behavior: 'smooth' });
+  renderSlots();
+  hideForms();
+
+  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
 });
 
-/* ── Inicializálás ─────────────────────────────────────────────── */
-initCalendar();
-renderTimeSlots();
+/* ── Inicializálás ──────────────────────────────────────────────── */
+renderCalendar();
+renderSlots();
