@@ -938,50 +938,20 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .logo-link {
   display: flex;
   align-items: center;
-  gap: .75rem;
   text-decoration: none;
   color: var(--c-dark);
 }
 
-.logo-mark-img {
-  width: auto;
-  height: 58px;
-  flex-shrink: 0;
-}
-
-.logo-mark-img--footer {
-  filter: brightness(0) saturate(0) invert(1) opacity(.85);
-}
-
-.logo-wordmark {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  line-height: 1;
-}
-
-.logo-studio {
-  font-family: var(--f-sans);
-  font-size: .54rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-  font-weight: 400;
-}
-
-.logo-freya {
-  font-family: var(--f-serif);
+.logo-text {
+  font-family: 'Inknut Antiqua', serif;
   font-size: 1.15rem;
   font-weight: 400;
-  letter-spacing: .08em;
-  font-style: italic;
-  color: var(--c-dark);
+  letter-spacing: .04em;
   line-height: 1;
+  color: var(--c-dark);
 }
 
-.logo-link--footer .logo-studio { color: rgba(246,245,242,.4); }
-.logo-link--footer .logo-freya  { color: var(--c-bg); }
-.logo-link--footer .logo-mark   { color: var(--c-accent); }
+.logo-link--footer .logo-text { color: var(--c-bg); }
 
 /* ═══════════════════════════════════════════════════════════════════
    EYEBROW
