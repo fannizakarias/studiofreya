@@ -381,43 +381,37 @@ bookingForm.addEventListener('submit', async (e) => {
   btn.disabled  = true;
   btn.textContent = 'Küldés…';
 
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        access_key: '9498e55b-f041-44fb-9f4a-b44b5019e0f6',
-        subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
-        from_name:  document.getElementById('b-nev').value,
-        nev:        document.getElementById('b-nev').value,
-        email:      document.getElementById('b-email').value,
-        telefon:    document.getElementById('b-telefon').value,
-        szemelyek:  document.getElementById('b-szemelyek').value,
-        megjegyzes: document.getElementById('b-megjegyzes').value,
-        idotartam:  `${st.hours} óra`,
-        ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
-        datum:      st.dateStr,
-        idopont:    `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
-      }),
-    });
-    if (!res.ok) throw new Error();
+  // Azonnali helyi frissítés (email és GitHub eredményétől függetlenül)
+  if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
+  const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
+  bookedHours.forEach(h => {
+    if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
+  });
 
-    // Azonnali helyi frissítés
-    if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
-    const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
-    bookedHours.forEach(h => {
-      if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
-    });
+  // Email küldése (nem blokkoló — ha sikertelen, a foglalás akkor is elmegy)
+  fetch('https://api.web3forms.com/submit', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      access_key: '9498e55b-f041-44fb-9f4a-b44b5019e0f6',
+      subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
+      from_name:  document.getElementById('b-nev').value,
+      nev:        document.getElementById('b-nev').value,
+      email:      document.getElementById('b-email').value,
+      telefon:    document.getElementById('b-telefon').value,
+      szemelyek:  document.getElementById('b-szemelyek').value,
+      megjegyzes: document.getElementById('b-megjegyzes').value,
+      idotartam:  `${st.hours} óra`,
+      ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
+      datum:      st.dateStr,
+      idopont:    `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
+    }),
+  }).catch(() => {});
 
-    // schedule.json frissítése GitHubon (ha a token be van állítva)
-    markBooked(st.dateStr, st.hours, st.hour).catch(() => {});
+  // schedule.json frissítése GitHubon
+  markBooked(st.dateStr, st.hours, st.hour).catch(() => {});
 
-    showSuccess();
-  } catch {
-    alert('Hiba történt a küldés során. Kérlek próbáld újra, vagy hívj minket!');
-    btn.disabled    = false;
-    btn.textContent = 'Foglalás elküldése';
-  }
+  showSuccess();
 });
 
 function showSuccess() {
