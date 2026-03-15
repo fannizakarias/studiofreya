@@ -943,8 +943,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .logo-mark-img {
-  width: 42px;
-  height: 42px;
+  width: auto;
+  height: 58px;
   flex-shrink: 0;
 }
 
