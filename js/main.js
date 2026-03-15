@@ -342,24 +342,26 @@ bookingForm.addEventListener('submit', async (e) => {
     if (action.includes('YOUR_FORM_ID')) {
       // Formspree ID még nincs beállítva – szimuláció
       await new Promise(r => setTimeout(r, 900));
-      showSuccess();
-      return;
+    } else {
+      const res = await fetch(action, {
+        method:  'POST',
+        body:    new FormData(bookingForm),
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) throw new Error();
     }
 
-    const res = await fetch(action, {
-      method:  'POST',
-      body:    new FormData(bookingForm),
-      headers: { Accept: 'application/json' },
+    // Optimista frissítés: a lefoglalt óra(k) azonnal foglalttá válnak
+    if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
+    const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
+    bookedHours.forEach(h => {
+      if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
     });
 
-    if (res.ok) {
-      showSuccess();
-    } else {
-      throw new Error();
-    }
+    showSuccess();
   } catch {
     alert('Hiba történt a küldés során. Kérlek próbáld újra, vagy hívj minket!');
-    btn.disabled  = false;
+    btn.disabled    = false;
     btn.textContent = 'Foglalás elküldése';
   }
 });
