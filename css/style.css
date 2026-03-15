@@ -942,21 +942,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-dark);
 }
 
-.logo-text {
-  font-family: 'Inknut Antiqua', serif;
-  font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: .04em;
-  line-height: 1;
-  color: var(--c-dark);
-  padding-bottom: .3rem;
-  border-bottom: 1px solid var(--c-dark);
-}
+.logo-svg { display: block; height: 28px; width: auto; }
 
-.logo-link--footer .logo-text {
-  color: var(--c-bg);
-  border-bottom-color: rgba(246,245,242,.45);
-}
+.logo-link--footer { color: var(--c-bg); }
 
 /* ═══════════════════════════════════════════════════════════════════
    EYEBROW
