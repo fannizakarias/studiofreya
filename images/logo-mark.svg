@@ -1,27 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" fill="none">
 
-  <!-- Soft ink-wash background — covers the stem area, not the full circle -->
-  <ellipse cx="22" cy="28" rx="12" ry="17" fill="#4a6251" opacity="0.18" transform="rotate(-8 22 28)"/>
+  <!-- Ink-wash background — egg/head shaped, reinforces the face reading -->
+  <ellipse cx="25" cy="27" rx="11" ry="15" fill="#4a6251" opacity="0.13" transform="rotate(-6 25 27)"/>
 
-  <!-- Hand-drawn circle — slightly imperfect, like drawn with a steady but human hand -->
+  <!-- Hand-drawn circle — slightly imperfect -->
   <path d="
-    M 28,6.5
-    C 40.8,6.2 50.2,15.6 49.8,28
-    C 49.4,40.8 39.8,50.5 27.5,49.8
-    C 15.2,49.1 6.1,39.2 6.5,27
-    C 6.9,15.5 16.8,6.8 28,7
+    M 28,6.8
+    C 40.5,6.5 50,15.8 49.7,28
+    C 49.4,40.5 39.5,50.2 27.5,49.7
+    C 15.5,49.2 6.3,39.2 6.7,27
+    C 7.1,15.2 16.8,7 28,7
   " stroke="#4a6251" stroke-width="1.1" stroke-linecap="round"/>
 
-  <!-- F rune — vertical stem, slightly imperfect path -->
-  <path d="M 21.5,14.5 C 21.8,21 21.2,28 21.6,35 C 21.8,38 21.4,40.5 21.5,42"
-        stroke="#1a1916" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- F stem — gently curved to suggest a face profile (forehead → nose → chin) -->
+  <path d="M 21.5,14 C 22.5,17 23,20 22,25 C 21.2,29 21.8,34 21.5,42"
+        stroke="#1a1916" stroke-width="2.7" stroke-linecap="round"/>
 
-  <!-- F rune — top branch, longer, nearly horizontal with slight hand-drawn dip -->
-  <path d="M 21.5,22 C 25,21.5 29.5,21.8 34.5,22.8"
+  <!-- Eye — the single abstract element that makes the F read as a face -->
+  <circle cx="27" cy="19.5" r="2" fill="#4a6251"/>
+
+  <!-- Top branch — the brow line of the F / face -->
+  <path d="M 21.5,23 C 25.5,22.3 30,22.6 35,23.6"
         stroke="#1a1916" stroke-width="2.2" stroke-linecap="round"/>
 
-  <!-- F rune — middle branch, shorter -->
-  <path d="M 21.5,31.5 C 24.5,31 27.5,31.2 31,32"
+  <!-- Middle branch — shorter, mouth / lower F bar -->
+  <path d="M 21.5,32 C 25,31.3 28.5,31.5 31.5,32.3"
         stroke="#1a1916" stroke-width="2.2" stroke-linecap="round"/>
 
 </svg>
