@@ -1151,6 +1151,110 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   letter-spacing: .04em;
 }
 
+/* ─── Booking: privacy policy checkbox ───────────────────────── */
+.bk-privacy-field .bk-check-wrap {
+  background: var(--c-soft);
+  border-color: var(--c-border);
+}
+.bk-privacy-field .bk-check-wrap:hover { background: var(--c-border); }
+
+.privacy-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: inherit;
+  color: var(--c-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.privacy-link:hover { color: var(--c-dark); }
+
+/* ─── Privacy modal ───────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 25, 22, .65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay[hidden] { display: none; }
+
+.modal-box {
+  background: var(--c-surface);
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 2.5rem 2.5rem 2.5rem;
+  border-radius: 2px;
+}
+
+.modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin-left: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--c-muted);
+  padding: 0 .2rem;
+  transition: color .15s;
+}
+.modal-close:hover { color: var(--c-dark); }
+
+.modal-content h2 {
+  font-size: 1.6rem;
+  margin-bottom: .25rem;
+}
+.modal-date {
+  font-size: .8rem;
+  color: var(--c-muted);
+  margin-bottom: 1.75rem;
+}
+.modal-content h3 {
+  font-family: var(--f-sans);
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin: 1.5rem 0 .5rem;
+}
+.modal-content p {
+  font-size: .9rem;
+  line-height: 1.7;
+  margin-bottom: .75rem;
+}
+.modal-content ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+  margin-bottom: .75rem;
+}
+.modal-content ul li {
+  font-size: .9rem;
+  line-height: 1.7;
+  margin-bottom: .2rem;
+}
+.modal-content a {
+  color: var(--c-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .modal-box { padding: 1.5rem 1.25rem; }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    RESPONSIVE — new sections
    ═══════════════════════════════════════════════════════════════════ */

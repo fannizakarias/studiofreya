@@ -3,12 +3,13 @@
   <text
     x="0"
     y="21"
-    font-family="'Inknut Antiqua', serif"
-    font-size="20"
+    font-family="'New York', 'New York Small', Georgia, serif"
+    font-size="17"
     font-weight="400"
+    letter-spacing="3"
     textLength="160"
     lengthAdjust="spacingAndGlyphs"
     fill="#1a1916"
-  >Studio Freya</text>
+  >STUDIO FREYA</text>
   <rect x="0" y="28" width="160" height="1" fill="#1a1916"/>
 </svg>

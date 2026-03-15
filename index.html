@@ -326,6 +326,16 @@
                 <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
               </div>
             </div>
+            <div class="bk-field bk-field--full bk-privacy-field">
+              <label class="bk-check-wrap" for="b-adatkezeles">
+                <input type="checkbox" class="bk-check-input" id="b-adatkezeles" name="adatkezeles" value="elfogadva" required />
+                <span class="bk-check-box"></span>
+                <span class="bk-check-text">
+                  Elolvastam és elfogadom az
+                  <button type="button" class="privacy-link" id="open-privacy">Adatkezelési tájékoztatót</button> *
+                </span>
+              </label>
+            </div>
             <button type="submit" class="btn" id="booking-submit">Foglalás elküldése</button>
           </form>
         </div>
@@ -402,6 +412,67 @@
       </div>
     </div>
   </footer>
+
+  <!-- Adatkezelési tájékoztató modál -->
+  <div class="modal-overlay" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title" hidden>
+    <div class="modal-box">
+      <button class="modal-close" id="close-privacy" aria-label="Bezárás">&times;</button>
+      <div class="modal-content">
+        <h2 id="privacy-modal-title">Adatkezelési tájékoztató</h2>
+        <p class="modal-date">Hatályos: 2025. január 1-jétől</p>
+
+        <h3>1. Az adatkezelő</h3>
+        <p>
+          <strong>Zakariás Fanni egyéni vállalkozó</strong><br>
+          Cím: 8200 Veszprém, Rákóczi utca 4.<br>
+          E-mail: <a href="mailto:hello@studiofreya.hu">hello@studiofreya.hu</a>
+        </p>
+
+        <h3>2. A kezelt személyes adatok köre</h3>
+        <p>A foglalási űrlap kitöltésekor az alábbi adatokat kezeljük:</p>
+        <ul>
+          <li>Teljes név (kötelező)</li>
+          <li>E-mail cím (kötelező)</li>
+          <li>Telefonszám (opcionális)</li>
+          <li>Résztvevők száma (opcionális)</li>
+          <li>Megjegyzés, egyéb kérések (opcionális)</li>
+          <li>Foglalás adatai: időtartam, időpont, ár</li>
+        </ul>
+
+        <h3>3. Az adatkezelés célja</h3>
+        <p>A foglalási kérelem feldolgozása, a foglalás visszaigazolása, kapcsolattartás a szolgáltatás teljesítésével összefüggésben.</p>
+
+        <h3>4. Az adatkezelés jogalapja</h3>
+        <p>Az adatkezelés jogalapja az Európai Parlament és a Tanács (EU) 2016/679 rendeletének (GDPR) 6. cikk (1) bekezdés b) pontja: az adatkezelés olyan szerződés teljesítéséhez szükséges, amelyben az érintett az egyik fél, illetve az a szerződés megkötését megelőzően az érintett kérésére történő lépések megtételéhez szükséges.</p>
+
+        <h3>5. Az adatok tárolásának időtartama</h3>
+        <p>A foglalással kapcsolatos adatokat a foglalás teljesítésétől számított 2 évig őrizzük meg, ezt követően töröljük.</p>
+
+        <h3>6. Adatfeldolgozók</h3>
+        <p>A foglalási értesítések küldéséhez a <strong>Web3Forms</strong> (web3forms.com) szolgáltatást vesszük igénybe, amely adatfeldolgozóként kezeli az Ön által megadott adatokat kizárólag az e-mail értesítés továbbításához. Az adatokat harmadik félnek nem adjuk el, és marketing célra nem használjuk fel.</p>
+
+        <h3>7. Az érintett jogai</h3>
+        <p>Ön az alábbi jogokkal rendelkezik személyes adatai kezelésével kapcsolatban:</p>
+        <ul>
+          <li><strong>Hozzáférés joga:</strong> tájékoztatást kérhet a kezelt adatairól.</li>
+          <li><strong>Helyesbítés joga:</strong> kérheti pontatlan adatainak kijavítását.</li>
+          <li><strong>Törlés joga:</strong> kérheti adatai törlését („elfeledtetéshez való jog").</li>
+          <li><strong>Adatkezelés korlátozásának joga:</strong> kérheti az adatkezelés korlátozását.</li>
+          <li><strong>Tiltakozás joga:</strong> tiltakozhat adatai kezelése ellen.</li>
+          <li><strong>Adathordozhatóság joga:</strong> kérheti adatait géppel olvasható formátumban.</li>
+        </ul>
+        <p>Jogai gyakorlásához forduljon hozzánk a <a href="mailto:hello@studiofreya.hu">hello@studiofreya.hu</a> e-mail címen.</p>
+
+        <h3>8. Panasztétel</h3>
+        <p>Ha úgy véli, hogy adatainak kezelése sérti a vonatkozó jogszabályokat, panaszt nyújthat be a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH):</p>
+        <p>
+          NAIH<br>
+          Cím: 1055 Budapest, Falk Miksa utca 9–11.<br>
+          Weboldal: <a href="https://www.naih.hu" target="_blank" rel="noopener">www.naih.hu</a>
+        </p>
+      </div>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

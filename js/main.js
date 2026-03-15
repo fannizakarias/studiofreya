@@ -411,6 +411,35 @@ document.querySelectorAll('.pf-btn').forEach(btn => {
   });
 });
 
+/* ─── Adatkezelési tájékoztató modál ─────────────────────────── */
+const privacyModal   = document.getElementById('privacy-modal');
+const openPrivacyBtn = document.getElementById('open-privacy');
+const closePrivacyBtn = document.getElementById('close-privacy');
+
+function openPrivacyModal(e) {
+  e && e.preventDefault();
+  privacyModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  closePrivacyBtn.focus();
+}
+
+function closePrivacyModal() {
+  privacyModal.hidden = true;
+  document.body.style.overflow = '';
+  openPrivacyBtn.focus();
+}
+
+openPrivacyBtn.addEventListener('click', openPrivacyModal);
+closePrivacyBtn.addEventListener('click', closePrivacyModal);
+
+privacyModal.addEventListener('click', (e) => {
+  if (e.target === privacyModal) closePrivacyModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !privacyModal.hidden) closePrivacyModal();
+});
+
 /* ─── "Fotóst is kérek" gomb → foglalás + checkbox pipa ─────── */
 document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   e.preventDefault();
