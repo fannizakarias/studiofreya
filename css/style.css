@@ -937,34 +937,47 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .logo-link {
   display: flex;
   align-items: center;
-  gap: .7rem;
+  gap: .75rem;
   text-decoration: none;
   color: var(--c-dark);
 }
 
 .logo-mark {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 22px;
   flex-shrink: 0;
   color: var(--c-accent);
 }
 
 .logo-wordmark {
-  font-family: var(--f-serif);
-  font-size: 1.3rem;
-  font-weight: 400;
-  letter-spacing: .05em;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   line-height: 1;
-  color: var(--c-dark);
 }
 
-.logo-wordmark em {
+.logo-studio {
+  font-family: var(--f-sans);
+  font-size: .54rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  font-weight: 400;
+}
+
+.logo-freya {
+  font-family: var(--f-serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: .08em;
   font-style: italic;
-  font-weight: 300;
+  color: var(--c-dark);
+  line-height: 1;
 }
 
-.logo-link--footer .logo-wordmark { color: var(--c-bg); }
-.logo-link--footer .logo-mark     { color: var(--c-accent); }
+.logo-link--footer .logo-studio { color: rgba(246,245,242,.4); }
+.logo-link--footer .logo-freya  { color: var(--c-bg); }
+.logo-link--footer .logo-mark   { color: var(--c-accent); }
 
 /* ═══════════════════════════════════════════════════════════════════
    EYEBROW
