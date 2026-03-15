@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="160" height="32" role="img" aria-label="Studio Freya">
+  <title>Studio Freya</title>
+  <text
+    x="0"
+    y="21"
+    font-family="'New York', 'New York Small', Georgia, serif"
+    font-size="17"
+    font-weight="400"
+    letter-spacing="3"
+    textLength="160"
+    lengthAdjust="spacingAndGlyphs"
+    fill="#f6f5f2"
+  >STUDIO FREYA</text>
+  <rect x="0" y="28" width="160" height="1" fill="#f6f5f2"/>
+</svg>
