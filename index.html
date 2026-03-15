@@ -8,19 +8,26 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
 </head>
 <body>
 
   <!-- Navigáció -->
   <header class="site-header">
     <nav class="nav">
-      <a href="#" class="logo">Studio Freya</a>
+      <a href="#" class="logo-link" aria-label="Studio Freya — Főoldal">
+        <svg class="logo-mark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L22 12L12 22L2 12Z" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <span class="logo-wordmark">Studio <em>Freya</em></span>
+      </a>
       <button class="nav-toggle" aria-label="Menü megnyitása" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        <li><a href="#munkak">Munkák</a></li>
+        <li><a href="#munkak">Portfólió</a></li>
+        <li><a href="#fotos">Fotós</a></li>
         <li><a href="#szolgaltatasok">Szolgáltatások</a></li>
         <li><a href="#rolunk">Rólunk</a></li>
         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
@@ -35,25 +42,105 @@
       <p class="hero-eyebrow">Fotóstúdió · Veszprém</p>
       <h1>Fényt fogunk,<br /><em>történeteket mesélünk.</em></h1>
       <div class="hero-actions">
-        <a href="#munkak" class="btn">Munkáink</a>
+        <a href="#munkak" class="btn">Portfólió</a>
         <a href="#foglalas" class="btn btn--ghost">Időpontot foglalok</a>
       </div>
     </div>
   </section>
 
-  <!-- Munkák / Portfólió -->
+  <!-- Portfólió -->
   <section class="section" id="munkak">
     <div class="container">
       <header class="section-header">
         <h2 class="section-title">Válogatott munkák</h2>
+        <p class="section-sub">A stúdióban és helyszínen készített fotóink — portré, divat, esemény és kereskedelmi projektek.</p>
       </header>
+
+      <div class="portfolio-filter">
+        <button class="pf-btn active" data-filter="all">Mind</button>
+        <button class="pf-btn" data-filter="portré">Portré</button>
+        <button class="pf-btn" data-filter="divat">Divat</button>
+        <button class="pf-btn" data-filter="esemény">Esemény</button>
+        <button class="pf-btn" data-filter="kereskedelmi">Kereskedelmi</button>
+      </div>
+
       <div class="gallery">
-        <div class="gallery-item tall"><div class="gallery-placeholder"></div></div>
-        <div class="gallery-item"><div class="gallery-placeholder"></div></div>
-        <div class="gallery-item"><div class="gallery-placeholder"></div></div>
-        <div class="gallery-item wide"><div class="gallery-placeholder"></div></div>
-        <div class="gallery-item tall"><div class="gallery-placeholder"></div></div>
-        <div class="gallery-item"><div class="gallery-placeholder"></div></div>
+        <div class="gallery-item tall" data-cat="portré">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Portré</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="divat">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Divat</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="esemény">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Esemény</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item wide" data-cat="kereskedelmi">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Kereskedelmi</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item tall" data-cat="divat">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Divat</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="portré">
+          <div class="gallery-item-inner">
+            <div class="gallery-placeholder"></div>
+            <div class="gallery-item-caption">
+              <span class="gallery-caption-cat">Portré</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zakariás Fanni — Fotós -->
+  <section class="section section--photographer" id="fotos">
+    <div class="container">
+      <div class="photographer-grid">
+        <figure class="photographer-photo">
+          <div class="gallery-placeholder" style="height:100%;min-height:520px"></div>
+          <!-- Csere: <img src="images/fanni.jpg" alt="Zakariás Fanni fotós"> -->
+        </figure>
+        <div class="photographer-body">
+          <p class="eyebrow">Fotós bérelhető</p>
+          <h2 class="section-title">Zakariás Fanni</h2>
+          <p class="photographer-bio">Fanni 8 éve foglalkozik portré- és divatfotózással. Naturalista, fényre érzékeny stílusával olyan képeket alkot, amelyek az alany legigazibb pillanatait örökítik meg.</p>
+          <p class="photographer-bio">Bérelhető önállóan helyszíni fotózásra, vagy kiegészítőként stúdiófoglaláshoz. Utóbbi esetben egyetlen alkalommal kapsz profin megvilágított stúdiós és dinamikus, riportszerű képeket is.</p>
+          <div class="photographer-tags">
+            <span class="photo-tag">Portré</span>
+            <span class="photo-tag">Divat</span>
+            <span class="photo-tag">Esemény</span>
+            <span class="photo-tag">Esküvő</span>
+          </div>
+          <div class="photographer-actions">
+            <a href="#foglalas" class="btn" id="btn-with-fotos">Fotóst is kérek</a>
+            <a href="#kapcsolat" class="btn btn--outline">Kérdezz Fanniról</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -84,6 +171,16 @@
           <span class="service-number">04</span>
           <h3>Kereskedelmi fotózás</h3>
           <p>Márkád és terméked fotózása, amely minőséget és egyedi látásmódot közvetít.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-number">05</span>
+          <h3>Stúdió bérlés</h3>
+          <p>Professzionálisan felszerelt stúdió saját fotóssal, vagy fotós nélkül. 1 óra 10 000 Ft-tól.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-number">06</span>
+          <h3>Fotós + Stúdió csomag</h3>
+          <p>Zakariás Fanni és a stúdió együtt — portré, divat vagy üzleti fotózáshoz az ideális kombináció.</p>
         </div>
       </div>
     </div>
@@ -209,6 +306,16 @@
                 <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="20" placeholder="1" />
               </div>
               <div class="bk-field bk-field--full">
+                <label class="bk-check-wrap" for="b-fotos">
+                  <input type="checkbox" class="bk-check-input" id="b-fotos" name="fotos_zakarias_fanni" value="igen" />
+                  <span class="bk-check-box"></span>
+                  <span class="bk-check-text">
+                    Zakariás Fanni fotóst is kérem
+                    <span class="bk-check-price">+8 000 Ft / óra</span>
+                  </span>
+                </label>
+              </div>
+              <div class="bk-field bk-field--full">
                 <label for="b-megjegyzes">Megjegyzés</label>
                 <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
               </div>
@@ -262,7 +369,7 @@
             <input type="text" name="name" placeholder="Neved" required />
             <input type="email" name="email" placeholder="E-mail cím" required />
           </div>
-          <input type="text" name="subject" placeholder="Tárgy" />
+          <input type="text" name="subject_line" placeholder="Tárgy" />
           <textarea name="message" rows="5" placeholder="Meséld el a projektedet..." required></textarea>
           <button type="submit" class="btn">Üzenet küldése</button>
         </form>
@@ -274,7 +381,13 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <span class="logo">Studio Freya</span>
+        <a href="#" class="logo-link logo-link--footer" aria-label="Studio Freya">
+          <svg class="logo-mark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2L22 12L12 22L2 12Z" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          <span class="logo-wordmark">Studio <em>Freya</em></span>
+        </a>
         <span class="footer-address">8200 Veszprém, Rákóczi utca 4.</span>
       </div>
       <p class="footer-copy">&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>

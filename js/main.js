@@ -398,3 +398,25 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 /* ─── Inicializálás ───────────────────────────────────────────── */
 renderCalendar();
 renderSlots();
+
+/* ─── Portfólió szűrő ────────────────────────────────────────── */
+document.querySelectorAll('.pf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.hidden = filter !== 'all' && item.dataset.cat !== filter;
+    });
+  });
+});
+
+/* ─── "Fotóst is kérek" gomb → foglalás + checkbox pipa ─────── */
+document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    const cb = document.getElementById('b-fotos');
+    if (cb) cb.checked = true;
+  }, 600);
+});

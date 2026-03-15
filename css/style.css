@@ -932,6 +932,264 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .footer-social a:hover { color: var(--c-bg); }
 
 /* ═══════════════════════════════════════════════════════════════════
+   LOGO
+   ═══════════════════════════════════════════════════════════════════ */
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  text-decoration: none;
+  color: var(--c-dark);
+}
+
+.logo-mark {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--c-accent);
+}
+
+.logo-wordmark {
+  font-family: var(--f-serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: .05em;
+  line-height: 1;
+  color: var(--c-dark);
+}
+
+.logo-wordmark em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.logo-link--footer .logo-wordmark { color: var(--c-bg); }
+.logo-link--footer .logo-mark     { color: var(--c-accent); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   EYEBROW
+   ═══════════════════════════════════════════════════════════════════ */
+.eyebrow {
+  display: block;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 1rem;
+  font-family: var(--f-sans);
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PORTFOLIO FILTER
+   ═══════════════════════════════════════════════════════════════════ */
+.portfolio-filter {
+  display: flex;
+  gap: .3rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.pf-btn {
+  background: none;
+  border: 1px solid var(--c-border);
+  padding: .4rem 1.1rem;
+  font-family: var(--f-sans);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.pf-btn:hover { background: var(--c-soft); color: var(--c-dark); border-color: var(--c-dark); }
+.pf-btn.active { background: var(--c-dark); color: var(--c-bg); border-color: var(--c-dark); }
+
+/* Gallery item inner wrapper & hover */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gallery-item-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item-inner .gallery-placeholder {
+  transition: transform .45s cubic-bezier(.25,.1,.25,1);
+}
+.gallery-item:hover .gallery-placeholder {
+  transform: scale(1.04);
+}
+
+.gallery-item-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2rem 1rem .9rem;
+  background: linear-gradient(to top, rgba(26,25,22,.65) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity .25s;
+  display: flex;
+  align-items: flex-end;
+}
+.gallery-item:hover .gallery-item-caption { opacity: 1; }
+
+.gallery-caption-cat {
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(246,245,242,.85);
+  border: 1px solid rgba(246,245,242,.3);
+  padding: .15rem .55rem;
+  line-height: 1.6;
+  font-family: var(--f-sans);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHOTOGRAPHER SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.section--photographer {
+  background: var(--c-surface);
+  padding: 0;
+  overflow: hidden;
+}
+
+.photographer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 640px;
+}
+
+.photographer-photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.photographer-body {
+  padding: 5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--c-soft);
+}
+
+.photographer-body .section-title {
+  margin-bottom: 1.8rem;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.photographer-bio {
+  color: var(--c-muted);
+  font-size: .93rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.photographer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 2rem 0 2.5rem;
+}
+
+.photo-tag {
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .3rem .8rem;
+  border: 1px solid var(--c-border);
+  color: var(--c-muted);
+  font-family: var(--f-sans);
+}
+
+.photographer-actions {
+  display: flex;
+  gap: .8rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Booking: photographer checkbox ─────────────────────────── */
+.bk-check-wrap {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: 1rem 1.2rem;
+  background: var(--c-accent-lt);
+  border: 1px solid var(--c-free-bd);
+  cursor: pointer;
+  transition: background .15s;
+  user-select: none;
+  border-radius: 2px;
+}
+.bk-check-wrap:hover { background: #dde8df; }
+
+.bk-check-input { display: none; }
+
+.bk-check-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--c-border);
+  flex-shrink: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s, background .15s;
+}
+.bk-check-input:checked ~ .bk-check-box {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+}
+.bk-check-input:checked ~ .bk-check-box::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 5px;
+  border-left: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.bk-check-text {
+  font-size: .88rem;
+  color: var(--c-dark);
+  line-height: 1.5;
+}
+
+.bk-check-price {
+  display: inline-block;
+  margin-left: .5rem;
+  font-size: .75rem;
+  color: var(--c-accent);
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE — new sections
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .photographer-body { padding: 4rem 3rem; }
+}
+
+@media (max-width: 900px) {
+  .photographer-grid { grid-template-columns: 1fr; }
+  .photographer-photo { min-height: 360px; }
+  .photographer-body { padding: 3.5rem 2rem; }
+}
+
+@media (max-width: 640px) {
+  .photographer-body { padding: 2.5rem 1.5rem; }
+  .photographer-actions { flex-direction: column; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
