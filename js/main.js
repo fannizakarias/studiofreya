@@ -2,6 +2,12 @@
    Studio Freya — főscript
    ═══════════════════════════════════════════════════════════════════ */
 
+/* ─── GitHub konfig — foglalás automatikus mentéséhez ────────── */
+const GH_OWNER  = 'fannizakarias';
+const GH_REPO   = 'studiofreya';
+const GH_BRANCH = 'main';
+const GH_TOKEN  = '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';
+
 /* ─── Év a láblécben ──────────────────────────────────────────── */
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -325,6 +331,45 @@ document.getElementById('bk-change-btn').addEventListener('click', () => {
    ═══════════════════════════════════════════════════════════════════ */
 const bookingForm = document.getElementById('booking-form');
 
+/* ─── Foglalás mentése GitHub schedule.json-ba ───────────────── */
+async function markBooked(dateStr, hours, startHour) {
+  if (GH_TOKEN === 'YOUR_GITHUB_TOKEN') return;
+
+  const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data/schedule.json`;
+  const headers = {
+    Authorization: `Bearer ${GH_TOKEN}`,
+    Accept: 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+
+  const getRes = await fetch(`${apiUrl}?ref=${GH_BRANCH}`, { headers });
+  if (!getRes.ok) throw new Error('GitHub lekérés sikertelen');
+  const current = await getRes.json();
+  const data = JSON.parse(atob(current.content.replace(/\n/g, '')));
+
+  if (!data.foglalt) data.foglalt = {};
+  if (!data.foglalt[dateStr]) data.foglalt[dateStr] = [];
+  const hoursToBook = hours === 2 ? [startHour, startHour + 1] : [startHour];
+  hoursToBook.forEach(h => {
+    if (!data.foglalt[dateStr].includes(h)) data.foglalt[dateStr].push(h);
+  });
+  data.foglalt[dateStr].sort((a, b) => a - b);
+
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2) + '\n')));
+  const putRes = await fetch(apiUrl, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({
+      message: `Foglalás: ${dateStr} ${pad(startHour)}:00`,
+      content,
+      branch: GH_BRANCH,
+      sha: current.sha,
+    }),
+  });
+  if (!putRes.ok) throw new Error('GitHub mentés sikertelen');
+}
+
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -351,12 +396,15 @@ bookingForm.addEventListener('submit', async (e) => {
       if (!res.ok) throw new Error();
     }
 
-    // Optimista frissítés: a lefoglalt óra(k) azonnal foglalttá válnak
+    // Azonnali helyi frissítés
     if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
     const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
     bookedHours.forEach(h => {
       if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
     });
+
+    // schedule.json frissítése GitHubon (ha a token be van állítva)
+    markBooked(st.dateStr, st.hours, st.hour).catch(() => {});
 
     showSuccess();
   } catch {
