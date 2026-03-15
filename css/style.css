@@ -330,6 +330,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 .service-card h3 { color: var(--c-bg); margin-bottom: .6rem; }
 .service-card p { font-size: .88rem; color: rgba(246,245,242,.55); line-height: 1.65; }
+.service-gear { margin: .75rem 0 0 1rem; padding: 0; list-style: disc; font-size: .82rem; color: rgba(246,245,242,.38); line-height: 1.7; }
 
 /* ═══════════════════════════════════════════════════════════════════
    ABOUT
