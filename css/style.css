@@ -949,9 +949,14 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   letter-spacing: .04em;
   line-height: 1;
   color: var(--c-dark);
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--c-dark);
 }
 
-.logo-link--footer .logo-text { color: var(--c-bg); }
+.logo-link--footer .logo-text {
+  color: var(--c-bg);
+  border-bottom-color: rgba(246,245,242,.45);
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    EYEBROW
