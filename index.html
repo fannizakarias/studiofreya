@@ -186,7 +186,7 @@
             <div class="bk-selection-badge" id="bk-selection-badge"></div>
             <button class="bk-change-btn" id="bk-change-btn">&#8592; Módosítás</button>
           </div>
-          <form class="bk-form" id="booking-form" action="https://formspree.io/f/xvzwbzzz">
+          <form class="bk-form" id="booking-form">
             <input type="hidden" name="idotartam" id="hidden-duration" />
             <input type="hidden" name="ar" id="hidden-price" />
             <input type="hidden" name="datum" id="hidden-date" />
@@ -255,7 +255,9 @@
       </div>
       <div class="contact-form-wrap">
         <p class="contact-lead">Szívesen dolgozunk bármilyen projektben. Írj nekünk!</p>
-        <form class="contact-form" action="https://formspree.io/f/xvzwbzzz" method="POST">
+        <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="9498e55b-f041-44fb-9f4a-b44b5019e0f6" />
+          <input type="hidden" name="subject" value="Üzenet érkezett – Studio Freya" />
           <div class="form-row">
             <input type="text" name="name" placeholder="Neved" required />
             <input type="email" name="email" placeholder="E-mail cím" required />
