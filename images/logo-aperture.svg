@@ -16,7 +16,4 @@
     text-anchor="middle"
     fill="#2D2926"
   >STUDIO FREYA</text>
-  
-  <!-- Subtle Divider -->
-  <line x1="85" y1="72" x2="115" y2="72" stroke="#2D2926" stroke-width="0.5" />
 </svg>
