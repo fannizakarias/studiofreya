@@ -7,8 +7,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ─── Fejléc árnyék görgetéskor ──────────────────────────────── */
 const header = document.querySelector('.site-header');
+const hero   = document.querySelector('.hero');
 window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 20);
+  const threshold = hero ? hero.offsetHeight * 0.5 : window.innerHeight * 0.5;
+  header.classList.toggle('scrolled', window.scrollY > threshold);
 }, { passive: true });
 
 /* ─── Mobil navigáció ─────────────────────────────────────────── */
