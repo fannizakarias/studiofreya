@@ -156,9 +156,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: rgba(246, 245, 242, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--c-border);
-  transition: box-shadow .3s;
+  transform: translateY(-100%);
+  transition: transform .4s ease, box-shadow .3s;
 }
-.site-header.scrolled { box-shadow: 0 1px 24px rgba(0,0,0,.07); }
+.site-header.scrolled {
+  transform: translateY(0);
+  box-shadow: 0 1px 24px rgba(0,0,0,.07);
+}
 
 .nav {
   max-width: var(--max-w);
@@ -225,10 +229,23 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   position: relative;
   min-height: 100svh;
   display: flex;
-  align-items: flex-end;
-  padding: 6rem 1.5rem 5.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   overflow: hidden;
   background: var(--c-mid);
+}
+
+.hero-logo-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-logo {
+  display: block;
+  width: min(420px, 70vw);
+  height: auto;
+  filter: brightness(0) invert(1);
 }
 
 /* Swap this for a real photo:
