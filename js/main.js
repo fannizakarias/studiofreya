@@ -167,7 +167,7 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
    ═══════════════════════════════════════════════════════════════════ */
 function renderCalendar() {
   const { calYear: yr, calMonth: mo } = st;
-  document.getElementById('cal-month-label').textContent = `${HONAPOK[mo]} ${yr}`;
+  document.getElementById('cal-month-label').textContent = `${yr} ${HONAPOK[mo]}`;
 
   const grid = document.getElementById('cal-grid');
   grid.innerHTML = '';
@@ -405,19 +405,14 @@ function showFormPanel() {
   // Badge
   const badge = document.getElementById('bk-selection-badge');
   const timeLabel  = st.hour !== null ? fmtHour(st.hour, hours) : '—';
-  const dateLabel  = st.date
-    ? st.date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric', weekday: 'short' })
+  const dateLabel = st.date
+    ? st.date.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
     : '—';
-  const priceLabel = st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '';
 
   badge.innerHTML = `
-    <strong>${st.label || hours + ' óra'}</strong>
-    <span class="bk-badge-sep"></span>
     ${dateLabel}
     <span class="bk-badge-sep"></span>
     ${timeLabel}
-    <span class="bk-badge-sep"></span>
-    <strong>${priceLabel}</strong>
   `;
 
   const panel = document.getElementById('bk-form-panel');
