@@ -353,6 +353,7 @@ function renderSlotsStudio(container) {
         }
 
         renderSlots();
+        updatePriceDisplay();
         if (st.hour !== null) showFormPanel();
         else hideForms();
       });
@@ -428,13 +429,23 @@ function showFormPanel() {
 
   const panel = document.getElementById('bk-form-panel');
   panel.hidden = false;
-  setTimeout(() => {
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 50);
+  updatePriceDisplay();
 }
 
 function hideForms() {
   document.getElementById('bk-form-panel').hidden = true;
+  document.getElementById('bk-price-display').hidden = true;
+}
+
+function updatePriceDisplay() {
+  const display = document.getElementById('bk-price-display');
+  if (!st.price) { display.hidden = true; return; }
+  display.hidden = false;
+  document.getElementById('bk-price-label').textContent = st.label
+    ? st.label.split('·')[0].trim()
+    : (st.hours ? `${st.hours} óra` : '');
+  document.getElementById('bk-price-amount').textContent =
+    st.price.toLocaleString('hu-HU') + ' Ft';
 }
 
 /* Módosítás gomb */

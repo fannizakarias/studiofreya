@@ -580,7 +580,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   opacity: .7;
 }
 
-/* ── Slot price indicator ─────────────────────────────────────── */
+/* ── Slot price indicator (inline, in slots list) ─────────────── */
 .bk-slots-price {
   font-family: var(--f-serif);
   font-size: 1.05rem;
@@ -589,6 +589,33 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   border-bottom: 1px solid var(--c-border);
 }
 .bk-slots-price[hidden] { display: none; }
+
+/* ── Price display bar ────────────────────────────────────────── */
+.bk-price-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  background: var(--c-accent-lt);
+  border-top: 2px solid var(--c-accent);
+  gap: 1rem;
+}
+.bk-price-display[hidden] { display: none; }
+
+.bk-price-label {
+  font-size: .82rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.bk-price-amount {
+  font-family: var(--f-serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--c-accent);
+  letter-spacing: -.01em;
+}
 
 /* ── Extend slot hint ─────────────────────────────────────────── */
 .bk-slot--extend .bk-slot-label {
