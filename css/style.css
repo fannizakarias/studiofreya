@@ -280,7 +280,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   object-fit: cover;
   object-position: center;
   z-index: 0;
-  will-change: transform;
 }
 
 .hero-content {
@@ -1369,9 +1368,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
     z-index: 150;
   }
   .nav-links.open { display: flex; }
-  .nav-links a { font-size: .9rem; }
-  .site-header:not(.scrolled) .nav-links.open a { color: var(--c-muted); }
-  .site-header:not(.scrolled) .nav-links.open a:hover { color: var(--c-dark); }
+  .nav-links a { font-size: .9rem; color: var(--c-muted); }
+  .nav-links a:hover { color: var(--c-dark); }
   .nav-link-booking { padding: .55rem 1.4rem; }
   .nav-toggle { display: flex; }
 
