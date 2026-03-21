@@ -164,17 +164,22 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   box-shadow: 0 1px 24px rgba(0,0,0,.07);
 }
 
-/* Hero felett: fehér elemek */
-.site-header:not(.scrolled) .nav-links a {
-  color: rgba(255,255,255,.75);
+/* Hero felett: fehér elemek — csak asztali nézeten */
+@media (min-width: 641px) {
+  .site-header:not(.scrolled) .nav-links a {
+    color: rgba(255,255,255,.75);
+  }
+  .site-header:not(.scrolled) .nav-links a:hover {
+    color: #fff;
+  }
 }
-.site-header:not(.scrolled) .nav-links a:hover {
-  color: #fff;
-}
+
 .site-header:not(.scrolled) .logo-svg {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Mobilon a hamburger csíkok fehérek a hero felett */
 .site-header:not(.scrolled) .nav-toggle span {
   background: #fff;
 }
@@ -1368,8 +1373,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
     z-index: 150;
   }
   .nav-links.open { display: flex; }
-  .nav-links a { font-size: .9rem; color: var(--c-muted); }
-  .nav-links a:hover { color: var(--c-dark); }
+  .nav-links a { font-size: .9rem; }
   .nav-link-booking { padding: .55rem 1.4rem; }
   .nav-toggle { display: flex; }
 
