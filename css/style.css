@@ -555,58 +555,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-top: auto;
 }
 
-/* ── Duration bar ─────────────────────────────────────────────── */
-.bk-duration-bar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid var(--c-border);
-}
-
-.bk-dur-btn {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: .2rem;
-  padding: 1.4rem 2rem;
-  background: none;
-  border: none;
-  border-right: 1px solid var(--c-border);
-  cursor: pointer;
-  text-align: left;
-  transition: background .18s;
-}
-.bk-dur-btn:last-child { border-right: none; }
-
-.bk-dur-btn::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 2px;
-  background: var(--c-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .22s cubic-bezier(.4,0,.2,1);
-}
-
-.bk-dur-btn:hover { background: var(--c-accent-lt); }
-.bk-dur-btn.active { background: var(--c-accent-lt); }
-.bk-dur-btn.active::after { transform: scaleX(1); }
-
-.bk-dur-time {
-  font-family: var(--f-serif);
-  font-size: 1.6rem;
-  font-weight: 300;
-  color: var(--c-dark);
-  line-height: 1;
-}
-
-.bk-dur-price {
-  font-size: .8rem;
-  letter-spacing: .08em;
-  color: var(--c-accent);
-}
-
 /* ── Duration info bar ────────────────────────────────────────── */
 .bk-duration-bar {
   padding: .9rem 1.8rem;
