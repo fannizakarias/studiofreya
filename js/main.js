@@ -9,7 +9,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const header = document.querySelector('.site-header');
 const hero   = document.querySelector('.hero');
 window.addEventListener('scroll', () => {
-  const threshold = hero ? hero.offsetHeight * 0.5 : window.innerHeight * 0.5;
+  const threshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
   header.classList.toggle('scrolled', window.scrollY > threshold);
 }, { passive: true });
 
