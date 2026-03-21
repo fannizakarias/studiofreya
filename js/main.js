@@ -408,12 +408,6 @@ function showFormPanel() {
   document.getElementById('hidden-date').value     = st.dateStr ?? '';
   document.getElementById('hidden-time').value     = st.hour !== null ? `${pad(st.hour)}:00` : '';
 
-  // Fanni checkbox: auto-set + mező elrejtése
-  const fanniField = document.getElementById('bk-fotos-field');
-  const fanniCb    = document.getElementById('b-fotos');
-  if (fanniField) fanniField.hidden = st.withFanni;
-  if (fanniCb)    fanniCb.checked   = st.withFanni;
-
   // Badge
   const badge = document.getElementById('bk-selection-badge');
   const timeLabel  = st.hour !== null ? fmtHour(st.hour, hours) : '—';
