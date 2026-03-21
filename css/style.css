@@ -1199,35 +1199,21 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
    ═══════════════════════════════════════════════════════════════════ */
 .studio-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: .75rem;
-}
-
-.studio-img--main {
-  grid-row: span 2;
 }
 
 .studio-img img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  aspect-ratio: 4/3;
-}
-
-.studio-img--main img {
-  aspect-ratio: unset;
-  height: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 @media (max-width: 640px) {
   .studio-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
   }
-  .studio-img--main { grid-row: span 1; }
-  .studio-img--main img { aspect-ratio: 4/3; }
 }
 
 /* ─── Studio equipment list ─────────────────────────────────────── */
@@ -1247,32 +1233,47 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-bottom: 1.25rem;
 }
 
-.studio-eq-list {
+.studio-eq-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: .5rem .75rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .75rem;
 }
 
-.studio-eq-item {
+.studio-eq-card {
   display: flex;
-  align-items: baseline;
-  gap: .75rem;
-  padding: .55rem 0;
-  border-bottom: 1px solid var(--c-border);
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  padding: .9rem .6rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  text-align: center;
+}
+
+.studio-eq-img {
+  width: 100%;
+  height: 90px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
 }
 
 .studio-eq-cat {
-  flex-shrink: 0;
-  font-size: .72rem;
+  font-size: .68rem;
   letter-spacing: .07em;
   text-transform: uppercase;
   color: var(--c-accent);
-  width: 7rem;
 }
 
 .studio-eq-name {
-  font-size: .9rem;
+  font-size: .8rem;
   color: var(--c-dark);
+  line-height: 1.35;
+}
+
+@media (max-width: 640px) {
+  .studio-eq-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
