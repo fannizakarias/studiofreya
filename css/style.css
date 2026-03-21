@@ -607,70 +607,37 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-accent);
 }
 
-/* ── Duration stepper ─────────────────────────────────────────── */
+/* ── Duration info bar ────────────────────────────────────────── */
 .bk-duration-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 1.8rem;
+  padding: .9rem 1.8rem;
   border-bottom: 1px solid var(--c-border);
-  gap: 1.5rem;
 }
-
-.bk-dur-info { flex: 1; }
 
 .bk-dur-rule {
   font-size: .8rem;
   color: var(--c-muted);
-  letter-spacing: .02em;
+  margin: 0;
 }
 
-.bk-dur-stepper {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-shrink: 0;
+.bk-dur-hint {
+  color: var(--c-muted);
+  opacity: .7;
 }
 
-.bk-step-btn {
-  width: 2.2rem;
-  height: 2.2rem;
-  border: 1px solid var(--c-border);
-  background: none;
-  border-radius: 2px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  line-height: 1;
-  color: var(--c-dark);
-  transition: background .15s, border-color .15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bk-step-btn:hover:not(:disabled) {
-  background: var(--c-accent-lt);
-  border-color: var(--c-accent);
-}
-.bk-step-btn:disabled { opacity: .3; cursor: default; }
-
-.bk-step-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 6rem;
-}
-
-.bk-step-hours {
+/* ── Slot price indicator ─────────────────────────────────────── */
+.bk-slots-price {
   font-family: var(--f-serif);
-  font-size: 1.5rem;
-  line-height: 1.1;
-  color: var(--c-dark);
-}
-
-.bk-step-price {
-  font-size: .78rem;
-  letter-spacing: .07em;
+  font-size: 1.05rem;
   color: var(--c-accent);
+  padding: .6rem 2rem .4rem;
+  border-bottom: 1px solid var(--c-border);
+}
+.bk-slots-price[hidden] { display: none; }
+
+/* ── Extend slot hint ─────────────────────────────────────────── */
+.bk-slot--extend .bk-slot-label {
+  color: var(--c-accent) !important;
+  font-style: italic;
 }
 
 /* ── Main area ────────────────────────────────────────────────── */
@@ -1550,8 +1517,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-pkg-btn:last-child { border-bottom: none; }
   .bk-pkg-num { font-size: 1.4rem; min-width: 1.6rem; }
 
-  .bk-duration-bar { flex-direction: column; align-items: flex-start; gap: .8rem; }
-  .bk-dur-stepper { width: 100%; justify-content: center; }
+  .bk-dur-hint { display: none; }
+  .bk-slots-price { padding: .5rem 1.25rem .3rem; }
 
   .bk-slots-list { padding: 1rem 1.25rem; }
   .bk-slots-header { padding: 1.2rem 1.25rem .8rem; }

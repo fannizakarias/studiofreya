@@ -135,47 +135,12 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     Object.assign(st, { hours: null, price: null, label: null,
                         date: null, dateStr: null, hour: null });
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
-    if (!st.withFanni) {
-      setStudioHours(1);
-    } else {
-      hideForms();
-      renderCalendar();
-      renderSlots();
-    }
+    hideForms();
+    renderCalendar();
+    renderSlots();
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════
-   IDŐTARTAM LÉPTETŐ (stúdió mód)
-   ═══════════════════════════════════════════════════════════════════ */
-const MAX_STUDIO_HOURS = MAX_HOUR - MIN_HOUR; // 10
-
-function updateStepperUI() {
-  const h = st.hours || 1;
-  const p = calcStudioPrice(h);
-  document.getElementById('bk-step-hours').textContent = h + ' óra';
-  document.getElementById('bk-step-price').textContent = p.toLocaleString('hu-HU') + ' Ft';
-  document.getElementById('bk-step-minus').disabled = h <= 1;
-  document.getElementById('bk-step-plus').disabled  = h >= MAX_STUDIO_HOURS;
-}
-
-function setStudioHours(h) {
-  st.hours = h;
-  st.price = calcStudioPrice(h);
-  st.label = `${h} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
-  st.hour  = null;
-  updateStepperUI();
-  hideForms();
-  renderCalendar();
-  if (st.dateStr) renderSlots();
-}
-
-document.getElementById('bk-step-minus').addEventListener('click', () => {
-  if ((st.hours || 1) > 1) setStudioHours((st.hours || 1) - 1);
-});
-document.getElementById('bk-step-plus').addEventListener('click', () => {
-  if ((st.hours || 1) < MAX_STUDIO_HOURS) setStudioHours((st.hours || 1) + 1);
-});
 
 /* ═══════════════════════════════════════════════════════════════════
    CSOMAG VÁLASZTÓ (Fanni módban)
@@ -283,6 +248,17 @@ document.getElementById('cal-next').addEventListener('click', () => {
 /* ═══════════════════════════════════════════════════════════════════
    IDŐPONTOK
    ═══════════════════════════════════════════════════════════════════ */
+const SLOT_PLACEHOLDER = `
+  <div class="bk-slots-placeholder">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+      <rect x="3" y="4" width="18" height="18" rx="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <p>Kattints egy zöld pontos napra<br>az elérhető időpontok megtekintéséhez</p>
+  </div>`;
+
 function renderSlots() {
   const container = document.getElementById('time-slots');
   const header    = document.getElementById('slots-header');
@@ -290,23 +266,105 @@ function renderSlots() {
 
   if (!st.dateStr) {
     header.innerHTML = '<span class="bk-slots-title">Válassz napot a naptárból</span>';
-    container.innerHTML = `
-      <div class="bk-slots-placeholder">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <p>Kattints egy zöld pontos napra<br>az elérhető időpontok megtekintéséhez</p>
-      </div>`;
+    container.innerHTML = SLOT_PLACEHOLDER;
     return;
   }
 
-  const hours = st.hours || 1;
   header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>`;
 
-  const slots = getSzabadOrak(st.dateStr, hours);
+  if (st.withFanni) {
+    if (!st.hours) {
+      container.innerHTML = '<p class="bk-no-slots">Válassz csomagot a foglalás elején!</p>';
+      return;
+    }
+    renderSlotsFanni(container);
+  } else {
+    renderSlotsStudio(container);
+  }
+}
+
+/* ── Stúdió: egyéni 1 órás slotok, többes kijelölés ──────────── */
+function renderSlotsStudio(container) {
+  const slots = getSzabadOrak(st.dateStr, 1);
+
+  if (slots.length === 0) {
+    container.innerHTML = '<p class="bk-no-slots">Erre a napra nincs elérhető időpont.</p>';
+    return;
+  }
+
+  // Ár kijelző
+  const priceBar = document.createElement('div');
+  priceBar.className = 'bk-slots-price';
+  if (st.hour !== null && st.hours) {
+    priceBar.textContent = `${st.hours} óra · ${calcStudioPrice(st.hours).toLocaleString('hu-HU')} Ft`;
+  } else {
+    priceBar.hidden = true;
+  }
+  container.appendChild(priceBar);
+
+  slots.forEach(({ hour, taken }) => {
+    const inRange  = st.hour !== null && hour >= st.hour && hour < st.hour + (st.hours || 0);
+    const isExtend = !taken && st.hour !== null && hour === st.hour + (st.hours || 0)
+                     && slots.some(s => s.hour === hour && !s.taken);
+
+    const el = document.createElement('div');
+    if (taken)         el.className = 'bk-slot bk-slot--taken';
+    else if (inRange)  el.className = 'bk-slot bk-slot--selected';
+    else if (isExtend) el.className = 'bk-slot bk-slot--free bk-slot--extend';
+    else               el.className = 'bk-slot bk-slot--free';
+
+    const labelText = taken ? 'Foglalt'
+      : inRange   ? 'Kiválasztva'
+      : isExtend  ? '+ bővítés'
+      : 'Szabad';
+
+    el.innerHTML = `
+      <span class="bk-slot-dot"></span>
+      <span class="bk-slot-time">${pad(hour)}:00 – ${pad(hour + 1)}:00</span>
+      <span class="bk-slot-label">${labelText}</span>
+    `;
+
+    if (!taken) {
+      el.addEventListener('click', () => {
+        if (isExtend) {
+          st.hours = (st.hours || 0) + 1;
+        } else if (inRange) {
+          if (st.hours <= 1) {
+            // egyetlen kijelölt: töröl
+            st.hour = null; st.hours = null; st.price = null; st.label = null;
+          } else if (hour === st.hour + st.hours - 1) {
+            // utolsó: csökkent
+            st.hours--;
+          } else if (hour === st.hour) {
+            // első: előrébb lép
+            st.hour++; st.hours--;
+          } else {
+            // közép: új kijelölés innen
+            st.hour = hour; st.hours = 1;
+          }
+        } else {
+          // új kijelölés
+          st.hour = hour; st.hours = 1;
+        }
+
+        if (st.hour !== null) {
+          st.price = calcStudioPrice(st.hours);
+          st.label = `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+        }
+
+        renderSlots();
+        if (st.hour !== null) showFormPanel();
+        else hideForms();
+      });
+    }
+
+    container.appendChild(el);
+  });
+}
+
+/* ── Fanni: fix időtartam, egyszerű kijelölés ─────────────────── */
+function renderSlotsFanni(container) {
+  const slots = getSzabadOrak(st.dateStr, st.hours);
 
   if (slots.length === 0) {
     container.innerHTML = '<p class="bk-no-slots">Erre a napra nincs elérhető időpont.</p>';
@@ -320,7 +378,7 @@ function renderSlots() {
 
     el.innerHTML = `
       <span class="bk-slot-dot"></span>
-      <span class="bk-slot-time">${fmtHour(hour, hours)}</span>
+      <span class="bk-slot-time">${fmtHour(hour, st.hours)}</span>
       <span class="bk-slot-label">${taken ? 'Foglalt' : 'Szabad'}</span>
     `;
 
@@ -462,7 +520,6 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   document.getElementById('booking-success').hidden  = true;
 
   document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
-  setStudioHours(1);
   bookingForm.reset();
 
   const btn = document.getElementById('booking-submit');
@@ -477,7 +534,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 });
 
 /* ─── Inicializálás ───────────────────────────────────────────── */
-setStudioHours(1);
+renderCalendar();
 renderSlots();
 
 /* ─── Portfólió szűrő ────────────────────────────────────────── */
