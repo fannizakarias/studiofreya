@@ -233,7 +233,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   justify-content: center;
   padding: 0;
   overflow: hidden;
-  background: var(--c-mid);
+  background: #1a1916;
 }
 
 .hero-logo-wrap {
@@ -248,17 +248,23 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   filter: brightness(0) invert(1);
 }
 
-/* Swap this for a real photo:
-   background-image: url('../images/hero.jpg');
-   background-size: cover; background-position: center; */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(15,14,12,.55) 0%, rgba(15,14,12,.3) 40%, rgba(15,14,12,.55) 100%);
+}
+
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    linear-gradient(to top, rgba(26,25,22,.72) 0%, transparent 55%),
-    linear-gradient(150deg, #232820 0%, #1a1916 50%, #201e1a 100%);
+  background-image: url('../images/studio1.JPG');
+  background-size: cover;
+  background-position: center;
 }
 
 .hero-content {
