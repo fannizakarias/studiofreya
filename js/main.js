@@ -531,16 +531,36 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 renderCalendar();
 renderSlots();
 
-/* ─── Portfólió szűrő ────────────────────────────────────────── */
-document.querySelectorAll('.pf-btn').forEach(btn => {
+/* ─── Fanni portfólió szűrő ──────────────────────────────────── */
+document.querySelectorAll('[data-fanni-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.pf-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('[data-fanni-filter]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.gallery-item').forEach(item => {
-      item.hidden = filter !== 'all' && item.dataset.cat !== filter;
+    const filter = btn.dataset.fanniFilter;
+    document.querySelectorAll('.fanni-gallery-item').forEach(item => {
+      item.hidden = item.dataset.fcat !== filter;
     });
   });
+});
+
+/* ─── "Csomagot foglalok" gomb ────────────────────────────────── */
+document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    document.querySelectorAll('.bk-mode-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === 'fanni');
+    });
+    st.withFanni = true;
+    Object.assign(st, { hours: null, price: null, label: null,
+                        date: null, dateStr: null, hour: null });
+    document.getElementById('bk-duration-bar').hidden = true;
+    document.getElementById('bk-packages').hidden     = false;
+    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    hideForms();
+    renderCalendar();
+    renderSlots();
+  }, 600);
 });
 
 /* ─── Adatkezelési tájékoztató modál ─────────────────────────── */

@@ -1173,6 +1173,151 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   STUDIO SHOWCASE
+   ═══════════════════════════════════════════════════════════════════ */
+.studio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: .75rem;
+}
+
+.studio-img--main {
+  grid-row: span 2;
+}
+
+.studio-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+}
+
+.studio-img--main img {
+  aspect-ratio: unset;
+  height: 100%;
+}
+
+@media (max-width: 640px) {
+  .studio-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .studio-img--main { grid-row: span 1; }
+  .studio-img--main img { aspect-ratio: 4/3; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FANNI PORTFOLIO & PACKAGES
+   ═══════════════════════════════════════════════════════════════════ */
+.fanni-portfolio {
+  margin-top: 5rem;
+}
+
+.fanni-portfolio-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.fanni-portfolio-title {
+  font-family: var(--f-serif);
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--c-dark);
+  margin: 0;
+}
+
+.fanni-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 240px;
+  gap: .75rem;
+}
+
+.fanni-gallery-item .gallery-placeholder {
+  height: 100%;
+  min-height: unset;
+}
+
+.fanni-gallery-item--tall {
+  grid-row: span 2;
+}
+
+.fanni-gallery-item[hidden] { display: none; }
+
+.fanni-packages-info {
+  margin-top: 5rem;
+}
+
+.fanni-packages-sub {
+  color: var(--c-muted);
+  font-size: .9rem;
+  margin: .5rem 0 2.5rem;
+}
+
+.fanni-pkg-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--c-border);
+  border: 1px solid var(--c-border);
+}
+
+.fanni-pkg-card {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 2rem 1.8rem;
+  background: var(--c-surface);
+}
+
+.fanni-pkg-num {
+  font-family: var(--f-serif);
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--c-accent);
+  opacity: .5;
+}
+
+.fanni-pkg-body h4 {
+  font-family: var(--f-serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin: 0 0 .3rem;
+  color: var(--c-dark);
+}
+
+.fanni-pkg-body p {
+  font-size: .85rem;
+  color: var(--c-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.fanni-pkg-price {
+  margin-top: auto;
+  font-size: 1.1rem;
+  letter-spacing: .04em;
+  color: var(--c-dark);
+}
+
+@media (max-width: 900px) {
+  .fanni-gallery { grid-template-columns: repeat(2, 1fr); }
+  .fanni-pkg-cards { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .fanni-gallery { grid-template-columns: 1fr; grid-auto-rows: 220px; }
+  .fanni-gallery-item--tall { grid-row: span 1; }
+  .fanni-portfolio-header { flex-direction: column; align-items: flex-start; gap: .75rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    PHOTOGRAPHER SECTION
    ═══════════════════════════════════════════════════════════════════ */
 .section--photographer {

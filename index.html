@@ -22,8 +22,8 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        <li><a href="#munkak">Portfólió</a></li>
-        <li><a href="#fotos">Fotós</a></li>
+        <li><a href="#studio">Stúdió</a></li>
+        <li><a href="#fotos">Fanni fotós</a></li>
         <li><a href="#szolgaltatasok">Szolgáltatások</a></li>
         <li><a href="#rolunk">Rólunk</a></li>
         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
@@ -38,77 +38,29 @@
     <div class="hero-logo-wrap">
       <img src="images/logo-aperture.svg" alt="Studio Freya" class="hero-logo" />
     </div>
-    <a href="#munkak" class="scroll-hint" aria-label="Görgets le">
+    <a href="#studio" class="scroll-hint" aria-label="Görgets le">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="6 9 12 15 18 9"/>
       </svg>
     </a>
   </section>
 
-  <!-- Portfólió -->
-  <section class="section" id="munkak">
+  <!-- Stúdió -->
+  <section class="section section--studio" id="studio">
     <div class="container">
       <header class="section-header">
-        <h2 class="section-title">Válogatott munkák</h2>
-        <p class="section-sub">A stúdióban és helyszínen készített fotóink — portré, divat, esemény és kereskedelmi projektek.</p>
+        <h2 class="section-title">A stúdió</h2>
+        <p class="section-sub">Professzionálisan felszerelt fotóstúdió Veszprémben — studióvaku, LED lámpa, softboxok és Colorama papírháttér.</p>
       </header>
-
-      <div class="portfolio-filter">
-        <button class="pf-btn active" data-filter="all">Mind</button>
-        <button class="pf-btn" data-filter="portré">Portré</button>
-        <button class="pf-btn" data-filter="divat">Divat</button>
-        <button class="pf-btn" data-filter="esemény">Esemény</button>
-        <button class="pf-btn" data-filter="kereskedelmi">Kereskedelmi</button>
-      </div>
-
-      <div class="gallery">
-        <div class="gallery-item tall" data-cat="portré">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Portré</span>
-            </div>
-          </div>
+      <div class="studio-grid">
+        <div class="studio-img studio-img--main">
+          <img src="images/studio2.jpeg" alt="Studio Freya stúdió" />
         </div>
-        <div class="gallery-item" data-cat="divat">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Divat</span>
-            </div>
-          </div>
+        <div class="studio-img">
+          <img src="images/studio3.jpeg" alt="Studio Freya stúdió" />
         </div>
-        <div class="gallery-item" data-cat="esemény">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Esemény</span>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-item wide" data-cat="kereskedelmi">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Kereskedelmi</span>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-item tall" data-cat="divat">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Divat</span>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-item" data-cat="portré">
-          <div class="gallery-item-inner">
-            <div class="gallery-placeholder"></div>
-            <div class="gallery-item-caption">
-              <span class="gallery-caption-cat">Portré</span>
-            </div>
-          </div>
+        <div class="studio-img">
+          <img src="images/studio4.jpeg" alt="Studio Freya stúdió" />
         </div>
       </div>
     </div>
@@ -117,10 +69,11 @@
   <!-- Zakariás Fanni — Fotós -->
   <section class="section section--photographer" id="fotos">
     <div class="container">
+
+      <!-- Bio -->
       <div class="photographer-grid">
         <figure class="photographer-photo">
           <div class="gallery-placeholder" style="height:100%;min-height:520px"></div>
-          <!-- Csere: <img src="images/fanni.jpg" alt="Zakariás Fanni fotós"> -->
         </figure>
         <div class="photographer-body">
           <p class="eyebrow">Fotós bérelhető</p>
@@ -129,7 +82,7 @@
           <p class="photographer-bio">Bérelhető önállóan helyszíni fotózásra, vagy kiegészítőként stúdiófoglaláshoz. Utóbbi esetben egyetlen alkalommal kapsz profin megvilágított stúdiós és dinamikus, riportszerű képeket is.</p>
           <div class="photographer-tags">
             <span class="photo-tag">Portré</span>
-            <span class="photo-tag">Divat</span>
+            <span class="photo-tag">Brand</span>
             <span class="photo-tag">Esemény</span>
             <span class="photo-tag">Esküvő</span>
           </div>
@@ -139,6 +92,94 @@
           </div>
         </div>
       </div>
+
+      <!-- Portfólió -->
+      <div class="fanni-portfolio">
+        <div class="fanni-portfolio-header">
+          <h3 class="fanni-portfolio-title">Portfólió</h3>
+          <div class="portfolio-filter">
+            <button class="pf-btn active" data-fanni-filter="portre">Portré fotók</button>
+            <button class="pf-btn" data-fanni-filter="brand">Brand fotók</button>
+          </div>
+        </div>
+
+        <div class="fanni-gallery" id="fanni-gallery">
+          <!-- Portré placeholderek -->
+          <div class="fanni-gallery-item" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item fanni-gallery-item--tall" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item fanni-gallery-item--tall" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="portre">
+            <div class="gallery-placeholder"></div>
+          </div>
+          <!-- Brand placeholderek -->
+          <div class="fanni-gallery-item fanni-gallery-item--tall" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+          <div class="fanni-gallery-item fanni-gallery-item--tall" data-fcat="brand" hidden>
+            <div class="gallery-placeholder"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Csomagok -->
+      <div class="fanni-packages-info">
+        <h3 class="fanni-portfolio-title">Csomagok</h3>
+        <p class="fanni-packages-sub">Minden csomag tartalmazza a stúdió használatát — nincs külön helyszíndíj.</p>
+        <div class="fanni-pkg-cards">
+          <div class="fanni-pkg-card">
+            <span class="fanni-pkg-num">1</span>
+            <div class="fanni-pkg-body">
+              <h4>Alap csomag</h4>
+              <p>30 perces fotózás · 10 retusált kép</p>
+            </div>
+            <span class="fanni-pkg-price">25 000 Ft</span>
+          </div>
+          <div class="fanni-pkg-card">
+            <span class="fanni-pkg-num">2</span>
+            <div class="fanni-pkg-body">
+              <h4>Haladó csomag</h4>
+              <p>1 órás fotózás · 20 retusált kép</p>
+            </div>
+            <span class="fanni-pkg-price">45 000 Ft</span>
+          </div>
+          <div class="fanni-pkg-card">
+            <span class="fanni-pkg-num">3</span>
+            <div class="fanni-pkg-body">
+              <h4>Prémium csomag</h4>
+              <p>1,5 órás fotózás · 40 retusált kép</p>
+            </div>
+            <span class="fanni-pkg-price">65 000 Ft</span>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:2rem">
+          <a href="#foglalas" class="btn" id="btn-with-fotos-pkg">Csomagot foglalok</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
