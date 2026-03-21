@@ -89,6 +89,11 @@ function fmtDateHU(d) {
   });
 }
 
+/* ── Stúdió ár számítás ───────────────────────────────────────── */
+function calcStudioPrice(hours) {
+  return 10000 + (hours - 1) * 8000;
+}
+
 /* ── Szabad órák egy napra + időtartamra ──────────────────────── */
 function getSzabadOrak(dateStr, hours) {
   const szabad  = (SZABAD[dateStr]  || [])
@@ -96,20 +101,16 @@ function getSzabadOrak(dateStr, hours) {
     .slice().sort((a,b) => a-b);
   const foglalt = (FOGLALT[dateStr] || []);
 
-  if (hours === 1) {
-    return szabad.map(h => ({
-      hour:  h,
-      taken: foglalt.includes(h),
-    }));
-  }
-
-  // 2 órás: csak akkor szabad, ha h és h+1 is szerepel SZABAD-ban,
-  // és egyik sem foglalt
   return szabad
-    .filter(h => szabad.includes(h + 1))
+    .filter(h => {
+      for (let i = 0; i < hours; i++) {
+        if (!szabad.includes(h + i)) return false;
+      }
+      return true;
+    })
     .map(h => ({
       hour:  h,
-      taken: foglalt.includes(h) || foglalt.includes(h + 1),
+      taken: Array.from({length: hours}, (_, i) => h + i).some(hh => foglalt.includes(hh)),
     }));
 }
 
@@ -133,28 +134,47 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     // Szelekció nullázása
     Object.assign(st, { hours: null, price: null, label: null,
                         date: null, dateStr: null, hour: null });
-    document.querySelectorAll('.bk-dur-btn, .bk-pkg-btn').forEach(b => b.classList.remove('active'));
-    hideForms();
-    renderCalendar();
-    renderSlots();
+    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    if (!st.withFanni) {
+      setStudioHours(1);
+    } else {
+      hideForms();
+      renderCalendar();
+      renderSlots();
+    }
   });
 });
 
 /* ═══════════════════════════════════════════════════════════════════
-   IDŐTARTAM VÁLASZTÓ
+   IDŐTARTAM LÉPTETŐ (stúdió mód)
    ═══════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.bk-dur-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.bk-dur-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    st.hours = Number(btn.dataset.hours);
-    st.price = Number(btn.dataset.price);
-    st.label = btn.dataset.label;
-    st.hour = null;
-    hideForms();
-    renderCalendar();
-    if (st.dateStr) renderSlots();
-  });
+const MAX_STUDIO_HOURS = MAX_HOUR - MIN_HOUR; // 10
+
+function updateStepperUI() {
+  const h = st.hours || 1;
+  const p = calcStudioPrice(h);
+  document.getElementById('bk-step-hours').textContent = h + ' óra';
+  document.getElementById('bk-step-price').textContent = p.toLocaleString('hu-HU') + ' Ft';
+  document.getElementById('bk-step-minus').disabled = h <= 1;
+  document.getElementById('bk-step-plus').disabled  = h >= MAX_STUDIO_HOURS;
+}
+
+function setStudioHours(h) {
+  st.hours = h;
+  st.price = calcStudioPrice(h);
+  st.label = `${h} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+  st.hour  = null;
+  updateStepperUI();
+  hideForms();
+  renderCalendar();
+  if (st.dateStr) renderSlots();
+}
+
+document.getElementById('bk-step-minus').addEventListener('click', () => {
+  if ((st.hours || 1) > 1) setStudioHours((st.hours || 1) - 1);
+});
+document.getElementById('bk-step-plus').addEventListener('click', () => {
+  if ((st.hours || 1) < MAX_STUDIO_HOURS) setStudioHours((st.hours || 1) + 1);
 });
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -441,7 +461,8 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   document.querySelector('.bk-main').hidden          = false;
   document.getElementById('booking-success').hidden  = true;
 
-  document.querySelectorAll('.bk-dur-btn, .bk-pkg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+  setStudioHours(1);
   bookingForm.reset();
 
   const btn = document.getElementById('booking-submit');
@@ -456,7 +477,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 });
 
 /* ─── Inicializálás ───────────────────────────────────────────── */
-renderCalendar();
+setStudioHours(1);
 renderSlots();
 
 /* ─── Portfólió szűrő ────────────────────────────────────────── */

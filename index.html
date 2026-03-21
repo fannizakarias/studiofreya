@@ -239,14 +239,17 @@
 
         <!-- Időtartam választó (csak stúdió) -->
         <div class="bk-duration-bar" id="bk-duration-bar">
-          <button class="bk-dur-btn" data-hours="1" data-price="10000" data-label="1 óra · 10 000 Ft">
-            <span class="bk-dur-time">1 óra</span>
-            <span class="bk-dur-price">10 000 Ft</span>
-          </button>
-          <button class="bk-dur-btn" data-hours="2" data-price="18000" data-label="2 óra · 18 000 Ft">
-            <span class="bk-dur-time">2 óra</span>
-            <span class="bk-dur-price">18 000 Ft</span>
-          </button>
+          <div class="bk-dur-info">
+            <span class="bk-dur-rule">1. óra: <strong>10 000 Ft</strong> &nbsp;·&nbsp; minden további óra: <strong>8 000 Ft</strong></span>
+          </div>
+          <div class="bk-dur-stepper">
+            <button class="bk-step-btn" id="bk-step-minus" aria-label="Kevesebb óra">−</button>
+            <div class="bk-step-display">
+              <span class="bk-step-hours" id="bk-step-hours">1 óra</span>
+              <span class="bk-step-price" id="bk-step-price">10 000 Ft</span>
+            </div>
+            <button class="bk-step-btn" id="bk-step-plus" aria-label="Több óra">+</button>
+          </div>
         </div>
 
         <!-- Csomagok (Fanni + stúdió) -->
