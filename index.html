@@ -225,8 +225,20 @@
 
       <div class="bk-widget" id="bk-widget">
 
-        <!-- Időtartam választó -->
-        <div class="bk-duration-bar">
+        <!-- Módválasztó -->
+        <div class="bk-mode-bar" id="bk-mode-bar">
+          <button class="bk-mode-btn active" data-mode="studio">
+            <span class="bk-mode-title">Csak stúdió</span>
+            <span class="bk-mode-sub">Saját fotóssal · H, Sze, P, Szo, V</span>
+          </button>
+          <button class="bk-mode-btn" data-mode="fanni">
+            <span class="bk-mode-title">Stúdió + Fanni fotós</span>
+            <span class="bk-mode-sub">Stúdió díja benne van · csak Szo–V</span>
+          </button>
+        </div>
+
+        <!-- Időtartam választó (csak stúdió) -->
+        <div class="bk-duration-bar" id="bk-duration-bar">
           <button class="bk-dur-btn" data-hours="1" data-price="10000" data-label="1 óra · 10 000 Ft">
             <span class="bk-dur-time">1 óra</span>
             <span class="bk-dur-price">10 000 Ft</span>
@@ -234,7 +246,25 @@
           <button class="bk-dur-btn" data-hours="2" data-price="18000" data-label="2 óra · 18 000 Ft">
             <span class="bk-dur-time">2 óra</span>
             <span class="bk-dur-price">18 000 Ft</span>
-            <span class="bk-dur-badge">Megtakarítás: 2 000 Ft</span>
+          </button>
+        </div>
+
+        <!-- Csomagok (Fanni + stúdió) -->
+        <div class="bk-packages" id="bk-packages" hidden>
+          <button class="bk-pkg-btn" data-hours="1" data-price="25000" data-label="1. csomag · 30 perc · 25 000 Ft">
+            <span class="bk-pkg-num">1</span>
+            <span class="bk-pkg-desc">30 perces fotózás<br>10 retusált kép</span>
+            <span class="bk-pkg-price">25 000 Ft</span>
+          </button>
+          <button class="bk-pkg-btn" data-hours="1" data-price="45000" data-label="2. csomag · 1 óra · 45 000 Ft">
+            <span class="bk-pkg-num">2</span>
+            <span class="bk-pkg-desc">1 órás fotózás<br>20 retusált kép</span>
+            <span class="bk-pkg-price">45 000 Ft</span>
+          </button>
+          <button class="bk-pkg-btn" data-hours="2" data-price="65000" data-label="3. csomag · 1,5 óra · 65 000 Ft">
+            <span class="bk-pkg-num">3</span>
+            <span class="bk-pkg-desc">1,5 órás fotózás<br>40 retusált kép</span>
+            <span class="bk-pkg-price">65 000 Ft</span>
           </button>
         </div>
 
@@ -309,7 +339,7 @@
                 <label for="b-szemelyek">Résztvevők száma</label>
                 <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="20" placeholder="1" />
               </div>
-              <div class="bk-field bk-field--full">
+              <div class="bk-field bk-field--full" id="bk-fotos-field">
                 <label class="bk-check-wrap" for="b-fotos">
                   <input type="checkbox" class="bk-check-input" id="b-fotos" name="fotos_zakarias_fanni" value="igen" />
                   <span class="bk-check-box"></span>

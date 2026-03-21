@@ -60,7 +60,14 @@ const HONAPOK = [
   'Július','Augusztus','Szeptember','Október','November','December',
 ];
 
+// 0=V, 1=H, 2=K, 3=Sze, 4=Cs, 5=P, 6=Szo
+const ALLOWED_DAYS = new Set([0, 1, 3, 5, 6]); // V, H, Sze, P, Szo
+const FANNI_DAYS   = new Set([0, 6]);            // V, Szo
+const MIN_HOUR = 8;
+const MAX_HOUR = 18;
+
 const st = {
+  withFanni: false,
   hours:   null,    // 1 vagy 2
   price:   null,    // Ft
   label:   null,    // pl. "1 óra · 10 000 Ft"
@@ -84,13 +91,15 @@ function fmtDateHU(d) {
 
 /* ── Szabad órák egy napra + időtartamra ──────────────────────── */
 function getSzabadOrak(dateStr, hours) {
-  const szabad  = (SZABAD[dateStr]  || []).slice().sort((a,b)=>a-b);
+  const szabad  = (SZABAD[dateStr]  || [])
+    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR)
+    .slice().sort((a,b) => a-b);
   const foglalt = (FOGLALT[dateStr] || []);
 
   if (hours === 1) {
     return szabad.map(h => ({
-      hour:   h,
-      taken:  foglalt.includes(h),
+      hour:  h,
+      taken: foglalt.includes(h),
     }));
   }
 
@@ -110,6 +119,28 @@ function hasAvail(dateStr, hours) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   MÓDVÁLASZTÓ (stúdió / Fanni)
+   ═══════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.bk-mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    st.withFanni = btn.dataset.mode === 'fanni';
+
+    document.getElementById('bk-duration-bar').hidden = st.withFanni;
+    document.getElementById('bk-packages').hidden     = !st.withFanni;
+
+    // Szelekció nullázása
+    Object.assign(st, { hours: null, price: null, label: null,
+                        date: null, dateStr: null, hour: null });
+    document.querySelectorAll('.bk-dur-btn, .bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    hideForms();
+    renderCalendar();
+    renderSlots();
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════
    IDŐTARTAM VÁLASZTÓ
    ═══════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.bk-dur-btn').forEach(btn => {
@@ -119,8 +150,24 @@ document.querySelectorAll('.bk-dur-btn').forEach(btn => {
     st.hours = Number(btn.dataset.hours);
     st.price = Number(btn.dataset.price);
     st.label = btn.dataset.label;
-    // időpont törlése, naptár és lista frissítése
     st.hour = null;
+    hideForms();
+    renderCalendar();
+    if (st.dateStr) renderSlots();
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   CSOMAG VÁLASZTÓ (Fanni módban)
+   ═══════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    st.hours = Number(btn.dataset.hours);
+    st.price = Number(btn.dataset.price);
+    st.label = btn.dataset.label;
+    st.hour  = null;
     hideForms();
     renderCalendar();
     if (st.dateStr) renderSlots();
@@ -153,8 +200,9 @@ function renderCalendar() {
   for (let d = 1; d <= lastDay.getDate(); d++) {
     const date    = new Date(yr, mo, d);
     const dateStr = toDateStr(date);
-    const isPast  = date < today;
-    const isSun   = date.getDay() === 0;
+    const isPast   = date < today;
+    const daySet   = st.withFanni ? FANNI_DAYS : ALLOWED_DAYS;
+    const isAllowed = daySet.has(date.getDay());
 
     const el       = document.createElement('div');
     const numSpan  = document.createElement('span');
@@ -166,7 +214,7 @@ function renderCalendar() {
 
     if (date.getTime() === today.getTime()) el.classList.add('bk-cal-day--today');
 
-    if (isPast || isSun) {
+    if (isPast || !isAllowed) {
       el.classList.add(isPast ? 'bk-cal-day--past' : 'bk-cal-day--off');
     } else {
       // Van-e elérhető időpont ezen a napon?
@@ -277,21 +325,27 @@ function showFormPanel() {
   const hours = st.hours || 1;
 
   // Rejtett mezők
-  document.getElementById('hidden-duration').value = `${hours} óra`;
-  document.getElementById('hidden-price').value    = `${st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : ''}`;
+  document.getElementById('hidden-duration').value = st.label || `${hours} óra`;
+  document.getElementById('hidden-price').value    = st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '';
   document.getElementById('hidden-date').value     = st.dateStr ?? '';
   document.getElementById('hidden-time').value     = st.hour !== null ? `${pad(st.hour)}:00` : '';
 
+  // Fanni checkbox: auto-set + mező elrejtése
+  const fanniField = document.getElementById('bk-fotos-field');
+  const fanniCb    = document.getElementById('b-fotos');
+  if (fanniField) fanniField.hidden = st.withFanni;
+  if (fanniCb)    fanniCb.checked   = st.withFanni;
+
   // Badge
   const badge = document.getElementById('bk-selection-badge');
-  const timeLabel = st.hour !== null ? fmtHour(st.hour, hours) : '—';
-  const dateLabel = st.date
+  const timeLabel  = st.hour !== null ? fmtHour(st.hour, hours) : '—';
+  const dateLabel  = st.date
     ? st.date.toLocaleDateString('hu-HU', { month: 'long', day: 'numeric', weekday: 'short' })
     : '—';
   const priceLabel = st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '';
 
   badge.innerHTML = `
-    <strong>${hours} óra</strong>
+    <strong>${st.label || hours + ' óra'}</strong>
     <span class="bk-badge-sep"></span>
     ${dateLabel}
     <span class="bk-badge-sep"></span>
@@ -328,7 +382,7 @@ const bookingForm = document.getElementById('booking-form');
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  if (!st.hours)        { alert('Kérlek válassz időtartamot!'); return; }
+  if (!st.hours)        { alert(st.withFanni ? 'Kérlek válassz csomagot!' : 'Kérlek válassz időtartamot!'); return; }
   if (!st.dateStr)      { alert('Kérlek válassz dátumot!');     return; }
   if (st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
 
@@ -367,21 +421,27 @@ bookingForm.addEventListener('submit', async (e) => {
 });
 
 function showSuccess() {
+  document.querySelector('.bk-mode-bar').hidden      = true;
   document.querySelector('.bk-duration-bar').hidden  = true;
+  document.getElementById('bk-packages').hidden      = true;
   document.querySelector('.bk-main').hidden          = true;
   document.getElementById('bk-form-panel').hidden    = true;
   document.getElementById('booking-success').hidden  = false;
 }
 
 document.getElementById('booking-reset').addEventListener('click', () => {
-  Object.assign(st, { hours: null, price: null, label: null,
+  Object.assign(st, { withFanni: false, hours: null, price: null, label: null,
                       date: null, dateStr: null, hour: null });
 
+  document.querySelectorAll('.bk-mode-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.getElementById('bk-duration-bar').hidden = false;
+  document.getElementById('bk-packages').hidden     = true;
+  document.querySelector('.bk-mode-bar').hidden      = false;
   document.querySelector('.bk-duration-bar').hidden  = false;
   document.querySelector('.bk-main').hidden          = false;
   document.getElementById('booking-success').hidden  = true;
 
-  document.querySelectorAll('.bk-dur-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.bk-dur-btn, .bk-pkg-btn').forEach(b => b.classList.remove('active'));
   bookingForm.reset();
 
   const btn = document.getElementById('booking-submit');
@@ -440,12 +500,22 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !privacyModal.hidden) closePrivacyModal();
 });
 
-/* ─── "Fotóst is kérek" gomb → foglalás + checkbox pipa ─────── */
+/* ─── "Fotóst is kérek" gomb → Fanni módra vált ──────────────── */
 document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
   setTimeout(() => {
-    const cb = document.getElementById('b-fotos');
-    if (cb) cb.checked = true;
+    document.querySelectorAll('.bk-mode-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === 'fanni');
+    });
+    st.withFanni = true;
+    Object.assign(st, { hours: null, price: null, label: null,
+                        date: null, dateStr: null, hour: null });
+    document.getElementById('bk-duration-bar').hidden = true;
+    document.getElementById('bk-packages').hidden     = false;
+    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    hideForms();
+    renderCalendar();
+    renderSlots();
   }, 600);
 });
