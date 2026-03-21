@@ -1225,47 +1225,25 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-bottom: 1.25rem;
 }
 
-.studio-eq-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: .75rem;
-}
-
-.studio-eq-card {
+.studio-eq-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: .4rem;
-  padding: .9rem .6rem;
-  background: var(--c-surface);
-  border: 1px solid var(--c-border);
-  text-align: center;
+  gap: .35rem;
 }
 
-.studio-eq-img {
-  width: 100%;
-  height: 90px;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
-.studio-eq-cat {
-  font-size: .68rem;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--c-accent);
-}
-
-.studio-eq-name {
-  font-size: .8rem;
+.studio-eq-list li {
+  font-size: .9rem;
   color: var(--c-dark);
-  line-height: 1.35;
+  padding-left: 1rem;
+  position: relative;
 }
 
-@media (max-width: 640px) {
-  .studio-eq-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.studio-eq-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--c-accent);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
