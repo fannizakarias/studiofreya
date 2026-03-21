@@ -68,12 +68,13 @@ const MAX_HOUR = 18;
 
 const st = {
   withFanni: false,
-  hours:   null,    // 1 vagy 2
-  price:   null,    // Ft
-  label:   null,    // pl. "1 óra · 10 000 Ft"
-  date:    null,    // Date
-  dateStr: null,    // 'ÉÉÉÉ-HH-NN'
-  hour:    null,    // kezdő óra (number)
+  hours:   null,
+  price:   null,
+  label:   null,
+  desc:    null,    // csomag leírás (Fanni módban)
+  date:    null,
+  dateStr: null,
+  hour:    null,
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
 };
@@ -132,7 +133,7 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     document.getElementById('bk-packages').hidden     = !st.withFanni;
 
     // Szelekció nullázása
-    Object.assign(st, { hours: null, price: null, label: null,
+    Object.assign(st, { hours: null, price: null, label: null, desc: null,
                         date: null, dateStr: null, hour: null });
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
     hideForms();
@@ -152,8 +153,10 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
     st.hours = Number(btn.dataset.hours);
     st.price = Number(btn.dataset.price);
     st.label = btn.dataset.label;
+    st.desc  = btn.dataset.desc || null;
     st.hour  = null;
     hideForms();
+    updatePriceDisplay();
     renderCalendar();
     if (st.dateStr) renderSlots();
   });
@@ -291,16 +294,6 @@ function renderSlotsStudio(container) {
     container.innerHTML = '<p class="bk-no-slots">Erre a napra nincs elérhető időpont.</p>';
     return;
   }
-
-  // Ár kijelző
-  const priceBar = document.createElement('div');
-  priceBar.className = 'bk-slots-price';
-  if (st.hour !== null && st.hours) {
-    priceBar.textContent = `${st.hours} óra · ${calcStudioPrice(st.hours).toLocaleString('hu-HU')} Ft`;
-  } else {
-    priceBar.hidden = true;
-  }
-  container.appendChild(priceBar);
 
   slots.forEach(({ hour, taken }) => {
     const inRange  = st.hour !== null && hour >= st.hour && hour < st.hour + (st.hours || 0);
@@ -441,11 +434,18 @@ function updatePriceDisplay() {
   const display = document.getElementById('bk-price-display');
   if (!st.price) { display.hidden = true; return; }
   display.hidden = false;
-  document.getElementById('bk-price-label').textContent = st.label
-    ? st.label.split('·')[0].trim()
-    : (st.hours ? `${st.hours} óra` : '');
-  document.getElementById('bk-price-amount').textContent =
-    st.price.toLocaleString('hu-HU') + ' Ft';
+
+  const labelEl  = document.getElementById('bk-price-label');
+  const amountEl = document.getElementById('bk-price-amount');
+
+  if (st.withFanni && st.label) {
+    // Fanni mód: "2. csomag" + leírás
+    labelEl.innerHTML = `<strong>${st.label}</strong>${st.desc ? `<br><span>${st.desc}</span>` : ''}`;
+  } else {
+    // Stúdió mód: "X óra"
+    labelEl.innerHTML = `<strong>${st.hours} óra</strong>`;
+  }
+  amountEl.textContent = st.price.toLocaleString('hu-HU') + ' Ft';
 }
 
 /* Módosítás gomb */
