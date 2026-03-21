@@ -172,7 +172,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: #fff;
 }
 .site-header:not(.scrolled) .logo-svg {
-  filter: brightness(0) invert(1);
+  opacity: 0;
+  pointer-events: none;
 }
 .site-header:not(.scrolled) .nav-toggle span {
   background: #fff;
@@ -1004,7 +1005,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-dark);
 }
 
-.logo-svg { display: block; height: 70px; width: auto; }
+.logo-svg { display: block; height: 70px; width: auto; transition: opacity .4s ease; }
 
 .logo-link--footer { color: var(--c-bg); }
 
