@@ -284,6 +284,30 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.4);
+  text-decoration: none;
+  transition: color .2s;
+  animation: scroll-hint-bounce 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.scroll-hint:hover {
+  color: rgba(255,255,255,.75);
+}
+
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    SECTIONS
    ═══════════════════════════════════════════════════════════════════ */
