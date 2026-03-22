@@ -591,13 +591,32 @@ function closePrivacyModal() {
 
 openPrivacyBtn.addEventListener('click', openPrivacyModal);
 closePrivacyBtn.addEventListener('click', closePrivacyModal);
+document.getElementById('open-privacy-footer')?.addEventListener('click', openPrivacyModal);
 
 privacyModal.addEventListener('click', (e) => {
   if (e.target === privacyModal) closePrivacyModal();
 });
 
+/* ─── ÁSZF modál ──────────────────────────────────────────────── */
+function makeModal(overlayId, closeId, openIds) {
+  const overlay  = document.getElementById(overlayId);
+  const closeBtn = document.getElementById(closeId);
+  const open  = () => { overlay.hidden = false; document.body.style.overflow = 'hidden'; closeBtn.focus(); };
+  const close = () => { overlay.hidden = true;  document.body.style.overflow = ''; };
+  openIds.forEach(id => document.getElementById(id)?.addEventListener('click', open));
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  return close;
+}
+
+const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf']);
+const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open-impresszum']);
+
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !privacyModal.hidden) closePrivacyModal();
+  if (e.key !== 'Escape') return;
+  if (!privacyModal.hidden)                              closePrivacyModal();
+  if (!document.getElementById('aszf-modal').hidden)       closeAszf();
+  if (!document.getElementById('impresszum-modal').hidden) closeImpresszum();
 });
 
 /* ─── "Fotóst is kérek" gomb → Fanni módra vált ──────────────── */

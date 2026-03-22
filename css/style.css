@@ -1129,6 +1129,19 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .footer-address { font-size: .72rem; opacity: .6; }
 .footer-copy { font-size: .72rem; }
 
+.footer-legal { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.footer-legal-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--f-sans);
+  font-size: .72rem;
+  color: rgba(246,245,242,.4);
+  transition: color .15s;
+}
+.footer-legal-link:hover { color: rgba(246,245,242,.8); }
+
 .footer-social { display: flex; gap: 1.5rem; }
 .footer-social a {
   font-size: .7rem;
