@@ -543,12 +543,12 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-pkg-btn.active { background: var(--c-accent-lt); }
 .bk-pkg-btn.active::after { transform: scaleX(1); }
 
-.bk-pkg-num {
+.bk-pkg-name {
   font-family: var(--f-serif);
-  font-size: 2rem;
-  line-height: 1;
-  color: var(--c-accent);
-  opacity: .6;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+  color: var(--c-dark);
 }
 .bk-pkg-desc {
   font-size: .8rem;
@@ -1698,7 +1698,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-packages { grid-template-columns: 1fr; }
   .bk-pkg-btn { border-right: none !important; border-bottom: 1px solid var(--c-border); flex-direction: row; align-items: center; gap: 1rem; }
   .bk-pkg-btn:last-child { border-bottom: none; }
-  .bk-pkg-num { font-size: 1.4rem; min-width: 1.6rem; }
+  .bk-pkg-name { font-size: .9rem; }
 
   .bk-dur-hint { display: none; }
   .bk-slots-price { padding: .5rem 1.25rem .3rem; }
