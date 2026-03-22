@@ -190,7 +190,7 @@
     <div class="container">
       <header class="section-header">
         <h2 class="section-title">Stúdió foglalás</h2>
-        <p class="section-sub">Válassz módot, majd jelölj ki egy szabad időpontot a naptárból.<br>A foglalás kizárólag a visszaigazoló e-mail megérkezése után érvényes.</p>
+        <p class="section-sub">Válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy Zakariás Fannitól kérsz fotózást, majd jelölj ki egy szabad időpontot.<br>A foglalás kizárólag a visszaigazoló e-mail megérkezése után érvényes.</p>
         <p class="section-hours">Nyitvatartás: <strong>H · Sze · Pé · Szo · Va</strong> &nbsp;08:00–18:00</p>
       </header>
 
@@ -204,17 +204,18 @@
           </button>
           <button class="bk-mode-btn" data-mode="fanni">
             <span class="bk-mode-title">Fotózás stúdióban</span>
-            <span class="bk-mode-sub">Zakariás Fanni · csak Szo–V</span>
+            <span class="bk-mode-sub">Zakariás Fanni · Szo–V</span>
           </button>
         </div>
 
         <!-- Árazási infó (csak stúdió) -->
         <div class="bk-duration-bar" id="bk-duration-bar">
-          <p class="bk-dur-rule"><strong>1. óra: 10 000 Ft</strong> · minden további óra: <strong>8 000 Ft</strong><span class="bk-dur-hint"> — Több egymás utáni időpontra kattintva bővítheted a foglalást</span></p>
+          <p class="bk-dur-rule">Az első óra <strong>10 000 Ft</strong>, minden további óra <strong>8 000 Ft</strong>.<span class="bk-dur-hint"> Több időpontot is kijelölhetsz egymás után — az ár automatikusan frissül.</span></p>
         </div>
 
         <!-- Csomagok (Fanni + stúdió) -->
         <div class="bk-packages" id="bk-packages" hidden>
+          <p class="bk-pkg-note">A csomag ára tartalmazza a stúdió használatát — nincs külön helyszíndíj.</p>
           <button class="bk-pkg-btn" data-hours="1" data-price="25000" data-label="1. csomag" data-desc="30 perces fotózás · 10 retusált kép">
             <span class="bk-pkg-num">1</span>
             <span class="bk-pkg-desc">30 perces fotózás<br>10 retusált kép</span>
@@ -342,37 +343,39 @@
 
   <!-- Kapcsolat -->
   <section class="section section--dark" id="kapcsolat">
-    <div class="container contact-wrap">
-      <div class="contact-info">
-        <h2 class="section-title">Kapcsolat</h2>
-        <p class="contact-about">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco laboris.</p>
-        <div class="contact-details">
-          <div class="contact-detail-item">
-            <span class="contact-detail-label">Cím</span>
-            <span>8200 Veszprém<br>Rákóczi utca 4.</span>
-          </div>
-          <div class="contact-detail-item">
-            <span class="contact-detail-label">E-mail</span>
-            <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>
-            <a href="mailto:fanni.zakarias@gmail.com">fanni.zakarias@gmail.com</a>
-          </div>
-          <div class="contact-detail-item">
-            <span class="contact-detail-label">Telefon</span>
-            <a href="tel:+36303066297">+36 30 306 6297</a>
-          </div>
+    <div class="container">
+      <div class="contact-top">
+        <div>
+          <h2 class="section-title">Kapcsolat</h2>
+          <p class="contact-about">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco laboris.</p>
         </div>
-        <div class="contact-map">
-          <iframe
-            src="https://maps.google.com/maps?q=R%C3%A1k%C3%B3czi+utca+4%2C+8200+Veszpr%C3%A9m&output=embed&hl=hu&z=17"
-            width="100%" height="260" style="border:0;display:block;"
-            allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Studio Freya helyszín"></iframe>
+        <div class="contact-reach">
+          <p class="contact-reach-title">Kérdésed van vagy egyedi projektet tervezel?</p>
+          <p class="contact-reach-text">Keress minket e-mailben vagy telefonon — szívesen segítünk.</p>
         </div>
       </div>
-      <div class="contact-form-wrap">
-        <p class="contact-reach-title">Kérdésed van vagy egyedi projektet tervezel?</p>
-        <p class="contact-reach-text">Keress minket e-mailben vagy telefonon — szívesen segítünk.</p>
+      <div class="contact-details">
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Cím</span>
+          <span>8200 Veszprém<br>Rákóczi utca 4.</span>
+        </div>
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">E-mail</span>
+          <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>
+          <a href="mailto:fanni.zakarias@gmail.com">fanni.zakarias@gmail.com</a>
+        </div>
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Telefon</span>
+          <a href="tel:+36303066297">+36 30 306 6297</a>
+        </div>
+      </div>
+      <div class="contact-map">
+        <iframe
+          src="https://maps.google.com/maps?q=R%C3%A1k%C3%B3czi+utca+4%2C+8200+Veszpr%C3%A9m&output=embed&hl=hu&z=17"
+          width="100%" height="300" style="border:0;display:block;"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Studio Freya helyszín"></iframe>
       </div>
     </div>
   </section>
