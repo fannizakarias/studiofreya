@@ -44,6 +44,7 @@ fetch('data/schedule.json', { cache: 'no-store' })
   .then(data => {
     SZABAD  = data.szabad  || {};
     FOGLALT = data.foglalt || {};
+    jumpToEarliestAvailable();
     renderCalendar();
     if (st.dateStr) renderSlots();
   })
@@ -78,6 +79,22 @@ const st = {
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
 };
+
+function jumpToEarliestAvailable() {
+  const today   = new Date(); today.setHours(0,0,0,0);
+  const daySet  = st.withFanni ? FANNI_DAYS : ALLOWED_DAYS;
+  const hours   = st.hours || 1;
+
+  const earliest = Object.keys(SZABAD)
+    .map(ds => new Date(ds))
+    .filter(d => d >= today && daySet.has(d.getDay()) && hasAvail(toDateStr(d), hours))
+    .sort((a, b) => a - b)[0];
+
+  if (earliest) {
+    st.calYear  = earliest.getFullYear();
+    st.calMonth = earliest.getMonth();
+  }
+}
 
 function pad(n)      { return String(n).padStart(2, '0'); }
 function toDateStr(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
@@ -139,6 +156,7 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
     hideForms();
     updateFeltetelek();
+    jumpToEarliestAvailable();
     renderCalendar();
     renderSlots();
   });
