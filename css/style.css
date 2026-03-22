@@ -247,7 +247,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   width: 22px;
   height: 1px;
   background: var(--c-dark);
-  transition: transform .28s, opacity .28s;
+  transition: transform .28s, opacity .28s, background-color .4s ease;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

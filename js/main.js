@@ -8,9 +8,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* ─── Fejléc árnyék görgetéskor ──────────────────────────────── */
 const header = document.querySelector('.site-header');
 const hero   = document.querySelector('.hero');
+let scrollThreshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
+window.addEventListener('resize', () => {
+  scrollThreshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
+}, { passive: true });
 window.addEventListener('scroll', () => {
-  const threshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
-  header.classList.toggle('scrolled', window.scrollY > threshold);
+  header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
 }, { passive: true });
 
 /* ─── Mobil navigáció ─────────────────────────────────────────── */
