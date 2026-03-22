@@ -207,7 +207,7 @@
 
         <!-- Árazási infó (csak stúdió) -->
         <div class="bk-duration-bar" id="bk-duration-bar">
-          <p class="bk-dur-rule">Az első óra <strong>10 000 Ft</strong>, minden további óra <strong>8 000 Ft</strong>.<span class="bk-dur-hint"> Több időpontot is kijelölhetsz egymás után — az ár automatikusan frissül.</span></p>
+          <p class="bk-dur-rule">Az első óra <strong>10 000 Ft</strong>, minden további óra <strong>8 000 Ft</strong>. <span class="bk-dur-hint">1 óra = 50 perc fotózás + 10 perc rendbetétel. Több időpontot is kijelölhetsz egymás után — az ár automatikusan frissül.</span></p>
         </div>
 
         <!-- Csomagok (Fanni + stúdió) -->
@@ -313,6 +313,16 @@
               </div>
             </div>
             <div class="bk-field bk-field--full bk-privacy-field">
+              <label class="bk-check-wrap" for="b-aszf">
+                <input type="checkbox" class="bk-check-input" id="b-aszf" name="aszf" value="elfogadva" required />
+                <span class="bk-check-box"></span>
+                <span class="bk-check-text">
+                  Elolvastam és elfogadom az
+                  <button type="button" class="privacy-link" id="open-aszf-form">Bérlési feltételeket</button> *
+                </span>
+              </label>
+            </div>
+            <div class="bk-field bk-field--full bk-privacy-field">
               <label class="bk-check-wrap" for="b-adatkezeles">
                 <input type="checkbox" class="bk-check-input" id="b-adatkezeles" name="adatkezeles" value="elfogadva" required />
                 <span class="bk-check-box"></span>
@@ -388,7 +398,7 @@
       </div>
       <p class="footer-copy">&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>
       <div class="footer-legal">
-        <button class="footer-legal-link" id="open-aszf">ÁSZF</button>
+        <button class="footer-legal-link" id="open-aszf">Bérlési feltételek</button>
         <button class="footer-legal-link" id="open-impresszum">Impresszum</button>
         <button class="footer-legal-link" id="open-privacy-footer">Adatkezelés</button>
       </div>
@@ -466,7 +476,7 @@
     <div class="modal-box">
       <button class="modal-close" id="close-aszf" aria-label="Bezárás">&times;</button>
       <div class="modal-content">
-        <h2 id="aszf-modal-title">Általános Szerződési Feltételek</h2>
+        <h2 id="aszf-modal-title">Bérlési feltételek</h2>
         <p class="modal-date">Hatályos: 2025. január 1-jétől</p>
 
         <h3>1. Általános rendelkezések</h3>
@@ -475,50 +485,83 @@
         Székhely: 8200 Veszprém, Rákóczi utca 4.<br>
         E-mail: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a><br>
         Telefon: <a href="tel:+36303066297">+36 30 306 6297</a></p>
-        <p>Jelen Általános Szerződési Feltételek (ÁSZF) a Studio Freya weboldalán (studiofreya.hu) keresztül igénybe vehető stúdióbérlési és fotózási szolgáltatásokra vonatkoznak. A foglalás elküldésével az ügyfél elfogadja az ÁSZF rendelkezéseit.</p>
+        <p>Jelen bérlési feltételek a Studio Freya weboldalán (studiofreya.hu) keresztül igénybe vehető stúdióbérlési és fotózási szolgáltatásokra vonatkoznak. A foglalás elküldésével az ügyfél elfogadja a bérlési feltételek rendelkezéseit.</p>
 
         <h3>2. A foglalás menete</h3>
         <p>A foglalási igény a weboldalon keresztül adható le. Az ügyfél kiválasztja a kívánt szolgáltatást (stúdióbérlés vagy fotózás Zakariás Fannival), az időpontot, majd kitölti az adatlapot és elküldi a foglalást.</p>
         <p>A foglalás kizárólag a szolgáltató által küldött e-mailes visszaigazolással válik érvényessé. A visszaigazolást a szolgáltató 24 munkaidős órán belül küldi el. Visszaigazolás hiányában a foglalás nem tekinthető elfogadottnak.</p>
 
         <h3>3. Árak és fizetési feltételek</h3>
-        <p><strong>Stúdióbérlés (saját fotóssal):</strong> Az első óra díja 10 000 Ft, minden további megkezdett óra 8 000 Ft.</p>
+        <p><strong>Stúdióbérlés:</strong> Az első óra díja 10 000 Ft, minden további megkezdett óra 8 000 Ft.</p>
         <p><strong>Fotózás Zakariás Fannival:</strong></p>
         <ul>
           <li>Kis csomag: 30 perces fotózás, 10 retusált kép — 25 000 Ft</li>
           <li>Közepes csomag: 1 órás fotózás, 20 retusált kép — 45 000 Ft</li>
           <li>Nagy csomag: 1,5 órás fotózás, 40 retusált kép — 65 000 Ft</li>
         </ul>
-        <p>Minden csomag tartalmazza a stúdió használatát, külön stúdió bérlési díj nem kerül felszámításra. Az árak forintban értendők és tartalmazzák az ÁFÁ-t. A szolgáltatás díja helyszínen, a fotózás napján fizetendő, készpénzben vagy banki átutalással.</p>
+        <p>Minden csomag tartalmazza a stúdió használatát, külön stúdió bérlési díj nem kerül felszámításra. Az árak forintban értendők, ÁFA-mentesek (alanyi adómentes szolgáltató). A szolgáltatás díja helyszínen, a fotózás napján fizetendő, készpénzben vagy banki átutalással.</p>
 
         <h3>4. Lemondás és módosítás</h3>
         <p>A foglalás az időpont előtt legalább <strong>48 órával</strong> díjmentesen lemondható vagy módosítható. A lemondást e-mailben kell jelezni a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> címen.</p>
         <p>48 órán belüli lemondás esetén a szolgáltató a teljes díj 50%-át jogosult felszámítani előkészítési költség címén. Meg nem jelenés esetén a teljes díj felszámításra kerülhet.</p>
         <p>A szolgáltató rendkívüli körülmények (betegség, vis maior) esetén jogosult a foglalást díjmentesen lemondani, erről az ügyfelet haladéktalanul értesíti és új időpontot ajánl fel.</p>
 
-        <h3>5. A stúdió használatának szabályai</h3>
+        <h3>5. A stúdióbérlés megengedett céljai</h3>
+        <p>A stúdió kizárólag az alábbi célokra bérelhető:</p>
         <ul>
-          <li>A stúdióba kizárólag az időpontban megjelölt személyek léphetnek be.</li>
-          <li>A stúdióban tilos a dohányzás, az állatok behozatala, valamint alkohol fogyasztása.</li>
+          <li>Fotózás (portré, termék, brand, divat, esemény stb.)</li>
+          <li>Videófelvétel készítése</li>
+          <li>Reklám- és tartalomgyártás</li>
+          <li>Workshop tartása</li>
+        </ul>
+        <p>A stúdió <strong>nem</strong> bérelhető rendezvény, buli, összejövetel vagy egyéb, fotózással nem összefüggő tevékenység céljára. Kétség esetén a bérlő előzetesen egyeztessen a szolgáltatóval.</p>
+
+        <h3>6. A stúdió használatának szabályai</h3>
+        <p><strong>Érkezés és távozás</strong></p>
+        <ul>
+          <li>Kérjük, 5–10 perccel a bérlés kezdete előtt érkezz.</li>
+          <li>1 óra bérlés = 50 perc tényleges használat + 10 perc rendbetétel. A takarítás ideje beleszámít a bérlési időbe — a helyiséget pontosan olyan állapotban kell visszahagyni, ahogyan átvétted.</li>
+          <li>A bérlési idő végén pontosan kell távozni, hogy a következő foglalást ne zavarjuk.</li>
+          <li>Hosszabbításra kizárólag akkor van lehetőség, ha az időpont után nincs további foglalás.</li>
+        </ul>
+        <p><strong>Általános szabályok</strong></p>
+        <ul>
+          <li>A stúdióba kizárólag az időpontban megjelölt személyek léphetnek be. Maximális létszám: <strong>7 fő</strong> (fotós is beleszámítva). 7 fő feletti igény esetén kérjük, előzetesen egyeztess velünk.</li>
+          <li>A stúdióban tilos a dohányzás és az alkohol fogyasztása.</li>
+          <li>Állatok behozatala előzetes egyeztetést igényel.</li>
+          <li>Kérjük, hozz váltócipőt — utcai cipővel a stúdióba belépni nem lehet.</li>
+          <li>Nagy bútorok és berendezési tárgyak áthelyezése nem engedélyezett.</li>
+          <li>Erotikus vagy aktfotózás céljára a stúdió nem bérelhető.</li>
           <li>A bérlő köteles a felszerelést rendeltetésszerűen használni és a stúdiót átvételi állapotban visszahagyni.</li>
           <li>A felszerelésben okozott kárt a bérlő köteles megtéríteni. A kár mértékét a szolgáltató határozza meg az aktuális javítási vagy pótlási költségek alapján.</li>
           <li>A stúdióba hozott külső kellékek, jelmezek, rekvizitumok behozataláért és azok épségéért a bérlő felelős.</li>
+          <li>Minden megkezdett óra teljes óraként kerül elszámolásra.</li>
         </ul>
 
-        <h3>6. Fotózási szolgáltatás különös feltételei</h3>
+        <h3>7. Kereskedelmi és üzleti célú bérlés</h3>
+        <p>Az alábbi esetekben az árlista nem alkalmazható automatikusan — minden ilyen megkeresés egyedi egyeztetést és árazást igényel:</p>
+        <ul>
+          <li>Reklámfilm vagy videoklip forgatása</li>
+          <li>Céges megrendelésre készülő termék- vagy brand fotózás</li>
+          <li>Üzleti célú, kereskedelmi felhasználásra szánt anyag készítése</li>
+          <li>Workshopok és csoportos foglalkozások</li>
+        </ul>
+        <p>Ilyen jellegű igény esetén kérjük, vedd fel velünk a kapcsolatot előzetesen a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen vagy telefonon.</p>
+
+        <h3>8. Fotózási szolgáltatás különös feltételei</h3>
         <p>A retusált képek átadása a fotózást követő <strong>14 munkanapon belül</strong> történik, online galéria formájában.</p>
         <p>A fotók szerzői joga Zakariás Fannit illeti meg. Az ügyfél a fotókat személyes felhasználásra (közösségi média, nyomtatás) szabadon használhatja. Kereskedelmi célú felhasználáshoz külön megállapodás szükséges.</p>
         <p>Zakariás Fanni jogosult a fotókat portfólióban és marketingcélokra felhasználni, kivéve ha az ügyfél ezt írásban kifejezetten megtiltja.</p>
 
-        <h3>7. Felelősség</h3>
+        <h3>9. Felelősség</h3>
         <p>A szolgáltató nem vállal felelősséget az ügyfél által a stúdióba behozott tárgyakban keletkezett kárért, lopásért vagy elveszett értékekért. A stúdióban hagyott tárgyakért a szolgáltató nem felel.</p>
         <p>A szolgáltató nem felelős olyan körülményekért, amelyek a foglalás teljesítését lehetetlenné teszik és amelyek elháríthatatlan külső okból erednek (vis maior).</p>
 
-        <h3>8. Panaszkezelés</h3>
+        <h3>10. Panaszkezelés</h3>
         <p>Panasz esetén az ügyfél a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen vagy a +36 30 306 6297 telefonszámon veheti fel a kapcsolatot. A szolgáltató a panaszokat 15 munkanapon belül megválaszolja.</p>
 
-        <h3>9. Irányadó jog</h3>
-        <p>Jelen ÁSZF-re a magyar jog az irányadó. A felek vitás kérdéseiket elsősorban tárgyalásos úton rendezik. Amennyiben ez nem vezet eredményre, a Veszprémi Járásbíróság illetékességét kötik ki.</p>
+        <h3>11. Irányadó jog</h3>
+        <p>Jelen bérlési feltételekre a magyar jog az irányadó. A felek vitás kérdéseiket elsősorban tárgyalásos úton rendezik. Amennyiben ez nem vezet eredményre, a Veszprémi Járásbíróság illetékességét kötik ki.</p>
       </div>
     </div>
   </div>

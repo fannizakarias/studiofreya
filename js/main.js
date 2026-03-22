@@ -609,7 +609,7 @@ function makeModal(overlayId, closeId, openIds) {
   return close;
 }
 
-const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf']);
+const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf', 'open-aszf-form']);
 const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open-impresszum']);
 
 document.addEventListener('keydown', (e) => {
