@@ -131,6 +131,7 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
 
     document.getElementById('bk-duration-bar').hidden = st.withFanni;
     document.getElementById('bk-packages').hidden     = !st.withFanni;
+    document.getElementById('bk-pkg-note').hidden     = !st.withFanni;
 
     // Szelekció nullázása
     Object.assign(st, { hours: null, price: null, label: null, desc: null,
@@ -502,6 +503,7 @@ function showSuccess() {
   document.querySelector('.bk-mode-bar').hidden      = true;
   document.querySelector('.bk-duration-bar').hidden  = true;
   document.getElementById('bk-packages').hidden      = true;
+  document.getElementById('bk-pkg-note').hidden      = true;
   document.querySelector('.bk-main').hidden          = true;
   document.getElementById('bk-form-panel').hidden    = true;
   document.getElementById('booking-success').hidden  = false;
