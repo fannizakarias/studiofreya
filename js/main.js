@@ -138,6 +138,7 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
                         date: null, dateStr: null, hour: null });
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
     hideForms();
+    updateFeltetelek();
     renderCalendar();
     renderSlots();
   });
@@ -609,14 +610,31 @@ function makeModal(overlayId, closeId, openIds) {
   return close;
 }
 
-const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf', 'open-aszf-form']);
+const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf']);
+const closeFootozas   = makeModal('fotozas-modal',    'close-fotozas',    ['open-fotozas']);
 const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open-impresszum']);
+
+/* ── Feltételek checkbox — módtól függő ──────────────────────── */
+function updateFeltetelek() {
+  const btn  = document.getElementById('open-feltetelek-form');
+  const cb   = document.getElementById('b-feltetelek');
+  if (st.withFanni) {
+    btn.textContent = 'Fotózási feltételeket';
+    btn.onclick = (e) => { e.preventDefault(); document.getElementById('fotozas-modal').hidden = false; document.body.style.overflow = 'hidden'; };
+  } else {
+    btn.textContent = 'Bérlési feltételeket';
+    btn.onclick = (e) => { e.preventDefault(); document.getElementById('aszf-modal').hidden = false; document.body.style.overflow = 'hidden'; };
+  }
+  cb.checked = false;
+}
+updateFeltetelek();
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  if (!privacyModal.hidden)                              closePrivacyModal();
-  if (!document.getElementById('aszf-modal').hidden)       closeAszf();
-  if (!document.getElementById('impresszum-modal').hidden) closeImpresszum();
+  if (!privacyModal.hidden)                               closePrivacyModal();
+  if (!document.getElementById('aszf-modal').hidden)        closeAszf();
+  if (!document.getElementById('fotozas-modal').hidden)     closeFootozas();
+  if (!document.getElementById('impresszum-modal').hidden)  closeImpresszum();
 });
 
 /* ─── "Fotóst is kérek" gomb → Fanni módra vált ──────────────── */

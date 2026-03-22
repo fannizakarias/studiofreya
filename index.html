@@ -313,12 +313,12 @@
               </div>
             </div>
             <div class="bk-field bk-field--full bk-privacy-field">
-              <label class="bk-check-wrap" for="b-aszf">
-                <input type="checkbox" class="bk-check-input" id="b-aszf" name="aszf" value="elfogadva" required />
+              <label class="bk-check-wrap" for="b-feltetelek">
+                <input type="checkbox" class="bk-check-input" id="b-feltetelek" name="feltetelek" value="elfogadva" required />
                 <span class="bk-check-box"></span>
-                <span class="bk-check-text">
-                  Elolvastam és elfogadom az
-                  <button type="button" class="privacy-link" id="open-aszf-form">Bérlési feltételeket</button> *
+                <span class="bk-check-text" id="feltetelek-text">
+                  Elolvastam és elfogadom a
+                  <button type="button" class="privacy-link" id="open-feltetelek-form">Bérlési feltételeket</button> *
                 </span>
               </label>
             </div>
@@ -399,6 +399,7 @@
       <p class="footer-copy">&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>
       <div class="footer-legal">
         <button class="footer-legal-link" id="open-aszf">Bérlési feltételek</button>
+        <button class="footer-legal-link" id="open-fotozas">Fotózási feltételek</button>
         <button class="footer-legal-link" id="open-impresszum">Impresszum</button>
         <button class="footer-legal-link" id="open-privacy-footer">Adatkezelés</button>
       </div>
@@ -548,20 +549,71 @@
         </ul>
         <p>Ilyen jellegű igény esetén kérjük, vedd fel velünk a kapcsolatot előzetesen a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen vagy telefonon.</p>
 
-        <h3>8. Fotózási szolgáltatás különös feltételei</h3>
-        <p>A retusált képek átadása a fotózást követő <strong>14 munkanapon belül</strong> történik, online galéria formájában.</p>
-        <p>A fotók szerzői joga Zakariás Fannit illeti meg. Az ügyfél a fotókat személyes felhasználásra (közösségi média, nyomtatás) szabadon használhatja. Kereskedelmi célú felhasználáshoz külön megállapodás szükséges.</p>
-        <p>Zakariás Fanni jogosult a fotókat portfólióban és marketingcélokra felhasználni, kivéve ha az ügyfél ezt írásban kifejezetten megtiltja.</p>
-
-        <h3>9. Felelősség</h3>
+        <h3>8. Felelősség</h3>
         <p>A szolgáltató nem vállal felelősséget az ügyfél által a stúdióba behozott tárgyakban keletkezett kárért, lopásért vagy elveszett értékekért. A stúdióban hagyott tárgyakért a szolgáltató nem felel.</p>
         <p>A szolgáltató nem felelős olyan körülményekért, amelyek a foglalás teljesítését lehetetlenné teszik és amelyek elháríthatatlan külső okból erednek (vis maior).</p>
 
-        <h3>10. Panaszkezelés</h3>
+        <h3>9. Panaszkezelés</h3>
         <p>Panasz esetén az ügyfél a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen vagy a +36 30 306 6297 telefonszámon veheti fel a kapcsolatot. A szolgáltató a panaszokat 15 munkanapon belül megválaszolja.</p>
 
-        <h3>11. Irányadó jog</h3>
+        <h3>10. Irányadó jog</h3>
         <p>Jelen bérlési feltételekre a magyar jog az irányadó. A felek vitás kérdéseiket elsősorban tárgyalásos úton rendezik. Amennyiben ez nem vezet eredményre, a Veszprémi Járásbíróság illetékességét kötik ki.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fotózási feltételek modál -->
+  <div class="modal-overlay" id="fotozas-modal" role="dialog" aria-modal="true" aria-labelledby="fotozas-modal-title" hidden>
+    <div class="modal-box">
+      <button class="modal-close" id="close-fotozas" aria-label="Bezárás">&times;</button>
+      <div class="modal-content">
+        <h2 id="fotozas-modal-title">Fotózási feltételek</h2>
+        <p class="modal-date">Hatályos: 2025. január 1-jétől</p>
+
+        <h3>1. Általános rendelkezések</h3>
+        <p><strong>Szolgáltató:</strong> Zakariás Fanni egyéni vállalkozó<br>
+        Adószám: 91538181-1-39<br>
+        Székhely: 8200 Veszprém, Rákóczi utca 4.<br>
+        E-mail: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a><br>
+        Telefon: <a href="tel:+36303066297">+36 30 306 6297</a></p>
+        <p>Jelen fotózási feltételek a Studio Freya weboldalán keresztül foglalható fotózási szolgáltatásokra — Zakariás Fanni csomagjaira — vonatkoznak. A foglalás elküldésével az ügyfél elfogadja a fotózási feltételek rendelkezéseit.</p>
+
+        <h3>2. Csomagok és árak</h3>
+        <ul>
+          <li><strong>Kis csomag:</strong> 30 perces fotózás, 10 retusált kép — 25 000 Ft</li>
+          <li><strong>Közepes csomag:</strong> 1 órás fotózás, 20 retusált kép — 45 000 Ft</li>
+          <li><strong>Nagy csomag:</strong> 1,5 órás fotózás, 40 retusált kép — 65 000 Ft</li>
+        </ul>
+        <p>Minden csomag tartalmazza a stúdió használatát — külön stúdió bérlési díj nem kerül felszámításra. Az árak forintban értendők, ÁFA-mentesek (alanyi adómentes szolgáltató). A díj helyszínen, a fotózás napján fizetendő készpénzben vagy banki átutalással.</p>
+
+        <h3>3. A foglalás menete és visszaigazolás</h3>
+        <p>A foglalási igény a weboldalon keresztül adható le. A foglalás kizárólag a szolgáltató által küldött e-mailes visszaigazolással válik érvényessé, amelyet 24 munkaidős órán belül küldünk el.</p>
+
+        <h3>4. Lemondás és módosítás</h3>
+        <p>A foglalás az időpont előtt legalább <strong>48 órával</strong> díjmentesen lemondható vagy módosítható e-mailben. 48 órán belüli lemondás esetén a díj 50%-a felszámításra kerülhet. Meg nem jelenés esetén a teljes díj kiszámlázható.</p>
+        <p>A szolgáltató rendkívüli körülmények esetén jogosult a foglalást díjmentesen lemondani, erről az ügyfelet haladéktalanul értesíti és új időpontot ajánl fel.</p>
+
+        <h3>5. Képek átadása</h3>
+        <p>A retusált képek átadása a fotózást követő <strong>14 munkanapon belül</strong> történik, online galéria formájában. A képek száma a kiválasztott csomagnak megfelelő — azon felüli képek átadására nincs kötelezettség.</p>
+        <p>A nyers (nem retusált) felvételek nem kerülnek átadásra.</p>
+
+        <h3>6. Szerzői jogok és felhasználás</h3>
+        <p>A fotók szerzői joga Zakariás Fannit illeti meg. Az ügyfél a képeket személyes felhasználásra (közösségi média, nyomtatás, ajándék stb.) szabadon használhatja.</p>
+        <p>Kereskedelmi célú felhasználáshoz (reklám, termékértékesítés, kampány stb.) előzetes írásos megállapodás szükséges.</p>
+        <p>Zakariás Fanni jogosult a fotókat portfólióban és marketingcélokra felhasználni. Ha az ügyfél ezt nem kívánja, kérjük, jelezze írásban a foglalás leadásakor.</p>
+
+        <h3>7. Felkészülés a fotózásra</h3>
+        <p>Az ügyfél felelős saját öltözékéért, kiegészítőiért és kellékeiért. A fotózásra hozott tárgyakért a szolgáltató nem vállal felelősséget.</p>
+        <p>Kérjük, a megbeszélt időpontban érkezz — a késés a fotózási időből vonódik le, a csomag ára nem változik.</p>
+
+        <h3>8. Felelősség</h3>
+        <p>A szolgáltató nem vállal felelősséget az ügyfél által behozott tárgyakban keletkezett kárért vagy elveszett értékekért. A szolgáltató nem felelős vis maior körülmények miatt meghiúsuló fotózásért.</p>
+
+        <h3>9. Panaszkezelés</h3>
+        <p>Panasz esetén fordulj hozzánk a <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen. Panaszokat 15 munkanapon belül megválaszolunk.</p>
+
+        <h3>10. Irányadó jog</h3>
+        <p>Jelen fotózási feltételekre a magyar jog az irányadó. Vitás kérdésekben a felek tárgyalásos megoldást keresnek; ennek hiányában a Veszprémi Járásbíróság illetékességét kötik ki.</p>
       </div>
     </div>
   </div>
