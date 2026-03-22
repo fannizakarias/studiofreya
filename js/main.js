@@ -13,7 +13,9 @@ window.addEventListener('resize', () => {
   scrollThreshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
 }, { passive: true });
 window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
+  if (!navLinks.classList.contains('open')) {
+    header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
+  }
 }, { passive: true });
 
 /* ─── Mobil navigáció ─────────────────────────────────────────── */
@@ -22,11 +24,17 @@ const navLinks = document.querySelector('.nav-links');
 toggle.addEventListener('click', () => {
   const open = navLinks.classList.toggle('open');
   toggle.setAttribute('aria-expanded', open);
+  if (open) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
+  }
 });
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('open');
     toggle.setAttribute('aria-expanded', false);
+    header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
   });
 });
 

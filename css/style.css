@@ -166,10 +166,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transition: background .4s ease, border-color .4s ease, box-shadow .3s;
 }
 .site-header.scrolled {
-  background: rgba(246, 245, 242, 0.94);
-  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--c-border);
   box-shadow: 0 1px 24px rgba(0,0,0,.07);
+}
+.site-header.scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(246, 245, 242, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Hero felett: fehér elemek — csak asztali nézeten */
@@ -193,6 +201,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .nav {
+  position: relative;
+  z-index: 1;
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 1.5rem;
