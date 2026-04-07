@@ -664,6 +664,7 @@ document.addEventListener('keydown', (e) => {
   if (!document.getElementById('aszf-modal').hidden)        closeAszf();
   if (!document.getElementById('fotozas-modal').hidden)     closeFootozas();
   if (!document.getElementById('impresszum-modal').hidden)  closeImpresszum();
+  if (!document.getElementById('studio-lightbox').hidden)   lbClose();
 });
 
 /* ─── "Fotóst is kérek" gomb → Fanni módra vált ──────────────── */
@@ -685,3 +686,50 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     renderSlots();
   }, 600);
 });
+
+/* ═══════════════════════════════════════════════════════════════════
+   STUDIO LIGHTBOX
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  const lb       = document.getElementById('studio-lightbox');
+  const lbImg    = document.getElementById('studio-lb-img');
+  const backdrop = document.getElementById('studio-lb-backdrop');
+
+  const imgs = Array.from(document.querySelectorAll('.studio-img img'));
+  let current = 0;
+
+  function lbOpen(idx) {
+    current = idx;
+    lbImg.src = imgs[idx].src;
+    lbImg.alt = imgs[idx].alt;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('studio-lb-prev').hidden = imgs.length <= 1;
+    document.getElementById('studio-lb-next').hidden = imgs.length <= 1;
+  }
+
+  window.lbClose = function () {
+    lb.hidden = true;
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  };
+
+  function lbStep(dir) {
+    current = (current + dir + imgs.length) % imgs.length;
+    lbImg.src = imgs[current].src;
+    lbImg.alt = imgs[current].alt;
+  }
+
+  imgs.forEach((img, i) => img.addEventListener('click', () => lbOpen(i)));
+
+  document.getElementById('studio-lb-close').addEventListener('click', lbClose);
+  backdrop.addEventListener('click', lbClose);
+  document.getElementById('studio-lb-prev').addEventListener('click', () => lbStep(-1));
+  document.getElementById('studio-lb-next').addEventListener('click', () => lbStep(1));
+
+  document.addEventListener('keydown', (e) => {
+    if (lb.hidden) return;
+    if (e.key === 'ArrowLeft')  lbStep(-1);
+    if (e.key === 'ArrowRight') lbStep(1);
+  });
+})();
