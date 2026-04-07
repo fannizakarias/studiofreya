@@ -569,18 +569,6 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 renderCalendar();
 renderSlots();
 
-/* ─── Fanni portfólió szűrő ──────────────────────────────────── */
-document.querySelectorAll('[data-fanni-filter]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-fanni-filter]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.fanniFilter;
-    document.querySelectorAll('.fanni-gallery-item').forEach(item => {
-      item.hidden = item.dataset.fcat !== filter;
-    });
-  });
-});
-
 /* ─── "Csomagot foglalok" gomb ────────────────────────────────── */
 document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => {
   e.preventDefault();
