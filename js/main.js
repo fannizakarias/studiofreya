@@ -488,12 +488,52 @@ document.getElementById('bk-change-btn').addEventListener('click', () => {
    ═══════════════════════════════════════════════════════════════════ */
 const bookingForm = document.getElementById('booking-form');
 
+/* ─── Résztvevők: valós idejű clamping ───────────────────────────── */
+const szemInput = document.getElementById('b-szemelyek');
+szemInput.addEventListener('input', () => {
+  const v = parseInt(szemInput.value, 10);
+  if (!isNaN(v)) {
+    if (v < 1) szemInput.value = 1;
+    if (v > 6) szemInput.value = 6;
+  }
+});
+
+/* ─── Segédfüggvények ────────────────────────────────────────────── */
+function validateEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+}
+function validatePhone(v) {
+  if (!v.trim()) return true;                    // nem kötelező
+  const digits = v.replace(/\D/g, '');
+  return digits.length >= 8 && digits.length <= 13;
+}
+function validateSzemelyek(v) {
+  const n = parseInt(v, 10);
+  return !isNaN(n) && n >= 1 && n <= 6;
+}
+
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   if (!st.hours)        { alert(st.withFanni ? 'Kérlek válassz csomagot!' : 'Kérlek válassz időtartamot!'); return; }
   if (!st.dateStr)      { alert('Kérlek válassz dátumot!');     return; }
   if (st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
+
+  if (!validateEmail(document.getElementById('b-email').value)) {
+    document.getElementById('b-email').focus();
+    alert('Kérlek adj meg érvényes e-mail címet!');
+    return;
+  }
+  if (!validatePhone(document.getElementById('b-telefon').value)) {
+    document.getElementById('b-telefon').focus();
+    alert('A telefonszám formátuma nem megfelelő (pl. +36 70 123 4567).');
+    return;
+  }
+  if (!validateSzemelyek(document.getElementById('b-szemelyek').value)) {
+    document.getElementById('b-szemelyek').focus();
+    alert('A résztvevők száma 1 és 6 között kell legyen.');
+    return;
+  }
 
   const btn = document.getElementById('booking-submit');
   btn.disabled  = true;

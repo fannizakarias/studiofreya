@@ -1502,7 +1502,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .fanni-gallery-item[hidden] { display: none; }
 
 .fanni-packages-info {
-  margin-top: 5rem;
+  padding: 4rem min(6rem, 8vw);
 }
 
 .fanni-packages-sub {
