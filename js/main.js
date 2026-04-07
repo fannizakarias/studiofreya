@@ -488,29 +488,49 @@ document.getElementById('bk-change-btn').addEventListener('click', () => {
    ═══════════════════════════════════════════════════════════════════ */
 const bookingForm = document.getElementById('booking-form');
 
-/* ─── Email és telefon: valós idejű visszajelzés ─────────────────── */
-function setFieldError(inputId, errId, isError) {
-  document.getElementById(inputId).classList.toggle('invalid', isError);
-  document.getElementById(errId).classList.toggle('visible', isError);
+/* ─── Segédfüggvények ────────────────────────────────────────────── */
+function validateEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+}
+function validatePhone(v) {
+  if (!v.trim()) return true;
+  const digits = v.replace(/\D/g, '');
+  return digits.length >= 8 && digits.length <= 13;
+}
+function validateSzemelyek(v) {
+  const n = parseInt(v, 10);
+  return !isNaN(n) && n >= 1 && n <= 6;
 }
 
-const emailInput  = document.getElementById('b-email');
+function setFieldError(inputEl, errEl, isError) {
+  inputEl.classList.toggle('invalid', isError);
+  errEl.classList.toggle('visible', isError);
+}
+
+/* ─── Email és telefon: valós idejű visszajelzés ─────────────────── */
+const emailInput   = document.getElementById('b-email');
 const telefonInput = document.getElementById('b-telefon');
+const emailErr     = document.getElementById('b-email-err');
+const telefonErr   = document.getElementById('b-telefon-err');
+
+let emailTouched   = false;
+let telefonTouched = false;
 
 emailInput.addEventListener('blur', () => {
-  if (emailInput.value) setFieldError('b-email', 'b-email-err', !validateEmail(emailInput.value));
+  emailTouched = true;
+  setFieldError(emailInput, emailErr, !validateEmail(emailInput.value));
 });
 emailInput.addEventListener('input', () => {
-  if (emailInput.classList.contains('invalid') && validateEmail(emailInput.value))
-    setFieldError('b-email', 'b-email-err', false);
+  if (emailTouched) setFieldError(emailInput, emailErr, emailInput.value && !validateEmail(emailInput.value));
 });
 
 telefonInput.addEventListener('blur', () => {
-  if (telefonInput.value) setFieldError('b-telefon', 'b-telefon-err', !validatePhone(telefonInput.value));
+  telefonTouched = true;
+  if (telefonInput.value) setFieldError(telefonInput, telefonErr, !validatePhone(telefonInput.value));
+  else setFieldError(telefonInput, telefonErr, false);
 });
 telefonInput.addEventListener('input', () => {
-  if (telefonInput.classList.contains('invalid') && validatePhone(telefonInput.value))
-    setFieldError('b-telefon', 'b-telefon-err', false);
+  if (telefonTouched) setFieldError(telefonInput, telefonErr, telefonInput.value && !validatePhone(telefonInput.value));
 });
 
 /* ─── Résztvevők: valós idejű clamping ───────────────────────────── */

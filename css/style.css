@@ -987,6 +987,14 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-muted);
 }
 
+.bk-field-hint {
+  font-size: .68rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--c-muted);
+  opacity: .7;
+}
+
 .bk-field input,
 .bk-field textarea {
   width: 100%;
