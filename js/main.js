@@ -488,6 +488,31 @@ document.getElementById('bk-change-btn').addEventListener('click', () => {
    ═══════════════════════════════════════════════════════════════════ */
 const bookingForm = document.getElementById('booking-form');
 
+/* ─── Email és telefon: valós idejű visszajelzés ─────────────────── */
+function setFieldError(inputId, errId, isError) {
+  document.getElementById(inputId).classList.toggle('invalid', isError);
+  document.getElementById(errId).classList.toggle('visible', isError);
+}
+
+const emailInput  = document.getElementById('b-email');
+const telefonInput = document.getElementById('b-telefon');
+
+emailInput.addEventListener('blur', () => {
+  if (emailInput.value) setFieldError('b-email', 'b-email-err', !validateEmail(emailInput.value));
+});
+emailInput.addEventListener('input', () => {
+  if (emailInput.classList.contains('invalid') && validateEmail(emailInput.value))
+    setFieldError('b-email', 'b-email-err', false);
+});
+
+telefonInput.addEventListener('blur', () => {
+  if (telefonInput.value) setFieldError('b-telefon', 'b-telefon-err', !validatePhone(telefonInput.value));
+});
+telefonInput.addEventListener('input', () => {
+  if (telefonInput.classList.contains('invalid') && validatePhone(telefonInput.value))
+    setFieldError('b-telefon', 'b-telefon-err', false);
+});
+
 /* ─── Résztvevők: valós idejű clamping ───────────────────────────── */
 const szemInput = document.getElementById('b-szemelyek');
 szemInput.addEventListener('input', () => {
@@ -519,14 +544,14 @@ bookingForm.addEventListener('submit', async (e) => {
   if (!st.dateStr)      { alert('Kérlek válassz dátumot!');     return; }
   if (st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
 
-  if (!validateEmail(document.getElementById('b-email').value)) {
-    document.getElementById('b-email').focus();
-    alert('Kérlek adj meg érvényes e-mail címet!');
+  if (!validateEmail(emailInput.value)) {
+    setFieldError('b-email', 'b-email-err', true);
+    emailInput.focus();
     return;
   }
-  if (!validatePhone(document.getElementById('b-telefon').value)) {
-    document.getElementById('b-telefon').focus();
-    alert('A telefonszám formátuma nem megfelelő (pl. +36 70 123 4567).');
+  if (!validatePhone(telefonInput.value)) {
+    setFieldError('b-telefon', 'b-telefon-err', true);
+    telefonInput.focus();
     return;
   }
   if (!validateSzemelyek(document.getElementById('b-szemelyek').value)) {

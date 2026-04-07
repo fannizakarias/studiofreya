@@ -1002,6 +1002,16 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-field textarea:focus { border-color: var(--c-accent); }
 .bk-field textarea { resize: vertical; }
 
+.bk-field input.invalid { border-color: var(--c-taken); }
+
+.bk-field-error {
+  display: none;
+  font-size: .75rem;
+  color: var(--c-taken);
+  margin-top: .1rem;
+}
+.bk-field-error.visible { display: block; }
+
 /* ── Success ──────────────────────────────────────────────────── */
 .bk-success {
   text-align: center;
