@@ -744,7 +744,6 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
       track.scrollBy({ left: step(), behavior: 'smooth' }));
   }
   bindCarousel('fanni-portre-track', 'fanni-portre-prev', 'fanni-portre-next');
-  bindCarousel('fanni-brand-track',  'fanni-brand-prev',  'fanni-brand-next');
 })();
 
 /* ═══════════════════════════════════════════════════════════════════
