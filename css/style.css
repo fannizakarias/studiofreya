@@ -1568,6 +1568,33 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .fanni-portfolio-header { flex-direction: column; align-items: flex-start; gap: .75rem; }
 }
 
+/* ─── Átmeneti sáv stúdió → fotós ──────────────────────────────── */
+.section-bridge {
+  background: var(--c-mid);
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+}
+
+.section-bridge p {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  color: var(--c-bg);
+  letter-spacing: .02em;
+  margin-bottom: 1.1rem;
+}
+
+.section-bridge-link {
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(246,245,242,.5);
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.section-bridge-link:hover { color: var(--c-bg); }
+
 /* ═══════════════════════════════════════════════════════════════════
    PHOTOGRAPHER SECTION
    ═══════════════════════════════════════════════════════════════════ */
