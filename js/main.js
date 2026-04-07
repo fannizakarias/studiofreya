@@ -691,6 +691,23 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
 })();
 
 /* ═══════════════════════════════════════════════════════════════════
+   FANNI CAROUSELEK
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  function bindCarousel(trackId, prevId, nextId) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    const step = () => track.firstElementChild?.getBoundingClientRect().width + 8 || 180;
+    document.getElementById(prevId)?.addEventListener('click', () =>
+      track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    document.getElementById(nextId)?.addEventListener('click', () =>
+      track.scrollBy({ left: step(), behavior: 'smooth' }));
+  }
+  bindCarousel('fanni-portre-track', 'fanni-portre-prev', 'fanni-portre-next');
+  bindCarousel('fanni-brand-track',  'fanni-brand-prev',  'fanni-brand-next');
+})();
+
+/* ═══════════════════════════════════════════════════════════════════
    STUDIO LIGHTBOX
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
@@ -698,7 +715,7 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   const lbImg    = document.getElementById('studio-lb-img');
   const backdrop = document.getElementById('studio-lb-backdrop');
 
-  const imgs = Array.from(document.querySelectorAll('.studio-img img'));
+  const imgs = Array.from(document.querySelectorAll('.studio-img img, .fanni-car-item img'));
   let current = 0;
 
   function lbOpen(idx) {
