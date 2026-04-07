@@ -688,6 +688,21 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
 });
 
 /* ═══════════════════════════════════════════════════════════════════
+   STUDIO CAROUSEL
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  const track = document.getElementById('studio-car-track');
+  if (!track) return;
+  const STEP = 360;
+  document.getElementById('studio-car-prev')?.addEventListener('click', () => {
+    track.scrollBy({ left: -STEP, behavior: 'smooth' });
+  });
+  document.getElementById('studio-car-next')?.addEventListener('click', () => {
+    track.scrollBy({ left: STEP, behavior: 'smooth' });
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════════
    STUDIO LIGHTBOX
    ═══════════════════════════════════════════════════════════════════ */
 (function () {

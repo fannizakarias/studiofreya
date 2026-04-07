@@ -1263,11 +1263,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 /* ═══════════════════════════════════════════════════════════════════
    STUDIO SHOWCASE
    ═══════════════════════════════════════════════════════════════════ */
-
-/* Közös alap minden kattintható képtartálóhoz */
 .studio-img {
   overflow: hidden;
   border-radius: 4px;
+  flex: 0 0 auto;
 }
 
 .studio-img img {
@@ -1283,62 +1282,62 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transform: scale(1.03);
 }
 
-/* ─── 3 tematikus kártya ────────────────────────────────────────── */
-.studio-spots {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+/* ─── Carousel ──────────────────────────────────────────────────── */
+.studio-carousel {
+  position: relative;
 }
 
-.studio-spot-img {
-  aspect-ratio: 4 / 3;
+.studio-car-track {
+  display: flex;
+  gap: .625rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
 }
 
-.studio-spot-caption {
-  padding: .65rem .1rem .3rem;
+.studio-car-track::-webkit-scrollbar { display: none; }
+
+.studio-car-item {
+  scroll-snap-align: start;
+  width: 340px;
+  height: 380px;
+  flex-shrink: 0;
 }
 
-.studio-spot-label {
-  display: block;
-  font-size: .7rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-}
-
-.studio-spot-title {
-  font-family: var(--f-serif);
-  font-weight: 300;
-  font-size: 1.15rem;
+/* Nyilak */
+.studio-car-btn {
+  position: absolute;
+  top: calc(50% - 1.5rem); /* felső nyíl magasság: track közepe, de ne legyen a scrollbar sávon */
+  z-index: 2;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--c-border);
+  background: var(--c-bg);
   color: var(--c-dark);
-  margin-top: .15rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, box-shadow .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
 }
 
-/* ─── Részlet thumbnails ────────────────────────────────────────── */
-.studio-thumbs {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: .5rem;
+.studio-car-btn:hover {
+  background: var(--c-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 
-.studio-thumb {
-  aspect-ratio: 1;
-}
+.studio-car-prev { left: -1.125rem; }
+.studio-car-next { right: -1.125rem; }
 
 @media (max-width: 768px) {
-  .studio-spots { grid-template-columns: 1fr 1fr; }
-  .studio-spot:nth-child(3) { grid-column: 1 / -1; }
-  .studio-spot:nth-child(3) .studio-spot-img { aspect-ratio: 16 / 7; }
-  .studio-thumbs { grid-template-columns: repeat(3, 1fr); }
-  .studio-thumb { aspect-ratio: 1; }
-}
-
-@media (max-width: 480px) {
-  .studio-spots { grid-template-columns: 1fr; }
-  .studio-spot:nth-child(3) { grid-column: auto; }
-  .studio-spot:nth-child(3) .studio-spot-img { aspect-ratio: 4 / 3; }
-  .studio-thumbs { grid-template-columns: repeat(3, 1fr); }
+  .studio-car-item { width: 280px; height: 320px; }
+  .studio-car-btn  { display: none; }
 }
 
 /* ─── Studio lightbox ───────────────────────────────────────────── */
