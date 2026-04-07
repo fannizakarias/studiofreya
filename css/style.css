@@ -1604,52 +1604,45 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   overflow: hidden;
 }
 
-.photographer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.photographer-photo {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  min-height: 520px;
-}
-
-.photographer-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
-
 .photographer-body {
-  padding: 4rem 4rem 4rem 4.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  padding: 4rem min(6rem, 8vw);
   background: var(--c-soft);
   overflow: hidden;
 }
 
+.photographer-intro {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.photographer-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  flex-shrink: 0;
+}
+
 .photographer-body .section-title {
-  margin-bottom: 1.2rem;
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  margin-bottom: .75rem;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
 }
 
 .photographer-bio {
   color: var(--c-muted);
   font-size: .93rem;
   line-height: 1.8;
-  margin-bottom: 1.5rem;
+  margin-bottom: .75rem;
 }
 
 .photographer-actions {
   display: flex;
   gap: .8rem;
   flex-wrap: wrap;
-  margin-bottom: .5rem;
+  margin-top: 1rem;
 }
 
 /* ─── Fanni portfólió carouselek ────────────────────────────────── */
@@ -1708,8 +1701,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .fanni-car-track::-webkit-scrollbar { display: none; }
 
 .fanni-car-item {
-  flex: 0 0 43%;
-  height: 220px;
+  flex: 0 0 260px;
+  height: 340px;
   scroll-snap-align: start;
   border-radius: 3px;
   overflow: hidden;
@@ -1892,19 +1885,11 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 /* ═══════════════════════════════════════════════════════════════════
    RESPONSIVE — new sections
    ═══════════════════════════════════════════════════════════════════ */
-@media (max-width: 1024px) {
-  .photographer-body { padding: 4rem 3rem; }
-}
-
-@media (max-width: 900px) {
-  .photographer-grid { grid-template-columns: 1fr; }
-  .photographer-photo { min-height: 360px; }
-  .photographer-body { padding: 3.5rem 2rem; }
-}
-
 @media (max-width: 640px) {
   .photographer-body { padding: 2.5rem 1.5rem; }
-  .photographer-actions { flex-direction: column; }
+  .photographer-intro { gap: 1rem; }
+  .photographer-avatar { width: 64px; height: 64px; }
+  .fanni-car-item { flex: 0 0 200px; height: 260px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
