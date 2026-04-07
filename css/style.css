@@ -39,6 +39,9 @@
 /* ─── Base ──────────────────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
+/* Anchor linkek ne csússzanak a fix fejléc alá */
+[id] { scroll-margin-top: 5.5rem; }
+
 body {
   font-family: var(--f-sans);
   font-size: 1rem;
@@ -1639,6 +1642,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .photographer-body .section-title {
   margin-bottom: .75rem;
   font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+
+.photographer-quote {
+  font-family: var(--f-serif);
+  font-size: 1.15rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--c-dark);
+  border-left: 2px solid var(--c-accent);
+  padding-left: 1rem;
+  margin: 0 0 1rem;
+  line-height: 1.6;
 }
 
 .photographer-bio {
