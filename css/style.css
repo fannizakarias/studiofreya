@@ -1263,14 +1263,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 /* ═══════════════════════════════════════════════════════════════════
    STUDIO SHOWCASE
    ═══════════════════════════════════════════════════════════════════ */
-.studio-grid {
-  columns: 3;
-  column-gap: .75rem;
-}
 
+/* Közös alap minden kattintható képtartálóhoz */
 .studio-img {
-  break-inside: avoid;
-  margin-bottom: .75rem;
   overflow: hidden;
   border-radius: 4px;
 }
@@ -1278,7 +1273,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .studio-img img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   cursor: zoom-in;
   transition: transform .45s ease;
 }
@@ -1287,12 +1283,62 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transform: scale(1.03);
 }
 
+/* ─── 3 tematikus kártya ────────────────────────────────────────── */
+.studio-spots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.studio-spot-img {
+  aspect-ratio: 4 / 3;
+}
+
+.studio-spot-caption {
+  padding: .65rem .1rem .3rem;
+}
+
+.studio-spot-label {
+  display: block;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.studio-spot-title {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: 1.15rem;
+  color: var(--c-dark);
+  margin-top: .15rem;
+}
+
+/* ─── Részlet thumbnails ────────────────────────────────────────── */
+.studio-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .5rem;
+}
+
+.studio-thumb {
+  aspect-ratio: 1;
+}
+
 @media (max-width: 768px) {
-  .studio-grid { columns: 2; }
+  .studio-spots { grid-template-columns: 1fr 1fr; }
+  .studio-spot:nth-child(3) { grid-column: 1 / -1; }
+  .studio-spot:nth-child(3) .studio-spot-img { aspect-ratio: 16 / 7; }
+  .studio-thumbs { grid-template-columns: repeat(3, 1fr); }
+  .studio-thumb { aspect-ratio: 1; }
 }
 
 @media (max-width: 480px) {
-  .studio-grid { columns: 1; }
+  .studio-spots { grid-template-columns: 1fr; }
+  .studio-spot:nth-child(3) { grid-column: auto; }
+  .studio-spot:nth-child(3) .studio-spot-img { aspect-ratio: 4 / 3; }
+  .studio-thumbs { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ─── Studio lightbox ───────────────────────────────────────────── */
@@ -1366,29 +1412,14 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* ─── Studio intro szöveg ───────────────────────────────────────── */
 .studio-intro {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 3rem;
   margin-bottom: 2.5rem;
 }
 
 .studio-intro p {
-  font-size: .975rem;
-  line-height: 1.85;
-  color: var(--c-dark);
-}
-
-.studio-intro p:first-child {
-  grid-column: 1 / -1;
-  font-size: 1.05rem;
-}
-
-@media (max-width: 640px) {
-  .studio-intro {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .studio-intro p:first-child { grid-column: auto; }
+  color: var(--c-muted);
+  font-size: .95rem;
+  line-height: 1.65;
+  max-width: 640px;
 }
 
 /* ─── Studio equipment list ─────────────────────────────────────── */
