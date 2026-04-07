@@ -1786,6 +1786,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-accent);
   border-color: var(--c-accent);
 }
+.bk-check-input.invalid ~ .bk-check-box {
+  border-color: #c0392b;
+}
 .bk-check-input:checked ~ .bk-check-box::after {
   content: '';
   display: block;

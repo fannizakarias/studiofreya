@@ -538,10 +538,10 @@ telefonInput.addEventListener('input', () => {
 });
 
 feltetelek.addEventListener('change', () => {
-  feltetelekenErr.classList.toggle('visible', !feltetelek.checked);
+  setFieldError(feltetelek, feltetelekenErr, !feltetelek.checked);
 });
 adatkezeles.addEventListener('change', () => {
-  adatkezelesErr.classList.toggle('visible', !adatkezeles.checked);
+  setFieldError(adatkezeles, adatkezelesErr, !adatkezeles.checked);
 });
 
 /* ─── Résztvevők: valós idejű clamping ───────────────────────────── */
@@ -579,8 +579,8 @@ bookingForm.addEventListener('submit', async (e) => {
 
   const feltetelekhiba = !feltetelek.checked;
   const adatkezeleshiba = !adatkezeles.checked;
-  feltetelekenErr.classList.toggle('visible', feltetelekhiba);
-  adatkezelesErr.classList.toggle('visible', adatkezeleshiba);
+  setFieldError(feltetelek, feltetelekenErr, feltetelekhiba);
+  setFieldError(adatkezeles, adatkezelesErr, adatkezeleshiba);
   if (feltetelekhiba || adatkezeleshiba) return;
 
   const btn = document.getElementById('booking-submit');
