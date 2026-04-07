@@ -508,10 +508,14 @@ function setFieldError(inputEl, errEl, isError) {
 }
 
 /* ─── Email és telefon: valós idejű visszajelzés ─────────────────── */
-const emailInput   = document.getElementById('b-email');
-const telefonInput = document.getElementById('b-telefon');
-const emailErr     = document.getElementById('b-email-err');
-const telefonErr   = document.getElementById('b-telefon-err');
+const emailInput      = document.getElementById('b-email');
+const telefonInput    = document.getElementById('b-telefon');
+const emailErr        = document.getElementById('b-email-err');
+const telefonErr      = document.getElementById('b-telefon-err');
+const feltetelek      = document.getElementById('b-feltetelek');
+const feltetelekenErr = document.getElementById('b-feltetelek-err');
+const adatkezeles     = document.getElementById('b-adatkezeles');
+const adatkezelesErr  = document.getElementById('b-adatkezeles-err');
 
 let emailTouched   = false;
 let telefonTouched = false;
@@ -533,6 +537,13 @@ telefonInput.addEventListener('input', () => {
   if (telefonTouched) setFieldError(telefonInput, telefonErr, telefonInput.value && !validatePhone(telefonInput.value));
 });
 
+feltetelek.addEventListener('change', () => {
+  feltetelekenErr.classList.toggle('visible', !feltetelek.checked);
+});
+adatkezeles.addEventListener('change', () => {
+  adatkezelesErr.classList.toggle('visible', !adatkezeles.checked);
+});
+
 /* ─── Résztvevők: valós idejű clamping ───────────────────────────── */
 const szemInput = document.getElementById('b-szemelyek');
 szemInput.addEventListener('input', () => {
@@ -543,20 +554,6 @@ szemInput.addEventListener('input', () => {
   }
 });
 
-/* ─── Segédfüggvények ────────────────────────────────────────────── */
-function validateEmail(v) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-}
-function validatePhone(v) {
-  if (!v.trim()) return true;                    // nem kötelező
-  const digits = v.replace(/\D/g, '');
-  return digits.length >= 8 && digits.length <= 13;
-}
-function validateSzemelyek(v) {
-  const n = parseInt(v, 10);
-  return !isNaN(n) && n >= 1 && n <= 6;
-}
-
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -565,12 +562,12 @@ bookingForm.addEventListener('submit', async (e) => {
   if (st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
 
   if (!validateEmail(emailInput.value)) {
-    setFieldError('b-email', 'b-email-err', true);
+    setFieldError(emailInput, emailErr, true);
     emailInput.focus();
     return;
   }
   if (!validatePhone(telefonInput.value)) {
-    setFieldError('b-telefon', 'b-telefon-err', true);
+    setFieldError(telefonInput, telefonErr, true);
     telefonInput.focus();
     return;
   }
@@ -579,6 +576,12 @@ bookingForm.addEventListener('submit', async (e) => {
     alert('A résztvevők száma 1 és 6 között kell legyen.');
     return;
   }
+
+  const feltetelekhiba = !feltetelek.checked;
+  const adatkezeleshiba = !adatkezeles.checked;
+  feltetelekenErr.classList.toggle('visible', feltetelekhiba);
+  adatkezelesErr.classList.toggle('visible', adatkezeleshiba);
+  if (feltetelekhiba || adatkezeleshiba) return;
 
   const btn = document.getElementById('booking-submit');
   btn.disabled  = true;
