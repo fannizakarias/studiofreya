@@ -37,7 +37,8 @@
 }
 
 /* ─── Base ──────────────────────────────────────────────────────── */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { overflow-x: hidden; }
 
 /* Anchor linkek ne csússzanak a fix fejléc alá */
 [id] { scroll-margin-top: 5.5rem; }
