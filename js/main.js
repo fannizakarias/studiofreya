@@ -788,7 +788,7 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   const backdrop = document.getElementById('studio-lb-backdrop');
 
   // Mozaik + carousel + Fanni portfólió — egyetlen lightbox queue, src-alapú dedup
-  const allImgs = Array.from(document.querySelectorAll('.studio-grid-item img, .fanni-car-item img'));
+  const allImgs = Array.from(document.querySelectorAll('.studio-grid-item img, .fanni-portfolio-item img'));
   const srcIndex = new Map();
   const imgs = [];
   allImgs.forEach(img => {
