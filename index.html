@@ -18,9 +18,12 @@
   <meta property="og:url"         content="https://studiofreya.hu/" />
   <meta property="og:title"       content="Studio Freya – Fotóstúdió Veszprémben" />
   <meta property="og:description" content="Professzionális fotóstúdió Veszprémben. Stúdióbérlés vagy fotózás Zakariás Fannival. Online foglalás, Rákóczi utca 4." />
-  <meta property="og:image"       content="https://studiofreya.hu/images/studio/web/IMG_1930.jpg" />
-  <meta property="og:locale"      content="hu_HU" />
-  <meta property="og:site_name"   content="Studio Freya" />
+  <meta property="og:image"        content="https://studiofreya.hu/images/studio/web/IMG_1930.jpg" />
+  <meta property="og:image:width"  content="1800" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt"    content="Studio Freya fotóstúdió Veszprém belvárosában — bézs kanapé, növények" />
+  <meta property="og:locale"       content="hu_HU" />
+  <meta property="og:site_name"    content="Studio Freya" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image" />
@@ -92,11 +95,18 @@
 
   <!-- Hero -->
   <section class="hero">
-    <img src="images/studio/web/IMG_1930.jpg" alt="Studio Freya fotóstúdió Veszprém" class="hero-bg" aria-hidden="true" />
-    <div class="hero-logo-wrap">
+    <img src="images/studio/web/IMG_1930.jpg" alt="Studio Freya fotóstúdió Veszprém" class="hero-bg" aria-hidden="true" fetchpriority="high" />
+    <div class="hero-content">
       <img src="images/logo-aperture.svg" alt="Studio Freya" class="hero-logo" />
+      <p class="hero-eyebrow">Veszprém · Rákóczi utca 4.</p>
+      <h1 class="hero-tagline">Otthonos fotóstúdió<br><em>a város szívében</em></h1>
+      <p class="hero-sub">Berendezett enteriőr, profi világítás és háttér — bérelhető fotóssal vagy önállóan.</p>
+      <div class="hero-actions">
+        <a href="#foglalas" class="btn">Foglalok időpontot</a>
+        <a href="#studio" class="btn btn--ghost">A stúdió</a>
+      </div>
     </div>
-    <a href="#studio" class="scroll-hint" aria-label="Görgets le">
+    <a href="#studio" class="scroll-hint" aria-label="Görgess le">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="6 9 12 15 18 9"/>
       </svg>
@@ -113,48 +123,52 @@
       <div class="studio-intro">
         <p>Portré-, baba- és termékfotózáshoz felszerelt tér — berendezett enteriőrrel, Godox világítással, Colorama papírháttérrel és gyereksarokkal. Bérelhető fotóssal vagy anélkül.</p>
       </div>
-      <!-- Vízszintesen lapozható képcsík -->
-      <div class="studio-carousel">
-        <button class="studio-car-btn studio-car-prev" id="studio-car-prev" aria-label="Előző">&#8249;</button>
-        <div class="studio-car-track" id="studio-car-track">
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal és növényekkel" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1822.jpg" alt="Bézs kanapé tufted párnákkal, fa lábú asztalka növénnyel" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal, bézs asztalka" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé karfa közelkép, pampas fű vázában" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1821.jpg" alt="Mustár kanapé, fehér buborék váza eukaliptusz ágakkal" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1853.jpg" alt="Pink hortenzia bézs vázában, cappuccino Colorama háttéren" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1946.jpg" alt="Tipi sátor cseresznyevirág girlanddal és mackóval" />
-          </div>
-          <div class="studio-car-item studio-img">
-            <img src="images/studio/web/IMG_1964.jpg" alt="Godox stúdiólámpák bézs Colorama papírháttér előtt" />
-          </div>
-        </div>
-        <button class="studio-car-btn studio-car-next" id="studio-car-next" aria-label="Következő">&#8250;</button>
+
+      <!-- Stúdió képgalléria -->
+      <div class="studio-grid">
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1822.jpg" alt="Bézs kanapé tufted párnákkal, fa lábú asztalka növénnyel" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1853.jpg" alt="Pink hortenzia bézs vázában, cappuccino Colorama háttéren" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1946.jpg" alt="Tipi sátor cseresznyevirág girlanddal és mackóval" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal, bézs asztalka" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé karfa közelkép, pampas fű vázában" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-img">
+          <img src="images/studio/web/IMG_1964.jpg" alt="Godox stúdiólámpák bézs Colorama papírháttér előtt" loading="lazy" />
+        </figure>
+        <figure class="studio-grid-item studio-grid-item--wide studio-img">
+          <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal és növényekkel — stúdió összképe" loading="lazy" />
+        </figure>
       </div>
 
       <!-- Eszközök -->
       <div class="studio-equipment">
-        <h3 class="studio-eq-title">Felszerelés</h3>
+        <h3 class="studio-eq-title">Mit találsz nálunk</h3>
         <ul class="studio-eq-list">
-          <li>Godox MS-300V studióvaku</li>
-          <li>Godox SL300IIIBi Bi-Color LED lámpa</li>
-          <li>Godox 60×90 ernyő softbox</li>
-          <li>Godox Octa Softbox 120 cm</li>
-          <li>Colorama papírháttér — lemon, super white, cappuccino</li>
+          <li>Stúdióvaku és folyamatos LED-lámpa</li>
+          <li>Softbox és octobox</li>
+          <li>Háromféle papírháttér — lemon, super white, cappuccino</li>
+          <li>Berendezett enteriőr — kanapé, asztalkák, vázák, dekorok</li>
+          <li>Gyereksarok tipi sátorral, párnákkal és játékokkal</li>
         </ul>
+        <details class="studio-eq-details">
+          <summary>Részletes felszerelés</summary>
+          <ul class="studio-eq-sublist">
+            <li>Godox MS-300V studióvaku</li>
+            <li>Godox SL300IIIBi Bi-Color LED lámpa</li>
+            <li>Godox 60×90 ernyő softbox</li>
+            <li>Godox Octa Softbox 120 cm</li>
+            <li>Colorama papírháttér</li>
+          </ul>
+        </details>
       </div>
 
     </div>
@@ -172,32 +186,25 @@
 
       <div class="photographer-body">
           <div class="photographer-intro">
-            <img src="images/portfolio/fanni.jpg" alt="Zakariás Fanni" class="photographer-avatar" />
-            <div>
+            <div class="photographer-portrait">
+              <img src="images/portfolio/fanni.jpg" alt="Zakariás Fanni fotós portréja" loading="lazy" />
+            </div>
+            <div class="photographer-text">
+              <span class="eyebrow">A fotós</span>
               <h2 class="section-title">Zakariás Fanni</h2>
-              <blockquote class="photographer-quote">„A legjobb képek ott születnek, ahol az ember otthon érzi magát — ezért hoztam létre a Studio Freyát."</blockquote>
-              <p class="photographer-bio">Veszprémi fotós, portré- és brand fotózásra specializálódva. Természetes, légies képeket készítek: kevés póz, sok valódi pillanat. Akár rólad szól a fotózás, akár a vállalkozásodról.</p>
+              <blockquote class="photographer-quote">„A legtöbben csak egy jó képet szeretnének. Én ebben segítek."</blockquote>
+              <p class="photographer-bio">Veszprémi fotós vagyok, portré- és brand fotózással foglalkozom. Ha még sosem fotózkodtál stúdióban, ne izgulj — együtt kitaláljuk, mi illik hozzád. A végén olyan képeid lesznek, amiket tényleg szívesen megmutatsz.</p>
               <div class="photographer-actions">
                 <a href="#foglalas" class="btn" id="btn-with-fotos">Csomagot foglalok</a>
               </div>
             </div>
           </div>
 
-          <!-- Portfólió carousel -->
-          <div class="fanni-car-section">
-            <div class="fanni-car-header">
-              <h4 class="fanni-car-label">Portfólió</h4>
-              <div class="fanni-car-btns">
-                <button class="fanni-car-btn" id="fanni-portre-prev" aria-label="Előző">&#8249;</button>
-                <button class="fanni-car-btn" id="fanni-portre-next" aria-label="Következő">&#8250;</button>
-              </div>
-            </div>
-            <div class="fanni-car-track" id="fanni-portre-track">
-              <div class="fanni-car-item"><img src="images/portfolio/portre/zsofi1.jpeg" alt="Portfólió – Zakariás Fanni" /></div>
-              <div class="fanni-car-item"><img src="images/portfolio/portre/zsofi2.jpeg" alt="Portfólió – Zakariás Fanni" /></div>
-              <div class="fanni-car-item"><img src="images/portfolio/portre/zsofi4.jpeg" alt="Portfólió – Zakariás Fanni" /></div>
-              <div class="fanni-car-item"><img src="images/portfolio/portre/zsofi8.jpeg" alt="Portfólió – Zakariás Fanni" /></div>
-            </div>
+          <!-- Portfólió grid -->
+          <div class="fanni-portfolio-grid">
+            <figure class="fanni-portfolio-item fanni-car-item"><img src="images/portfolio/portre/zsofi2.jpeg" alt="Portfólió – Zakariás Fanni" loading="lazy" /></figure>
+            <figure class="fanni-portfolio-item fanni-car-item"><img src="images/portfolio/portre/zsofi4.jpeg" alt="Portfólió – Zakariás Fanni" loading="lazy" /></figure>
+            <figure class="fanni-portfolio-item fanni-car-item"><img src="images/portfolio/portre/zsofi8.jpeg" alt="Portfólió – Zakariás Fanni" loading="lazy" /></figure>
           </div>
         </div>
 
@@ -215,17 +222,18 @@
             </div>
             <span class="fanni-pkg-price">25 000 Ft</span>
           </div>
-          <div class="fanni-pkg-card">
+          <div class="fanni-pkg-card fanni-pkg-card--featured">
+            <span class="fanni-pkg-badge">Ajánlott</span>
             <div class="fanni-pkg-body">
               <h4>Közepes csomag</h4>
-              <p>1 órás fotózás · 20 retusált kép</p>
+              <p>60 perces fotózás · 20 retusált kép</p>
             </div>
             <span class="fanni-pkg-price">45 000 Ft</span>
           </div>
           <div class="fanni-pkg-card">
             <div class="fanni-pkg-body">
               <h4>Nagy csomag</h4>
-              <p>1,5 órás fotózás · 40 retusált kép</p>
+              <p>90 perces fotózás · 30 retusált kép</p>
             </div>
             <span class="fanni-pkg-price">65 000 Ft</span>
           </div>
@@ -272,14 +280,15 @@
             <span class="bk-pkg-desc">30 perces fotózás<br>10 retusált kép</span>
             <span class="bk-pkg-price">25 000 Ft</span>
           </button>
-          <button class="bk-pkg-btn" data-hours="1" data-price="45000" data-label="Közepes csomag" data-desc="1 órás fotózás · 20 retusált kép">
+          <button class="bk-pkg-btn bk-pkg-btn--featured" data-hours="1" data-price="45000" data-label="Közepes csomag" data-desc="60 perces fotózás · 20 retusált kép">
+            <span class="bk-pkg-flag">Ajánlott</span>
             <span class="bk-pkg-name">Közepes csomag</span>
-            <span class="bk-pkg-desc">1 órás fotózás<br>20 retusált kép</span>
+            <span class="bk-pkg-desc">60 perces fotózás<br>20 retusált kép</span>
             <span class="bk-pkg-price">45 000 Ft</span>
           </button>
-          <button class="bk-pkg-btn" data-hours="2" data-price="65000" data-label="Nagy csomag" data-desc="1,5 órás fotózás · 40 retusált kép">
+          <button class="bk-pkg-btn" data-hours="2" data-price="65000" data-label="Nagy csomag" data-desc="90 perces fotózás · 30 retusált kép">
             <span class="bk-pkg-name">Nagy csomag</span>
-            <span class="bk-pkg-desc">1,5 órás fotózás<br>40 retusált kép</span>
+            <span class="bk-pkg-desc">90 perces fotózás<br>30 retusált kép</span>
             <span class="bk-pkg-price">65 000 Ft</span>
           </button>
         </div>
@@ -462,8 +471,7 @@
         <button class="footer-legal-link" id="open-privacy-footer">Adatkezelés</button>
       </div>
       <div class="footer-social">
-        <a href="https://www.instagram.com/studiofreyaveszprem/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="Facebook">Facebook</a>
+        <a href="https://www.instagram.com/studiofreyaveszprem/" target="_blank" rel="noopener" aria-label="Instagram – studiofreyaveszprem">Instagram</a>
       </div>
     </div>
   </footer>
@@ -632,8 +640,8 @@
         <h3>2. Csomagok és árak</h3>
         <ul>
           <li><strong>Kis csomag:</strong> 30 perces fotózás, 10 retusált kép — 25 000 Ft</li>
-          <li><strong>Közepes csomag:</strong> 1 órás fotózás, 20 retusált kép — 45 000 Ft</li>
-          <li><strong>Nagy csomag:</strong> 1,5 órás fotózás, 40 retusált kép — 65 000 Ft</li>
+          <li><strong>Közepes csomag:</strong> 60 perces fotózás, 20 retusált kép — 45 000 Ft</li>
+          <li><strong>Nagy csomag:</strong> 90 perces fotózás, 30 retusált kép — 65 000 Ft</li>
         </ul>
         <p>Minden csomag tartalmazza a stúdió használatát — külön stúdió bérlési díj nem kerül felszámításra. Az árak forintban értendők, ÁFA-mentesek (alanyi adómentes szolgáltató). A díj helyszínen, a fotózás napján fizetendő készpénzben vagy banki átutalással.</p>
 

@@ -778,21 +778,6 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   });
 })();
 
-/* ═══════════════════════════════════════════════════════════════════
-   FANNI CAROUSELEK
-   ═══════════════════════════════════════════════════════════════════ */
-(function () {
-  function bindCarousel(trackId, prevId, nextId) {
-    const track = document.getElementById(trackId);
-    if (!track) return;
-    const step = () => track.firstElementChild?.getBoundingClientRect().width + 8 || 180;
-    document.getElementById(prevId)?.addEventListener('click', () =>
-      track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    document.getElementById(nextId)?.addEventListener('click', () =>
-      track.scrollBy({ left: step(), behavior: 'smooth' }));
-  }
-  bindCarousel('fanni-portre-track', 'fanni-portre-prev', 'fanni-portre-next');
-})();
 
 /* ═══════════════════════════════════════════════════════════════════
    STUDIO LIGHTBOX
@@ -802,7 +787,16 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   const lbImg    = document.getElementById('studio-lb-img');
   const backdrop = document.getElementById('studio-lb-backdrop');
 
-  const imgs = Array.from(document.querySelectorAll('.studio-img img, .fanni-car-item img'));
+  // Mozaik + carousel + Fanni portfólió — egyetlen lightbox queue, src-alapú dedup
+  const allImgs = Array.from(document.querySelectorAll('.studio-grid-item img, .fanni-car-item img'));
+  const srcIndex = new Map();
+  const imgs = [];
+  allImgs.forEach(img => {
+    if (!srcIndex.has(img.src)) {
+      srcIndex.set(img.src, imgs.length);
+      imgs.push(img);
+    }
+  });
   let current = 0;
 
   function lbOpen(idx) {
@@ -827,7 +821,11 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     lbImg.alt = imgs[current].alt;
   }
 
-  imgs.forEach((img, i) => img.addEventListener('click', () => lbOpen(i)));
+  // Click handler MINDEN megjelenő thumbnailre, src alapján mappolva a deduped queue-ra
+  allImgs.forEach(img => img.addEventListener('click', () => {
+    const idx = srcIndex.get(img.src);
+    if (idx !== undefined) lbOpen(idx);
+  }));
 
   document.getElementById('studio-lb-close').addEventListener('click', lbClose);
   backdrop.addEventListener('click', lbClose);

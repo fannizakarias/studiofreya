@@ -273,21 +273,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 5rem 1.5rem 6rem;
   overflow: hidden;
   background: #1a1916;
-}
-
-.hero-logo-wrap {
-  position: relative;
-  z-index: 2;
-}
-
-.hero-logo {
-  display: block;
-  width: min(420px, 70vw);
-  height: auto;
-  filter: brightness(0) invert(1);
+  text-align: center;
 }
 
 .hero::after {
@@ -296,7 +285,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(to bottom, rgba(15,14,12,.72) 0%, rgba(15,14,12,.55) 40%, rgba(15,14,12,.72) 100%);
+    linear-gradient(to bottom, rgba(15,14,12,.45) 0%, rgba(15,14,12,.32) 38%, rgba(15,14,12,.62) 100%);
 }
 
 .hero-bg {
@@ -311,26 +300,57 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 .hero-content {
   position: relative;
-  z-index: 1;
-  max-width: var(--max-w);
-  margin: 0 auto;
+  z-index: 2;
+  max-width: 720px;
   width: 100%;
   color: var(--c-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-logo {
+  display: block;
+  width: min(280px, 55vw);
+  height: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1.8rem;
+  opacity: .92;
 }
 
 .hero-eyebrow {
-  display: block;
-  font-size: .7rem;
-  letter-spacing: .22em;
+  font-size: .68rem;
+  letter-spacing: .28em;
   text-transform: uppercase;
-  color: var(--c-accent);
-  margin-bottom: 1.5rem;
+  color: rgba(246,245,242,.55);
+  margin-bottom: 1.2rem;
+  font-family: var(--f-sans);
 }
 
-.hero-content h1 { margin-bottom: 2.5rem; }
-.hero-content h1 em { font-style: italic; opacity: .7; }
+.hero-tagline {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 5.4vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  margin-bottom: 1.4rem;
+}
+.hero-tagline em { font-style: italic; font-weight: 300; opacity: .68; }
 
-.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-sub {
+  font-size: clamp(.95rem, 1.4vw, 1.05rem);
+  color: rgba(246,245,242,.72);
+  max-width: 460px;
+  margin-bottom: 2.4rem;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 .scroll-hint {
   position: absolute;
@@ -555,6 +575,29 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-pkg-btn:hover { background: var(--c-accent-lt); }
 .bk-pkg-btn.active { background: var(--c-accent-lt); }
 .bk-pkg-btn.active::after { transform: scaleX(1); }
+
+/* Kiemelt csomag (középső) — finom accent háttér + felső sáv */
+.bk-pkg-btn--featured {
+  background: var(--c-accent-lt);
+}
+.bk-pkg-btn--featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--c-accent);
+}
+.bk-pkg-flag {
+  position: absolute;
+  top: .55rem;
+  right: .8rem;
+  font-family: var(--f-sans);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  font-weight: 500;
+}
 
 .bk-pkg-name {
   font-family: var(--f-serif);
@@ -1303,62 +1346,48 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transform: scale(1.03);
 }
 
-/* ─── Carousel ──────────────────────────────────────────────────── */
-.studio-carousel {
+/* ─── Stúdió képgalléria (grid) ─────────────────────────────────── */
+.studio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+  margin-bottom: 4rem;
+}
+
+.studio-grid-item {
   position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  margin: 0;
+  aspect-ratio: 4 / 5;
 }
 
-.studio-car-track {
-  display: flex;
-  gap: .625rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 2px;
+.studio-grid-item--wide {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 7;
 }
 
-.studio-car-track::-webkit-scrollbar { display: none; }
-
-.studio-car-item {
-  scroll-snap-align: start;
-  width: 340px;
-  height: 380px;
-  flex-shrink: 0;
+.studio-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+  transition: transform .5s ease;
+  display: block;
 }
 
-/* Nyilak */
-.studio-car-btn {
-  position: absolute;
-  top: calc(50% - 1.5rem); /* felső nyíl magasság: track közepe, de ne legyen a scrollbar sávon */
-  z-index: 2;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  border: 1px solid var(--c-border);
-  background: var(--c-bg);
-  color: var(--c-dark);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s, box-shadow .2s;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+.studio-grid-item:hover img {
+  transform: scale(1.04);
 }
-
-.studio-car-btn:hover {
-  background: var(--c-surface);
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
-}
-
-.studio-car-prev { left: -1.125rem; }
-.studio-car-next { right: -1.125rem; }
 
 @media (max-width: 768px) {
-  .studio-car-item { width: 280px; height: 320px; }
-  .studio-car-btn  { display: none; }
+  .studio-grid { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+  .studio-grid-item--wide { aspect-ratio: 16 / 9; }
+}
+
+@media (max-width: 480px) {
+  .studio-grid { grid-template-columns: 1fr; margin-bottom: 3rem; }
+  .studio-grid-item--wide { aspect-ratio: 4 / 3; }
 }
 
 /* ─── Studio lightbox ───────────────────────────────────────────── */
@@ -1480,6 +1509,54 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-accent);
 }
 
+.studio-eq-details {
+  margin-top: 1.4rem;
+  font-size: .82rem;
+}
+.studio-eq-details summary {
+  cursor: pointer;
+  display: inline-block;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--c-border);
+  list-style: none;
+  transition: color .15s, border-color .15s;
+}
+.studio-eq-details summary::-webkit-details-marker { display: none; }
+.studio-eq-details summary::after {
+  content: ' +';
+  color: var(--c-accent);
+  font-weight: 400;
+}
+.studio-eq-details[open] summary::after { content: ' −'; }
+.studio-eq-details summary:hover {
+  color: var(--c-dark);
+  border-color: var(--c-dark);
+}
+.studio-eq-sublist {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.studio-eq-sublist li {
+  font-size: .8rem;
+  color: var(--c-muted);
+  padding-left: 1rem;
+  position: relative;
+}
+.studio-eq-sublist li::before {
+  content: '·';
+  position: absolute;
+  left: .25rem;
+  color: var(--c-muted);
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    FANNI PORTFOLIO & PACKAGES
    ═══════════════════════════════════════════════════════════════════ */
@@ -1541,11 +1618,40 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .fanni-pkg-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: .75rem;
   padding: 2rem 1.8rem;
   background: var(--c-surface);
+  transition: transform .25s ease;
+}
+
+.fanni-pkg-card--featured {
+  background: var(--c-dark);
+  color: var(--c-bg);
+  transform: translateY(-12px);
+  box-shadow: 0 12px 32px rgba(26,25,22,.18);
+  z-index: 1;
+}
+.fanni-pkg-card--featured .fanni-pkg-body h4 { color: var(--c-bg); }
+.fanni-pkg-card--featured .fanni-pkg-body p  { color: rgba(246,245,242,.65); }
+.fanni-pkg-card--featured .fanni-pkg-price   { color: var(--c-bg); }
+
+.fanni-pkg-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--c-accent);
+  color: var(--c-bg);
+  font-family: var(--f-sans);
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .35rem .9rem;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .fanni-pkg-num {
@@ -1581,6 +1687,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 @media (max-width: 900px) {
   .fanni-gallery { grid-template-columns: repeat(2, 1fr); }
   .fanni-pkg-cards { grid-template-columns: 1fr; }
+  .fanni-pkg-card--featured { transform: none; box-shadow: none; }
+  .fanni-pkg-badge { top: -8px; }
 }
 
 @media (max-width: 640px) {
@@ -1632,24 +1740,50 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .photographer-intro {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  margin-bottom: 3.5rem;
 }
 
-.photographer-avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+.photographer-portrait {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.photographer-portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: center top;
-  flex-shrink: 0;
+  display: block;
+}
+
+.photographer-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.photographer-text .eyebrow {
+  margin-bottom: .8rem;
 }
 
 .photographer-body .section-title {
-  margin-bottom: .75rem;
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  margin-bottom: 1.1rem;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+
+@media (max-width: 768px) {
+  .photographer-intro {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .photographer-portrait {
+    max-width: 360px;
+    margin: 0 auto;
+  }
 }
 
 .photographer-quote {
@@ -1678,71 +1812,22 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-top: 1rem;
 }
 
-/* ─── Fanni portfólió carouselek ────────────────────────────────── */
-.fanni-car-section {
+/* ─── Fanni portfólió grid ───────────────────────────────────────── */
+.fanni-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
   margin-top: 2rem;
 }
 
-.fanni-car-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: .6rem;
-}
-
-.fanni-car-label {
-  font-size: .7rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-}
-
-.fanni-car-btns {
-  display: flex;
-  gap: .3rem;
-}
-
-.fanni-car-btn {
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 50%;
-  border: 1px solid var(--c-border);
-  background: var(--c-surface);
-  color: var(--c-dark);
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .15s;
-}
-
-.fanni-car-btn:hover { background: var(--c-border); }
-
-.fanni-car-track {
-  display: flex;
-  gap: .5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  /* utolsó item után kis hely, hogy a következő kép bepekkenhessen */
-  padding-right: 2rem;
-}
-
-.fanni-car-track::-webkit-scrollbar { display: none; }
-
-.fanni-car-item {
-  flex: 0 0 260px;
-  height: 340px;
-  scroll-snap-align: start;
+.fanni-portfolio-item {
+  margin: 0;
   border-radius: 3px;
   overflow: hidden;
+  aspect-ratio: 4 / 5;
   cursor: zoom-in;
 }
 
-.fanni-car-item .gallery-placeholder,
 .fanni-car-item img {
   width: 100%;
   height: 100%;
@@ -1753,6 +1838,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .fanni-car-item:hover img { transform: scale(1.04); }
+
+@media (max-width: 640px) {
+  .fanni-portfolio-grid { grid-template-columns: repeat(3, 1fr); gap: .4rem; }
+}
 
 /* ─── Booking: photographer checkbox ─────────────────────────── */
 .bk-check-wrap {
@@ -1923,8 +2012,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
   .photographer-body { padding: 2.5rem 1.5rem; }
-  .photographer-intro { gap: 1rem; }
-  .photographer-avatar { width: 64px; height: 64px; }
   .fanni-car-item { flex: 0 0 200px; height: 260px; }
 }
 
@@ -1968,7 +2055,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .gallery { grid-template-columns: 1fr; grid-auto-rows: 220px; }
   .gallery-item.tall { grid-row: span 1; }
 
-  .hero-actions { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .hero-actions { flex-direction: column; align-items: stretch; gap: .75rem; width: 100%; max-width: 280px; }
+  .hero-actions .btn { text-align: center; }
 
   .bk-mode-bar { grid-template-columns: 1fr; }
   .bk-mode-btn { border-right: none !important; border-bottom: 1px solid var(--c-border); }
