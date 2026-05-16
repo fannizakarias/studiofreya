@@ -787,26 +787,33 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   const lbImg    = document.getElementById('studio-lb-img');
   const backdrop = document.getElementById('studio-lb-backdrop');
 
-  // Mozaik + carousel + Fanni portfólió — egyetlen lightbox queue, src-alapú dedup
-  const allImgs = Array.from(document.querySelectorAll('.studio-grid-item img, .fanni-portfolio-item img'));
-  const srcIndex = new Map();
-  const imgs = [];
-  allImgs.forEach(img => {
-    if (!srcIndex.has(img.src)) {
-      srcIndex.set(img.src, imgs.length);
-      imgs.push(img);
-    }
-  });
+  function buildGroup(selector) {
+    const srcIndex = new Map();
+    const imgs = [];
+    Array.from(document.querySelectorAll(selector)).forEach(img => {
+      if (!srcIndex.has(img.src)) {
+        srcIndex.set(img.src, imgs.length);
+        imgs.push(img);
+      }
+    });
+    return { imgs, srcIndex };
+  }
+
+  const studioGroup    = buildGroup('.studio-grid-item img');
+  const portfolioGroup = buildGroup('.fanni-portfolio-item img');
+
+  let activeGroup = studioGroup;
   let current = 0;
 
-  function lbOpen(idx) {
+  function lbOpen(group, idx) {
+    activeGroup = group;
     current = idx;
-    lbImg.src = imgs[idx].src;
-    lbImg.alt = imgs[idx].alt;
+    lbImg.src = group.imgs[idx].src;
+    lbImg.alt = group.imgs[idx].alt;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
-    document.getElementById('studio-lb-prev').hidden = imgs.length <= 1;
-    document.getElementById('studio-lb-next').hidden = imgs.length <= 1;
+    document.getElementById('studio-lb-prev').hidden = group.imgs.length <= 1;
+    document.getElementById('studio-lb-next').hidden = group.imgs.length <= 1;
   }
 
   window.lbClose = function () {
@@ -816,15 +823,19 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   };
 
   function lbStep(dir) {
+    const imgs = activeGroup.imgs;
     current = (current + dir + imgs.length) % imgs.length;
     lbImg.src = imgs[current].src;
     lbImg.alt = imgs[current].alt;
   }
 
-  // Click handler MINDEN megjelenő thumbnailre, src alapján mappolva a deduped queue-ra
-  allImgs.forEach(img => img.addEventListener('click', () => {
-    const idx = srcIndex.get(img.src);
-    if (idx !== undefined) lbOpen(idx);
+  studioGroup.imgs.forEach(img => img.addEventListener('click', () => {
+    const idx = studioGroup.srcIndex.get(img.src);
+    if (idx !== undefined) lbOpen(studioGroup, idx);
+  }));
+  portfolioGroup.imgs.forEach(img => img.addEventListener('click', () => {
+    const idx = portfolioGroup.srcIndex.get(img.src);
+    if (idx !== undefined) lbOpen(portfolioGroup, idx);
   }));
 
   document.getElementById('studio-lb-close').addEventListener('click', lbClose);
