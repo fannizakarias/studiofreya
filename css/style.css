@@ -593,7 +593,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: none;
 }
 .bk-packages.has-selection .bk-pkg-btn--featured:not(.active)::before {
-  display: none;
+  content: none;
 }
 .bk-pkg-flag {
   position: absolute;
