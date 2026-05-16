@@ -577,24 +577,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-pkg-btn.active { background: var(--c-accent-lt); }
 .bk-pkg-btn.active::after { transform: scaleX(1); }
 
-/* Kiemelt csomag (középső) — finom accent háttér + felső sáv */
-.bk-pkg-btn--featured {
-  background: var(--c-accent-lt);
-}
-.bk-pkg-btn--featured::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--c-accent);
-}
-/* Ha van kiválasztott csomag, a featured kiemelés eltűnik a nem aktív gombról */
-.bk-packages.has-selection .bk-pkg-btn--featured:not(.active) {
-  background: none;
-}
-.bk-packages.has-selection .bk-pkg-btn--featured:not(.active)::before {
-  content: none;
-}
+/* Közepes csomag — csak az "Ajánlott" felirat jelzi, vizuális kiemelés nélkül */
 .bk-pkg-flag {
   position: absolute;
   top: .55rem;
