@@ -588,6 +588,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   height: 2px;
   background: var(--c-accent);
 }
+/* Ha van kiválasztott csomag, a featured kiemelés eltűnik a nem aktív gombról */
+.bk-packages:has(.bk-pkg-btn.active) .bk-pkg-btn--featured:not(.active) {
+  background: none;
+}
+.bk-packages:has(.bk-pkg-btn.active) .bk-pkg-btn--featured:not(.active)::before {
+  display: none;
+}
 .bk-pkg-flag {
   position: absolute;
   top: .55rem;

@@ -98,7 +98,7 @@ function jumpToEarliestAvailable() {
 
   const earliest = Object.keys(SZABAD)
     .map(ds => new Date(ds))
-    .filter(d => d >= today && daySet.has(d.getDay()) && hasAvail(toDateStr(d), hours))
+    .filter(d => d > today && daySet.has(d.getDay()) && hasAvail(toDateStr(d), hours))
     .sort((a, b) => a - b)[0];
 
   if (earliest) {
@@ -219,7 +219,7 @@ function renderCalendar() {
   for (let d = 1; d <= lastDay.getDate(); d++) {
     const date    = new Date(yr, mo, d);
     const dateStr = toDateStr(date);
-    const isPast   = date < today;
+    const isPast   = date <= today;
     const daySet   = st.withFanni ? FANNI_DAYS : ALLOWED_DAYS;
     const isAllowed = daySet.has(date.getDay());
 
