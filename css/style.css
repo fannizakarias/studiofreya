@@ -589,10 +589,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-accent);
 }
 /* Ha van kiválasztott csomag, a featured kiemelés eltűnik a nem aktív gombról */
-.bk-packages:has(.bk-pkg-btn.active) .bk-pkg-btn--featured:not(.active) {
+.bk-packages.has-selection .bk-pkg-btn--featured:not(.active) {
   background: none;
 }
-.bk-packages:has(.bk-pkg-btn.active) .bk-pkg-btn--featured:not(.active)::before {
+.bk-packages.has-selection .bk-pkg-btn--featured:not(.active)::before {
   display: none;
 }
 .bk-pkg-flag {
@@ -708,6 +708,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   grid-template-columns: 320px 1fr;
   min-height: 420px;
 }
+.bk-main[hidden] { display: none; }
 
 /* ── Calendar ─────────────────────────────────────────────────── */
 .bk-calendar {

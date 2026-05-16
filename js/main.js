@@ -165,6 +165,7 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     Object.assign(st, { hours: null, price: null, label: null, desc: null,
                         date: null, dateStr: null, hour: null });
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('bk-packages').classList.remove('has-selection');
     hideForms();
     updateFeltetelek();
     jumpToEarliestAvailable();
@@ -181,6 +182,7 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('bk-packages').classList.add('has-selection');
     st.hours = Number(btn.dataset.hours);
     st.price = Number(btn.dataset.price);
     st.label = btn.dataset.label;
@@ -640,6 +642,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   document.getElementById('booking-success').hidden  = true;
 
   document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bk-packages').classList.remove('has-selection');
   bookingForm.reset();
 
   const btn = document.getElementById('booking-submit');
@@ -671,6 +674,7 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
     document.getElementById('bk-duration-bar').hidden = true;
     document.getElementById('bk-packages').hidden     = false;
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('bk-packages').classList.remove('has-selection');
     hideForms();
     renderCalendar();
     renderSlots();
@@ -757,6 +761,7 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     document.getElementById('bk-duration-bar').hidden = true;
     document.getElementById('bk-packages').hidden     = false;
     document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('bk-packages').classList.remove('has-selection');
     hideForms();
     renderCalendar();
     renderSlots();
