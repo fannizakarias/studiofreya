@@ -736,12 +736,15 @@ const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open
 function updateFeltetelek() {
   const btn  = document.getElementById('open-feltetelek-form');
   const cb   = document.getElementById('b-feltetelek');
+  const err  = document.getElementById('b-feltetelek-err');
   if (st.withFanni) {
     btn.textContent = 'Fotózási feltételeket';
     btn.onclick = (e) => { e.preventDefault(); document.getElementById('fotozas-modal').hidden = false; document.body.style.overflow = 'hidden'; };
+    err.textContent = 'Kérlek fogadd el a fotózási feltételeket.';
   } else {
     btn.textContent = 'Bérlési feltételeket';
     btn.onclick = (e) => { e.preventDefault(); document.getElementById('aszf-modal').hidden = false; document.body.style.overflow = 'hidden'; };
+    err.textContent = 'Kérlek fogadd el a bérlési feltételeket.';
   }
   cb.checked = false;
 }
