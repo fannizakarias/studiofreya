@@ -1814,12 +1814,24 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* ─── Fanni portfólió grid ───────────────────────────────────────── */
 .fanni-portfolio-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   font-size: .68rem;
-  letter-spacing: .16em;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--c-muted);
-  margin-top: 2.5rem;
-  margin-bottom: .75rem;
+  margin-top: 4.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  justify-content: center;
+}
+.fanni-portfolio-label::before,
+.fanni-portfolio-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--c-border);
 }
 
 .fanni-portfolio-grid {
