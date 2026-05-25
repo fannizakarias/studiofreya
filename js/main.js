@@ -261,7 +261,16 @@ function renderCalendar() {
           renderSlots();
         });
       } else {
-        el.classList.add('bk-cal-day--off');
+        // Nincs szabad slot — megkülönböztetjük: "teljesen foglalt" vs "nincs munkaidő"
+        const allSlots = getSzabadOrak(dateStr, hours);
+        if (allSlots.length > 0) {
+          el.classList.add('bk-cal-day--foglalt');
+          const dot = document.createElement('span');
+          dot.className = 'bk-day-dot bk-day-dot--taken';
+          el.appendChild(dot);
+        } else {
+          el.classList.add('bk-cal-day--off');
+        }
       }
     }
 

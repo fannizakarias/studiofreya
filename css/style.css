@@ -777,6 +777,12 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 /* Unavailable day */
 .bk-cal-day--off { color: #c8c5be; }
 
+/* Fully booked day */
+.bk-cal-day--foglalt {
+  color: var(--c-taken);
+  cursor: default;
+}
+
 /* Past / empty */
 .bk-cal-day--empty { cursor: default; }
 .bk-cal-day--past  { color: #d5d2cb; }
@@ -804,6 +810,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-free);
   flex-shrink: 0;
 }
+.bk-day-dot--taken { background: var(--c-taken); }
 
 /* Calendar legend */
 .bk-cal-legend {
@@ -823,6 +830,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-free);
   margin-right: .2rem;
 }
+.bk-cal-dot--taken { background: var(--c-taken); }
+.bk-cal-legend > span + span { margin-left: 1rem; }
 
 /* ── Slots panel ──────────────────────────────────────────────── */
 .bk-slots-panel {
