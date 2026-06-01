@@ -118,8 +118,16 @@ function fmtDateHU(d) {
   });
 }
 
+/* ── Június 1–7 akció ────────────────────────────────────────── */
+function isPromoActive() {
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+  return y === 2026 && m === 5 && d >= 1 && d <= 7;
+}
+
 /* ── Stúdió ár számítás ───────────────────────────────────────── */
 function calcStudioPrice(hours) {
+  if (isPromoActive()) return hours * 5000;
   return 10000 + (hours - 1) * 8000;
 }
 
@@ -865,4 +873,20 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     if (e.key === 'ArrowLeft')  lbStep(-1);
     if (e.key === 'ArrowRight') lbStep(1);
   });
+})();
+
+/* Árazási infó frissítése promo időszakban */
+(function () {
+  if (!isPromoActive()) return;
+  const rule = document.querySelector('.bk-dur-rule');
+  if (!rule) return;
+  rule.innerHTML = 'Akciós ár: <strong>5 000 Ft/óra</strong> (június 1–7.). <span class="bk-dur-hint">Több időpontot is kijelölhetsz egymás után — az ár automatikusan frissül.</span>';
+})();
+
+/* Promóciós sáv bezárás */
+(function () {
+  const bar   = document.getElementById('promoBar');
+  const close = document.getElementById('promoClose');
+  if (!bar || !close) return;
+  close.addEventListener('click', () => bar.classList.add('hidden'));
 })();
