@@ -620,6 +620,8 @@ bookingForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({
       access_key: 'aba153bd-ed5e-4516-bfea-dc7e2ca838b4',
       subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
+      tipus:      st.withFanni ? 'Fotózás Zakariás Fannival' : 'Stúdióbérlés',
+      csomag:     st.withFanni ? (st.label || '') : '',
       from_name:  document.getElementById('b-nev').value,
       nev:        document.getElementById('b-nev').value,
       email:      document.getElementById('b-email').value,

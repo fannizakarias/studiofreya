@@ -6,3 +6,14 @@ css/admin.css
 # macOS
 .DS_Store
 **/.DS_Store
+
+# Visszaigazoló email sablonok — ne kerüljenek a publikus oldalra
+visszaigazolo-fotozas-zakarias-fanni.md
+visszaigazolo-studioberles.md
+
+# Foglalási adatok és generált visszaigazolók (személyes adat)
+foglalasok/foglalasok.csv
+foglalasok/visszaigazolasok/
+
+# Visszaigazoló email generátor — ne kerüljön a publikus oldalra
+generate_emails.py
