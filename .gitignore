@@ -7,12 +7,17 @@ css/admin.css
 .DS_Store
 **/.DS_Store
 
+# Python gyorsítótár
+__pycache__/
+*.pyc
+
 # Visszaigazoló email sablonok — ne kerüljenek a publikus oldalra
 visszaigazolo-fotozas-zakarias-fanni.md
 visszaigazolo-studioberles.md
 
 # Foglalási adatok és generált visszaigazolók (személyes adat)
 foglalasok/foglalasok.csv
+foglalasok/modositasok.csv
 foglalasok/visszaigazolasok/
 
 # Visszaigazoló email generátor — ne kerüljön a publikus oldalra
