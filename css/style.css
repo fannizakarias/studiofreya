@@ -1889,6 +1889,70 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 .fanni-portfolio-item:hover img { transform: scale(1.04); }
 
+/* ─── Booking: form section title (fizetés / számlázás) ──────── */
+.bk-form-section-title {
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin: .2rem 0 -.3rem;
+}
+
+/* ─── Booking: payment method radio group ────────────────────── */
+.bk-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .7rem;
+}
+
+.bk-radio-wrap {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .85rem 1.1rem;
+  background: var(--c-soft);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  user-select: none;
+  border-radius: 2px;
+}
+.bk-radio-wrap:hover { background: var(--c-border); }
+
+.bk-radio-input { display: none; }
+
+.bk-radio-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s;
+}
+.bk-radio-input:checked ~ .bk-radio-box {
+  border-color: var(--c-accent);
+}
+.bk-radio-input:checked ~ .bk-radio-box::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-accent);
+}
+.bk-radio-wrap:has(.bk-radio-input:checked) {
+  background: var(--c-accent-lt);
+  border-color: var(--c-free-bd);
+}
+
+.bk-radio-text {
+  font-size: .88rem;
+  color: var(--c-dark);
+}
+
 /* ─── Booking: photographer checkbox ─────────────────────────── */
 .bk-check-wrap {
   display: flex;
@@ -2077,6 +2141,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .gallery-item.wide { grid-column: span 1; }
   .bk-form-grid { grid-template-columns: 1fr; }
+  .bk-radio-group { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {

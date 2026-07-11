@@ -213,6 +213,7 @@
                 <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2574.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
                 <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2621.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
                 <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2760.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                <figure class="fanni-portfolio-item"><img src="images/portfolio/kulteri/IMG_2419.JPEG" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
               </div>
             </div>
           </div>
@@ -389,6 +390,49 @@
                 <textarea id="b-megjegyzes" name="megjegyzes" rows="3" placeholder="Egyéb kívánságok, kérdések..."></textarea>
               </div>
             </div>
+
+            <p class="bk-form-section-title">Fizetési mód</p>
+            <div class="bk-radio-group" id="bk-payment-group">
+              <label class="bk-radio-wrap" for="b-fizetes-keszpenz">
+                <input type="radio" class="bk-radio-input" id="b-fizetes-keszpenz" name="fizetesi_mod" value="Készpénz" required />
+                <span class="bk-radio-box"></span>
+                <span class="bk-radio-text">Készpénz</span>
+              </label>
+              <label class="bk-radio-wrap" for="b-fizetes-atutalas">
+                <input type="radio" class="bk-radio-input" id="b-fizetes-atutalas" name="fizetesi_mod" value="Átutalás" required />
+                <span class="bk-radio-box"></span>
+                <span class="bk-radio-text">Átutalás</span>
+              </label>
+            </div>
+
+            <p class="bk-form-section-title">Számlázási adatok</p>
+            <div class="bk-form-grid">
+              <div class="bk-field bk-field--full">
+                <label for="b-szamla-nev">Teljes név *</label>
+                <input type="text" id="b-szamla-nev" name="szamlazasi_nev" placeholder="Példa Anna" required />
+              </div>
+              <div class="bk-field">
+                <label for="b-iranyitoszam">Irányítószám *</label>
+                <input type="text" id="b-iranyitoszam" name="iranyitoszam" placeholder="8200" inputmode="numeric" maxlength="4" required />
+              </div>
+              <div class="bk-field">
+                <label for="b-telepules">Település *</label>
+                <input type="text" id="b-telepules" name="telepules" placeholder="Veszprém" required />
+              </div>
+              <div class="bk-field">
+                <label for="b-kozterulet">Közterület neve és jellege *</label>
+                <input type="text" id="b-kozterulet" name="kozterulet" placeholder="Rákóczi Ferenc utca" required />
+              </div>
+              <div class="bk-field">
+                <label for="b-hazszam">Házszám *</label>
+                <input type="text" id="b-hazszam" name="hazszam" placeholder="4" required />
+              </div>
+              <div class="bk-field bk-field--full">
+                <label for="b-adoszam">Adószám <span class="bk-field-hint">(cégeknek)</span></label>
+                <input type="text" id="b-adoszam" name="adoszam" placeholder="12345678-1-42" />
+              </div>
+            </div>
+
             <div class="bk-field bk-field--full bk-privacy-field">
               <label class="bk-check-wrap" for="b-feltetelek">
                 <input type="checkbox" class="bk-check-input" id="b-feltetelek" name="feltetelek" value="elfogadva" />
