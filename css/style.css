@@ -1817,6 +1817,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   display: flex;
   align-items: center;
   gap: 1rem;
+  width: 100%;
+  font-family: inherit;
   font-size: .68rem;
   letter-spacing: .22em;
   text-transform: uppercase;
@@ -1825,6 +1827,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-bottom: 1.5rem;
   text-align: center;
   justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 .fanni-portfolio-label::before,
 .fanni-portfolio-label::after {
@@ -1834,10 +1840,35 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-border);
 }
 
+.fanni-portfolio-arrow {
+  flex: none;
+  transition: transform .25s ease;
+}
+.fanni-portfolio-label[aria-expanded="true"] .fanni-portfolio-arrow {
+  transform: rotate(180deg);
+}
+
+.fanni-portfolio-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .5s cubic-bezier(.4, 0, .2, 1);
+}
+.fanni-portfolio-collapse.is-open { grid-template-rows: 1fr; }
+
+.fanni-portfolio-collapse-inner { overflow: hidden; min-height: 0; }
+
 .fanni-portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: .75rem;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .35s ease, transform .4s ease;
+}
+.fanni-portfolio-collapse.is-open .fanni-portfolio-grid {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: .1s;
 }
 
 .fanni-portfolio-item {

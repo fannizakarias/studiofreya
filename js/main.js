@@ -612,7 +612,7 @@ bookingForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({
       access_key: 'aba153bd-ed5e-4516-bfea-dc7e2ca838b4',
       subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
-      tipus:      st.withFanni ? 'Fotózás Zakariás Fannival' : 'Stúdióbérlés',
+      tipus:      st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
       csomag:     st.withFanni ? (st.label || '') : '',
       from_name:  document.getElementById('b-nev').value,
       nev:        document.getElementById('b-nev').value,
@@ -781,6 +781,21 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     renderSlots();
   }, 600);
 });
+
+/* ═══════════════════════════════════════════════════════════════════
+   FANNI PORTFÓLIÓ — lenyitható grid
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  const toggleBtn = document.getElementById('fanni-portfolio-toggle');
+  const collapse  = document.getElementById('fanni-portfolio-collapse');
+  if (!toggleBtn || !collapse) return;
+
+  toggleBtn.addEventListener('click', () => {
+    const expand = toggleBtn.getAttribute('aria-expanded') !== 'true';
+    collapse.classList.toggle('is-open', expand);
+    toggleBtn.setAttribute('aria-expanded', String(expand));
+  });
+})();
 
 /* ═══════════════════════════════════════════════════════════════════
    STUDIO CAROUSEL

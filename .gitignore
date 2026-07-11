@@ -2,6 +2,8 @@
 admin.html
 js/admin.js
 css/admin.css
+admin-start.command
+admin-server.py
 
 # macOS
 .DS_Store
