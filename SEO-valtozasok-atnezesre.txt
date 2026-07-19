@@ -1,0 +1,270 @@
+SEO javítások — átnézésre (commitolva még nincs)
+Készült: 2026-07-11 / 2026-07-12
+Seobility jelentés alapján
+
+ÖSSZEFOGLALÓ
+============
+
+1) Kanonikus URL hiba (a legfontosabb, valódi bug)
+   A CNAME fájl www.studiofreya.hu-ra állítja a domaint, és az apex
+   (studiofreya.hu) élesben 301-gyel átirányít a www-re (ellenőrizve
+   curl -IL-lel). Eddig viszont a canonical, og:url, JSON-LD @id/url,
+   sitemap.xml és robots.txt mind a www NÉLKÜLI címet adták meg —
+   ez okozta a "canonical link points to a different page" hibát.
+   Javítva mindenhol: https://www.studiofreya.hu/
+
+   MEGJEGYZÉS: az og:image, twitter:image és a JSON-LD "image" mező
+   MÉG mindig a www nélküli címet használja (https://studiofreya.hu/images/...).
+   Mivel az apex 301-gyel átirányít, ez valószínűleg működik, de a
+   teljes konzisztencia kedvéért érdemes lehet ezt is www-re cserélni —
+   ez a diffben még NINCS benne, külön döntés kérdése.
+
+2) Apple touch icon
+   Hozzáadva: images/apple-touch-icon.png (180×180, a meglévő
+   favicon.svg-ből generálva) + <link rel="apple-touch-icon"> a <head>-ben.
+
+3) Cím/H1 kulcsszó-illesztés
+   A title-ből és H1-ből hiányzó szavak ("otthonos", "szívében",
+   "Veszprémben", "bérlés") bekerültek a stúdió- és fotós-bemutató
+   szövegébe.
+
+4) Tartalombővítés (~341 szóról ~846 szóra, becsült látható szöveg)
+   - Bővített stúdió-intro szöveg
+   - Bővített Zakariás Fanni bio szöveg
+   - Új "Miért válaszd a Studio Freyát" blokk (3 pont) a stúdió szekcióban
+   - Új GYIK szekció (7 kérdés-válasz) a Foglalás és Kapcsolat között —
+     kizárólag a már meglévő tényekből (árak, lemondási feltételek,
+     csomagok, nyitvatartás, cím), nincs kitalált állítás
+   - GYIK link a fejléc navigációba és a láblécbe
+   - Új footer navigáció (Stúdió / Zakariás Fanni / Foglalás / GYIK /
+     Kapcsolat linkek) — ez adja a plusz belső linkeket is
+
+ÉRINTETT FÁJLOK
+================
+ M css/style.css
+ M index.html
+ M robots.txt
+ M sitemap.xml
+?? images/apple-touch-icon.png   (új fájl, nincs git diffben, mert untracked)
+
+TELJES DIFF (index.html, css/style.css, robots.txt, sitemap.xml)
+==================================================================
+
+diff --git a/css/style.css b/css/style.css
+index 596727c..a6028d0 100644
+--- a/css/style.css
++++ b/css/style.css
+@@ -1204,6 +1204,15 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
+ .footer-address { font-size: .72rem; opacity: .6; }
+ .footer-copy { font-size: .72rem; }
+
++.footer-nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
++.footer-nav a {
++  font-size: .72rem;
++  letter-spacing: .04em;
++  color: rgba(246,245,242,.4);
++  transition: color .15s;
++}
++.footer-nav a:hover { color: rgba(246,245,242,.8); }
++
+ .footer-legal { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+ .footer-legal-link {
+   background: none;
+@@ -1514,6 +1523,32 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
+   margin-top: 1.4rem;
+   font-size: .82rem;
+ }
++.studio-why {
++  margin-top: 2.5rem;
++  padding-top: 2.5rem;
++  border-top: 1px solid var(--c-border);
++}
++
++.faq-list {
++  display: flex;
++  flex-direction: column;
++  gap: 2rem;
++  max-width: 760px;
++}
++
++.faq-item h3 {
++  font-size: 1.15rem;
++  margin-bottom: .5rem;
++}
++
++.faq-item p {
++  color: var(--c-muted);
++  font-size: .92rem;
++  line-height: 1.7;
++}
++
++.faq-item a { color: var(--c-accent); text-decoration: underline; }
++
+ .studio-eq-details summary {
+   cursor: pointer;
+   display: inline-block;
+diff --git a/index.html b/index.html
+index 1b7d564..3875639 100644
+--- a/index.html
++++ b/index.html
+@@ -5,7 +5,8 @@
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Studio Freya – Fotóstúdió Veszprémben | Bérlés & Fotózás</title>
+   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+-  <link rel="canonical" href="https://studiofreya.hu/" />
++  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
++  <link rel="canonical" href="https://www.studiofreya.hu/" />
+
+   <!-- SEO meta -->
+   <meta name="description" content="Studio Freya – professzionális fotóstúdió Veszprémben. Stúdióbérlés saját fotóssal, vagy stúdiófotózás. Rákóczi Ferenc utca 4. Online foglalás." />
+@@ -15,7 +16,7 @@
+
+   <!-- Open Graph -->
+   <meta property="og:type"        content="website" />
+-  <meta property="og:url"         content="https://studiofreya.hu/" />
++  <meta property="og:url"         content="https://www.studiofreya.hu/" />
+   <meta property="og:title"       content="Studio Freya – Fotóstúdió Veszprémben" />
+   <meta property="og:description" content="Professzionális fotóstúdió Veszprémben. Stúdióbérlés vagy stúdiófotózás. Online foglalás, Rákóczi Ferenc utca 4." />
+   <meta property="og:image"        content="https://studiofreya.hu/images/studio/web/IMG_1930.jpg" />
+@@ -36,10 +37,10 @@
+   {
+     "@context": "https://schema.org",
+     "@type": "LocalBusiness",
+-    "@id": "https://studiofreya.hu/",
++    "@id": "https://www.studiofreya.hu/",
+     "name": "Studio Freya",
+     "description": "Professzionális fotóstúdió Veszprémben. Stúdióbérlés és stúdiófotózás.",
+-    "url": "https://studiofreya.hu",
++    "url": "https://www.studiofreya.hu",
+     "telephone": "+36303066297",
+     "email": "info@studiofreya.hu",
+     "address": {
+@@ -88,6 +89,7 @@
+         <li><a href="#studio">Stúdió</a></li>
+         <li><a href="#fotos">Zakariás Fanni</a></li>
+         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
++        <li><a href="#gyik">GYIK</a></li>
+         <li><a href="#kapcsolat">Kapcsolat</a></li>
+       </ul>
+     </nav>
+@@ -121,7 +123,7 @@
+         <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában, az Óváros tér mellett.</p>
+       </header>
+       <div class="studio-intro">
+-        <p>Portré-, lifestyle-, család- és termékfotózáshoz felszerelt tér — berendezett enteriőrrel, Godox világítással, Colorama papírháttérrel és gyereksarokkal. Bérelhető fotóssal vagy anélkül.</p>
++        <p>Otthonos hangulatú fotóstúdió Veszprém belvárosában, a város szívében, az Óváros tér közelében. A tér portré-, lifestyle-, család- és termékfotózáshoz van felszerelve — berendezett enteriőrrel, Godox világítással, Colorama papírháttérrel és gyereksarokkal. A stúdió bérelhető saját fotóssal is, vagy önállóan, a teljes felszerelés használatával — neked csak azt kell eldöntened, hogy csak a helyszínre van szükséged, vagy szeretnéd, ha Zakariás Fanni vezetne végig a fotózáson.</p>
+       </div>
+
+       <!-- Stúdió képgalléria -->
+@@ -167,6 +169,16 @@
+         </details>
+       </div>
+
++      <!-- Miért minket -->
++      <div class="studio-why">
++        <h3 class="studio-eq-title">Miért válaszd a Studio Freyát</h3>
++        <ul class="studio-eq-list">
++          <li><strong>Központi elhelyezkedés</strong> — a stúdió Veszprém szívében, az Óváros tér mellett található, gyalogosan és autóval is könnyen megközelíthető.</li>
++          <li><strong>Rugalmas bérlés</strong> — óránkénti díjszabás, minimum bérleti idő nélkül, a foglalás pár kattintással, online intézhető.</li>
++          <li><strong>Teljes felszereltség</strong> — nem kell saját világítást vagy hátteret hoznod, minden készen áll, amikor megérkezel.</li>
++        </ul>
++      </div>
++
+     </div>
+   </section>
+
+@@ -189,7 +201,7 @@
+               <span class="eyebrow">A fotós</span>
+               <h2 class="section-title">Zakariás Fanni</h2>
+               <blockquote class="photographer-quote">„A legtöbben csak egy jó képet szeretnének. Én ebben segítek."</blockquote>
+-              <p class="photographer-bio">Veszprémi fotós vagyok, portré- és brand fotózással foglalkozom. Ha még sosem fotózkodtál stúdióban, ne izgulj — együtt kitaláljuk, mi illik hozzád. A végén olyan képeid lesznek, amiket tényleg szívesen megmutatsz.</p>
++              <p class="photographer-bio">Veszprémi fotós vagyok, portré- és brand fotózással foglalkozom. Ha még sosem fotózkodtál stúdióban, ne izgulj — együtt kitaláljuk, mi illik hozzád. A végén olyan képeid lesznek, amiket tényleg szívesen megmutatsz. Több éve fotózok Veszprémben és környékén, elsősorban portré, kismama, családi és brand témákban — a Studio Freya saját stúdiójában dolgozom, ahol a berendezett enteriőr és a profi világítás miatt az időjárástól függetlenül, nyugodt körülmények között készülhetnek a képek.</p>
+               <div class="photographer-actions">
+                 <a href="#foglalas" class="btn" id="btn-with-fotos">Foglalok</a>
+               </div>
+@@ -471,6 +483,46 @@
+     </div>
+   </section>
+
++  <!-- Gyakori kérdések -->
++  <section class="section" id="gyik">
++    <div class="container">
++      <header class="section-header">
++        <h2 class="section-title">Gyakori kérdések</h2>
++        <p class="section-sub">Amit a stúdióbérlésről és a fotózásról a leggyakrabban kérdeznek.</p>
++      </header>
++      <div class="faq-list">
++        <div class="faq-item">
++          <h3>Hogyan foglalhatok időpontot?</h3>
++          <p>A <a href="#foglalas">foglalási felületen</a> válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy Zakariás Fannitól kérsz fotózást is, majd jelölj ki egy szabad időpontot a naptárban. A foglalás a visszaigazoló e-mail megérkezése után válik érvényessé, amelyet 1 munkanapon belül küldünk.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Mennyibe kerül a stúdióbérlés?</h3>
++          <p>Az első óra 10 000 Ft, minden további megkezdett óra 8 000 Ft. Az ár tartalmazza a teljes felszerelés — világítás, hátterek, berendezett enteriőr — használatát. Fizetés a helyszínen történik, készpénzben vagy banki átutalással.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Mi a különbség a stúdióbérlés és a stúdiófotózás között?</h3>
++          <p>Stúdióbérléskor a teret vesszük igénybe önállóan — saját fényképezőgéppel vagy fotóssal érkezel. Stúdiófotózás esetén Zakariás <a href="#fotos">Fanni fotós</a> vezeti végig a fotózást, és a csomagár már tartalmazza a stúdió használatát, nincs külön bérleti díj.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Le tudom mondani vagy módosítani a foglalást?</h3>
++          <p>Igen, az időpont előtt legalább 48 órával díjmentesen lemondható vagy módosítható e-mailben. 48 órán belüli lemondás esetén a díj 50%-a felszámításra kerülhet.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Mikor kapom meg a retusált képeket?</h3>
++          <p>Stúdiófotózás esetén a retusált képeket a fotózást követő 14 munkanapon belül, online galéria formájában kapod meg. Extra retusált képek 1 000 Ft/db áron rendelhetők.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Hoznom kell saját ruhát vagy kelléket?</h3>
++          <p>Igen, az öltözékről és a kellékekről neked kell gondoskodnod. Ha szeretnéd, előre egyeztethetünk arról, mi illik leginkább az adott fotózáshoz.</p>
++        </div>
++        <div class="faq-item">
++          <h3>Hol található a stúdió?</h3>
++          <p>A Studio Freya Veszprém belvárosában, a Rákóczi Ferenc utca 4. szám alatt van, sétatávolságra az Óváros tértől. Nyitvatartás: hétfőn, szerdán, pénteken, szombaton és vasárnap 08:00–18:00 óra között. Elérhetőségeink a <a href="#kapcsolat">Kapcsolat</a> szekcióban találhatók.</p>
++        </div>
++      </div>
++    </div>
++  </section>
++
+   <!-- Kapcsolat -->
+   <section class="section section--dark" id="kapcsolat">
+     <div class="container">
+@@ -518,6 +570,13 @@
+         </a>
+         <span class="footer-address">8200 Veszprém, Rákóczi Ferenc utca 4.</span>
+       </div>
++      <nav class="footer-nav" aria-label="Lábléc navigáció">
++        <a href="#studio">Stúdió</a>
++        <a href="#fotos">Zakariás Fanni</a>
++        <a href="#foglalas">Foglalás</a>
++        <a href="#gyik">GYIK</a>
++        <a href="#kapcsolat">Kapcsolat</a>
++      </nav>
+       <p class="footer-copy">&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>
+       <div class="footer-legal">
+         <button class="footer-legal-link" id="open-aszf">Bérlési feltételek</button>
+diff --git a/robots.txt b/robots.txt
+index bcc4a2c..fe96962 100644
+--- a/robots.txt
++++ b/robots.txt
+@@ -1,4 +1,4 @@
+ User-agent: *
+ Allow: /
+
+-Sitemap: https://studiofreya.hu/sitemap.xml
++Sitemap: https://www.studiofreya.hu/sitemap.xml
+diff --git a/sitemap.xml b/sitemap.xml
+index dec79e0..ed1f318 100644
+--- a/sitemap.xml
++++ b/sitemap.xml
+@@ -1,8 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+-    <loc>https://studiofreya.hu/</loc>
+-    <lastmod>2025-01-01</lastmod>
++    <loc>https://www.studiofreya.hu/</loc>
++    <lastmod>2026-07-11</lastmod>
+     <changefreq>monthly</changefreq>
+     <priority>1.0</priority>
+   </url>

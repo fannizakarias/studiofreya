@@ -38,6 +38,36 @@ navLinks.querySelectorAll('a').forEach(link => {
   });
 });
 
+/* ─── Felszerelés-váltó ───────────────────────────────────────── */
+(function () {
+  const tablist = document.querySelector('.eq-tabs');
+  if (!tablist) return;
+  const tabs = Array.from(tablist.querySelectorAll('.eq-tab'));
+
+  function select(tab, focus) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(tab => tab.addEventListener('click', () => select(tab)));
+
+  tablist.addEventListener('keydown', (e) => {
+    const i = tabs.indexOf(document.activeElement);
+    if (i < 0) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const dir = e.key === 'ArrowRight' ? 1 : -1;
+      select(tabs[(i + dir + tabs.length) % tabs.length], true);
+    }
+  });
+})();
+
 /* ═══════════════════════════════════════════════════════════════════
    IDŐPONTOK — a data/schedule.json fájlból töltődnek be.
    Az admin eszközzel szerkeszted, majd GitHubra tolod fel.
@@ -510,7 +540,7 @@ function validatePhone(v) {
 }
 function validateSzemelyek(v) {
   const n = parseInt(v, 10);
-  return !isNaN(n) && n >= 1 && n <= 6;
+  return !isNaN(n) && n >= 1 && n <= 7;
 }
 
 function setFieldError(inputEl, errEl, isError) {
@@ -561,7 +591,7 @@ szemInput.addEventListener('input', () => {
   const v = parseInt(szemInput.value, 10);
   if (!isNaN(v)) {
     if (v < 1) szemInput.value = 1;
-    if (v > 6) szemInput.value = 6;
+    if (v > 7) szemInput.value = 7;
   }
 });
 
@@ -787,17 +817,29 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
 });
 
 /* ═══════════════════════════════════════════════════════════════════
-   FANNI PORTFÓLIÓ — lenyitható grid
+   FANNI PORTFÓLIÓ — oszloponkénti léptetés
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
-  const toggleBtn = document.getElementById('fanni-portfolio-toggle');
-  const collapse  = document.getElementById('fanni-portfolio-collapse');
-  if (!toggleBtn || !collapse) return;
+  document.querySelectorAll('.fanni-portfolio-carousel').forEach(carousel => {
+    const items = Array.from(carousel.querySelectorAll('.fanni-portfolio-item'));
+    const prevBtn = carousel.querySelector('.fanni-portfolio-nav--prev');
+    const nextBtn = carousel.querySelector('.fanni-portfolio-nav--next');
+    if (items.length <= 1) {
+      if (prevBtn) prevBtn.hidden = true;
+      if (nextBtn) nextBtn.hidden = true;
+      return;
+    }
+    let current = items.findIndex(item => item.classList.contains('is-active'));
+    if (current < 0) current = 0;
 
-  toggleBtn.addEventListener('click', () => {
-    const expand = toggleBtn.getAttribute('aria-expanded') !== 'true';
-    collapse.classList.toggle('is-open', expand);
-    toggleBtn.setAttribute('aria-expanded', String(expand));
+    function show(idx) {
+      items[current].classList.remove('is-active');
+      current = (idx + items.length) % items.length;
+      items[current].classList.add('is-active');
+    }
+
+    prevBtn?.addEventListener('click', () => show(current - 1));
+    nextBtn?.addEventListener('click', () => show(current + 1));
   });
 })();
 
@@ -825,10 +867,10 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   const lbImg    = document.getElementById('studio-lb-img');
   const backdrop = document.getElementById('studio-lb-backdrop');
 
-  function buildGroup(selector) {
+  function buildGroup(imgList) {
     const srcIndex = new Map();
     const imgs = [];
-    Array.from(document.querySelectorAll(selector)).forEach(img => {
+    Array.from(imgList).forEach(img => {
       if (!srcIndex.has(img.src)) {
         srcIndex.set(img.src, imgs.length);
         imgs.push(img);
@@ -837,8 +879,9 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     return { imgs, srcIndex };
   }
 
-  const studioGroup    = buildGroup('.studio-grid-item img');
-  const portfolioGroup = buildGroup('.fanni-portfolio-item img');
+  const studioGroup     = buildGroup(document.querySelectorAll('.studio-grid-item img'));
+  const portfolioGroups = Array.from(document.querySelectorAll('.fanni-portfolio-carousel'))
+    .map(carousel => buildGroup(carousel.querySelectorAll('.fanni-portfolio-item img')));
 
   let activeGroup = studioGroup;
   let current = 0;
@@ -871,10 +914,12 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     const idx = studioGroup.srcIndex.get(img.src);
     if (idx !== undefined) lbOpen(studioGroup, idx);
   }));
-  portfolioGroup.imgs.forEach(img => img.addEventListener('click', () => {
-    const idx = portfolioGroup.srcIndex.get(img.src);
-    if (idx !== undefined) lbOpen(portfolioGroup, idx);
-  }));
+  portfolioGroups.forEach(group => {
+    group.imgs.forEach(img => img.addEventListener('click', () => {
+      const idx = group.srcIndex.get(img.src);
+      if (idx !== undefined) lbOpen(group, idx);
+    }));
+  });
 
   document.getElementById('studio-lb-close').addEventListener('click', lbClose);
   backdrop.addEventListener('click', lbClose);

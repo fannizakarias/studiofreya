@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Studio Freya – Fotóstúdió Veszprémben | Bérlés & Fotózás</title>
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
-  <link rel="canonical" href="https://studiofreya.hu/" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://www.studiofreya.hu/" />
 
   <!-- SEO meta -->
   <meta name="description" content="Studio Freya – professzionális fotóstúdió Veszprémben. Stúdióbérlés saját fotóssal, vagy stúdiófotózás. Rákóczi Ferenc utca 4. Online foglalás." />
@@ -15,7 +16,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://studiofreya.hu/" />
+  <meta property="og:url"         content="https://www.studiofreya.hu/" />
   <meta property="og:title"       content="Studio Freya – Fotóstúdió Veszprémben" />
   <meta property="og:description" content="Professzionális fotóstúdió Veszprémben. Stúdióbérlés vagy stúdiófotózás. Online foglalás, Rákóczi Ferenc utca 4." />
   <meta property="og:image"        content="https://studiofreya.hu/images/studio/web/IMG_1930.jpg" />
@@ -36,10 +37,10 @@
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": "https://studiofreya.hu/",
+    "@id": "https://www.studiofreya.hu/",
     "name": "Studio Freya",
     "description": "Professzionális fotóstúdió Veszprémben. Stúdióbérlés és stúdiófotózás.",
-    "url": "https://studiofreya.hu",
+    "url": "https://www.studiofreya.hu",
     "telephone": "+36303066297",
     "email": "info@studiofreya.hu",
     "address": {
@@ -88,6 +89,7 @@
         <li><a href="#studio">Stúdió</a></li>
         <li><a href="#fotos">Zakariás Fanni</a></li>
         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
+        <li><a href="#gyik">GYIK</a></li>
         <li><a href="#kapcsolat">Kapcsolat</a></li>
       </ul>
     </nav>
@@ -116,57 +118,101 @@
   <!-- Stúdió -->
   <section class="section section--studio" id="studio">
     <div class="container">
-      <header class="section-header">
-        <h2 class="section-title">A stúdió</h2>
-        <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában, az Óváros tér mellett.</p>
-      </header>
-      <div class="studio-intro">
-        <p>Portré-, lifestyle-, család- és termékfotózáshoz felszerelt tér — berendezett enteriőrrel, Godox világítással, Colorama papírháttérrel és gyereksarokkal. Bérelhető fotóssal vagy anélkül.</p>
+      <div class="studio-layout">
+
+      <!-- Szöveges oszlop -->
+      <div class="studio-copy">
+        <header class="section-header">
+          <h2 class="section-title">A stúdió</h2>
+          <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában. Bérelhető önállóan, vagy foglalható stúdiófotózásra Zakariás Fannival.</p>
+        </header>
+        <div class="studio-intro">
+          <p>Portré-, lifestyle-, család- és termékfotózáshoz egyaránt alkalmas, teljesen berendezett tér: a bútorok, a fények és a hátterek már a helyükön várnak, neked csak a fényképezőgépet kell hoznod.</p>
+          <p>A felszerelés használata benne van a bérleti díjban, minimum időtartam nélkül — annyi órára foglalsz, amennyire szükséged van, a szabad időpontokat a naptárban látod.</p>
+        </div>
+
+        <div class="studio-hours">
+          <div class="studio-hours-item">
+            <span class="studio-hours-label">Cím</span>
+            <span>8200 Veszprém<br>Rákóczi Ferenc utca 4.</span>
+          </div>
+          <div class="studio-hours-item">
+            <span class="studio-hours-label">Nyitva</span>
+            <span>H, Sze, P, Szo, V · 08:00–18:00</span>
+          </div>
+        </div>
+
+        <!-- Felszerelés-váltó -->
+        <div class="eq-explorer">
+          <div class="eq-tabs" role="tablist" aria-label="Felszerelés">
+            <button type="button" class="eq-tab is-active" role="tab" id="eq-tab-light" aria-controls="eq-panel-light" aria-selected="true">Világítás</button>
+            <button type="button" class="eq-tab" role="tab" id="eq-tab-bg" aria-controls="eq-panel-bg" aria-selected="false" tabindex="-1">Hátterek</button>
+            <button type="button" class="eq-tab" role="tab" id="eq-tab-interior" aria-controls="eq-panel-interior" aria-selected="false" tabindex="-1">Enteriőr</button>
+          </div>
+
+          <div class="eq-panel is-active" id="eq-panel-light" role="tabpanel" aria-labelledby="eq-tab-light">
+            <figure class="eq-shot eq-shot--light">
+              <img src="images/studio/web/IMG_1964.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" loading="lazy" />
+            </figure>
+            <div class="eq-detail">
+              <p class="eq-lead">Vaku és állandó fény — portréhoz és termékfotóhoz egyaránt.</p>
+              <ul class="eq-specs">
+                <li>Godox MS-300V stúdióvaku</li>
+                <li>Godox SL300IIIBi bi-color LED lámpa</li>
+                <li>60×90 cm-es ernyős softbox</li>
+                <li>120 cm-es Octa softbox</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="eq-panel" id="eq-panel-bg" role="tabpanel" aria-labelledby="eq-tab-bg" hidden>
+            <figure class="eq-shot">
+              <img src="images/studio/web/IMG_1853.jpg" alt="Rózsaszín váza cappuccino színű papírháttér előtt" loading="lazy" />
+            </figure>
+            <div class="eq-detail">
+              <p class="eq-lead">Tiszta, egyszínű háttér, ha nem az enteriőr a főszereplő.</p>
+              <ul class="eq-specs">
+                <li>Colorama papírháttér</li>
+                <li>Super white — semleges, világos alap</li>
+                <li>Lemon — élénk, sárga tónus</li>
+                <li>Cappuccino — meleg, földszínű tónus</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="eq-panel" id="eq-panel-interior" role="tabpanel" aria-labelledby="eq-tab-interior" hidden>
+            <figure class="eq-shot">
+              <img src="images/studio/web/IMG_1822.jpg" alt="Bézs kanapé tufted párnákkal, fa lábú asztalka növénnyel" loading="lazy" />
+            </figure>
+            <div class="eq-detail">
+              <p class="eq-lead">Kész díszlet — nem kell külön berendezkedned.</p>
+              <ul class="eq-specs">
+                <li>Kanapé és fotel</li>
+                <li>Vázák, növények, textilek</li>
+                <li>Dekorok és apró kellékek</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Stúdió képgalléria -->
       <div class="studio-grid">
-        <figure class="studio-grid-item studio-img">
-          <img src="images/studio/web/IMG_1822.jpg" alt="Bézs kanapé tufted párnákkal, fa lábú asztalka növénnyel" loading="lazy" />
-        </figure>
         <figure class="studio-grid-item studio-img">
           <img src="images/studio/web/IMG_1946.jpg" alt="Tipi sátor cseresznyevirág girlanddal és mackóval" loading="lazy" />
         </figure>
         <figure class="studio-grid-item studio-img">
           <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal, bézs asztalka" loading="lazy" />
         </figure>
-        <figure class="studio-grid-item studio-grid-item--wide studio-img">
+        <figure class="studio-grid-item studio-img">
           <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé karfa közelkép, pampas fű vázában" loading="lazy" />
         </figure>
-        <figure class="studio-grid-item studio-grid-item--wide studio-img">
-          <img src="images/studio/web/IMG_1964.jpg" alt="Godox stúdiólámpák bézs Colorama papírháttér előtt" loading="lazy" />
-        </figure>
-        <figure class="studio-grid-item studio-grid-item--wide studio-img">
+        <figure class="studio-grid-item studio-img">
           <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal és növényekkel — stúdió összképe" loading="lazy" />
         </figure>
       </div>
 
-      <!-- Eszközök -->
-      <div class="studio-equipment">
-        <h3 class="studio-eq-title">Mit találsz nálunk</h3>
-        <ul class="studio-eq-list">
-          <li>Stúdió vaku és lámpa</li>
-          <li>Háromféle papírháttér — lemon, super white, cappuccino</li>
-          <li>Berendezett enteriőr — kanapé, asztalkák, vázák, dekorok</li>
-          <li>Gyereksarok tipi sátorral, párnákkal és játékokkal</li>
-        </ul>
-        <details class="studio-eq-details">
-          <summary>Részletes felszerelés</summary>
-          <ul class="studio-eq-sublist">
-            <li>Godox MS-300V studióvaku</li>
-            <li>Godox SL300IIIBi Bi-Color LED lámpa</li>
-            <li>Godox 60×90 ernyő softbox</li>
-            <li>Godox Octa Softbox 120 cm</li>
-            <li>Colorama papírháttér</li>
-          </ul>
-        </details>
-      </div>
-
+      </div><!-- /studio-layout -->
     </div>
   </section>
 
@@ -197,25 +243,67 @@
           </div>
 
           <!-- Portfólió grid -->
-          <button type="button" class="fanni-portfolio-label" id="fanni-portfolio-toggle" aria-expanded="false">
-            <span>Portfólió</span>
-            <svg class="fanni-portfolio-arrow" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 3.5L5 7l3.5-3.5"/></svg>
-          </button>
-          <div class="fanni-portfolio-collapse" id="fanni-portfolio-collapse">
-            <div class="fanni-portfolio-collapse-inner">
-              <div class="fanni-portfolio-grid" id="fanni-portfolio-grid">
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/zsofi1.jpeg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/zsofi2.jpeg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/allat/IMG_2146.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2084.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2110.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2295.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2574.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2621.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2760.jpg" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-                <figure class="fanni-portfolio-item"><img src="images/portfolio/kulteri/IMG_2419.JPEG" alt="Portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
-              </div>
-            </div>
+          <h3 class="fanni-portfolio-label"><span>Portfólió</span></h3>
+          <div class="fanni-portfolio-columns">
+
+                <div class="fanni-portfolio-col">
+                  <h4 class="fanni-portfolio-category-title">Portré</h4>
+                  <div class="fanni-portfolio-carousel">
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
+                    </button>
+                    <div class="fanni-portfolio-viewport">
+                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/portre/IMG_0066_4-2.jpg" alt="Portré portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/IMG_0081-Edit-2-2.jpg" alt="Portré portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/IMG_0182_1.jpg" alt="Portré portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/IMG_2844-2.jpg" alt="Portré portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/zsofi1.jpeg" alt="Portré portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                    </div>
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="fanni-portfolio-col">
+                  <h4 class="fanni-portfolio-category-title">Brand</h4>
+                  <div class="fanni-portfolio-carousel">
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
+                    </button>
+                    <div class="fanni-portfolio-viewport">
+                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/brand/IMG_0196_1.jpg" alt="Brand portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/IMG_0233_1.jpg" alt="Brand portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/IMG_0286.jpg" alt="Brand portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                    </div>
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="fanni-portfolio-col">
+                  <h4 class="fanni-portfolio-category-title">Kismama</h4>
+                  <div class="fanni-portfolio-carousel">
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
+                    </button>
+                    <div class="fanni-portfolio-viewport">
+                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/kismama/IMG_2084.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2110.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2295.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2563.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2574.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2621.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2760.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2782.jpg" alt="Kismama portfólió – Zakariás Fanni" decoding="async" fetchpriority="low" /></figure>
+                    </div>
+                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
+                    </button>
+                  </div>
+                </div>
+
           </div>
         </div>
 
@@ -249,6 +337,7 @@
             <span class="fanni-pkg-price">65 000 Ft</span>
           </div>
         </div>
+        <p class="fanni-packages-note">Amennyiben kültéri fotózást szeretnél Fannival, vedd fel vele a kapcsolatot a <a href="mailto:fanni.zakarias@gmail.com">fanni.zakarias@gmail.com</a> email címen.</p>
       </div>
 
     </div>
@@ -382,8 +471,8 @@
                 <span class="bk-field-error" id="b-telefon-err">Érvényes telefonszámot adj meg (pl. +36 70 123 4567).</span>
               </div>
               <div class="bk-field">
-                <label for="b-szemelyek">Résztvevők száma <span class="bk-field-hint">(max. 6 fő)</span></label>
-                <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="6" placeholder="1" required />
+                <label for="b-szemelyek">Résztvevők száma <span class="bk-field-hint">(max. 7 fő)</span></label>
+                <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="7" placeholder="1" required />
               </div>
               <div class="bk-field bk-field--full">
                 <label for="b-megjegyzes">Megjegyzés</label>
@@ -463,11 +552,50 @@
         <div class="bk-success" id="booking-success" hidden>
           <div class="bk-success-icon">✓</div>
           <h3>Foglalás elküldve!</h3>
-          <p>Köszönjük! 24 órán belül e-mailben megerősítjük az időpontodat.<br>Találkozunk a stúdióban — 8200 Veszprém, Rákóczi Ferenc utca 4.</p>
+          <p>Köszönjük! 1 munkanapon belül e-mailben megerősítjük az időpontodat.<br>Találkozunk a stúdióban — 8200 Veszprém, Rákóczi Ferenc utca 4.</p>
           <button class="btn btn--outline" id="booking-reset">Új foglalás</button>
         </div>
 
       </div><!-- /.bk-widget -->
+    </div>
+  </section>
+
+  <!-- Gyakori kérdések -->
+  <section class="section" id="gyik">
+    <div class="container">
+      <header class="section-header">
+        <h2 class="section-title">Gyakori kérdések</h2>
+      </header>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>Hogyan foglalhatok időpontot?</h3>
+          <p>A <a href="#foglalas">foglalási felületen</a> válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy Zakariás Fannitól kérsz fotózást, majd jelölj ki egy szabad időpontot a naptárban. A foglalás a visszaigazoló e-mail megérkezése után válik érvényessé, amelyet 1 munkanapon belül küldünk.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Mennyibe kerül a stúdióbérlés?</h3>
+          <p>Az első óra 10 000 Ft, minden további megkezdett óra 8 000 Ft. Az ár tartalmazza a teljes felszerelés — világítás, hátterek, berendezett enteriőr — használatát. A fizetés a foglalás napján történik, készpénzben a helyszínen vagy banki átutalással.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Mi a különbség a stúdióbérlés és a stúdiófotózás között?</h3>
+          <p>Stúdióbérlés esetén a teret veszed igénybe önállóan — saját fényképezőgéppel vagy fotóssal érkezel. Stúdiófotózásnál Zakariás <a href="#fotos">Fanni</a> lesz a fotósod, és a csomagár már tartalmazza a stúdió használatát is, így nincs külön bérleti díj.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Le tudom mondani vagy módosítani a foglalást?</h3>
+          <p>Igen, az időpont előtt legalább 48 órával díjmentesen lemondható vagy módosítható e-mailben. 48 órán belüli lemondás esetén a díj 50%-a felszámításra kerülhet.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Mikor kapom meg a retusált képeket?</h3>
+          <p>Stúdiófotózás esetén a retusált képeket a fotózást követő 14 munkanapon belül, online galéria formájában kapod meg. Extra retusált képek 1 000 Ft/db áron rendelhetők.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Hoznom kell saját ruhát vagy kelléket?</h3>
+          <p>Igen, az öltözékről és a kellékekről neked kell gondoskodnod. Ha szeretnéd, előre egyeztethetünk arról, mi illik leginkább az adott fotózáshoz.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Hol található a stúdió?</h3>
+          <p>A Studio Freya Veszprém belvárosában, a Rákóczi Ferenc utca 4. szám alatt van, sétatávolságra az Óváros tértől. Nyitvatartás: hétfőn, szerdán, pénteken, szombaton és vasárnap 08:00–18:00 óra között. Elérhetőségeink a <a href="#kapcsolat">Kapcsolat</a> szekcióban találhatók.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -518,6 +646,13 @@
         </a>
         <span class="footer-address">8200 Veszprém, Rákóczi Ferenc utca 4.</span>
       </div>
+      <nav class="footer-nav" aria-label="Lábléc navigáció">
+        <a href="#studio">Stúdió</a>
+        <a href="#fotos">Zakariás Fanni</a>
+        <a href="#foglalas">Foglalás</a>
+        <a href="#gyik">GYIK</a>
+        <a href="#kapcsolat">Kapcsolat</a>
+      </nav>
       <p class="footer-copy">&copy; <span id="year"></span> Studio Freya. Minden jog fenntartva.</p>
       <div class="footer-legal">
         <button class="footer-legal-link" id="open-aszf">Bérlési feltételek</button>
@@ -556,22 +691,27 @@
           <li>Résztvevők száma (opcionális)</li>
           <li>Megjegyzés, egyéb kérések (opcionális)</li>
           <li>Foglalás adatai: időtartam, időpont, ár</li>
+          <li>Fizetési mód (készpénz vagy átutalás)</li>
+          <li>Számlázási adatok: teljes név, irányítószám, település, közterület neve és jellege, házszám, adószám (cégek esetén, opcionális)</li>
         </ul>
 
         <h3>3. Az adatkezelés célja</h3>
-        <p>A foglalási kérelem feldolgozása, a foglalás visszaigazolása, valamint kapcsolattartás a szolgáltatás teljesítésével összefüggésben.</p>
+        <p>A foglalási kérelem feldolgozása, a foglalás visszaigazolása, a szolgáltatásról szóló számla kiállítása, valamint kapcsolattartás a szolgáltatás teljesítésével összefüggésben.</p>
 
         <h3>4. Az adatkezelés jogalapja</h3>
-        <p>Az adatkezelés jogalapja az Európai Parlament és a Tanács (EU) 2016/679 rendeletének (GDPR) 6. cikk (1) bekezdés b) pontja: az adatkezelés olyan szerződés teljesítéséhez szükséges, amelyben az érintett az egyik fél, illetve a szerződés megkötését megelőzően az érintett kérésére történő lépések megtételéhez szükséges.</p>
+        <p>A foglalási és kapcsolattartási adatok kezelésének jogalapja az Európai Parlament és a Tanács (EU) 2016/679 rendeletének (GDPR) 6. cikk (1) bekezdés b) pontja: az adatkezelés olyan szerződés teljesítéséhez szükséges, amelyben az érintett az egyik fél, illetve a szerződés megkötését megelőzően az érintett kérésére történő lépések megtételéhez szükséges.</p>
+        <p>A számlázási adatok kezelésének jogalapja a GDPR 6. cikk (1) bekezdés c) pontja: az adatkezelés az adatkezelőre vonatkozó jogi kötelezettség (a számvitelről szóló 2000. évi C. törvény és az általános forgalmi adóról szóló törvény bizonylatolási kötelezettsége) teljesítéséhez szükséges.</p>
 
         <h3>5. Az adatok tárolásának időtartama</h3>
         <p>A foglalással kapcsolatos adatokat a foglalás teljesítésétől számított 2 évig őrizzük meg, ezt követően töröljük.</p>
+        <p>A számlázási adatokat és a kiállított számlákat a számvitelről szóló 2000. évi C. törvény 169. §-a alapján a számla kiállításától számított <strong>8 évig</strong> kötelesek vagyunk megőrizni.</p>
 
         <h3>6. Adatfeldolgozók</h3>
-        <p>A weboldal működtetéséhez és a foglalási folyamathoz az alábbi adatfeldolgozókat vesszük igénybe:</p>
+        <p>A weboldal működtetéséhez és a foglalási folyamathoz az alábbi adatfeldolgozókat, illetve harmadik feleket vesszük igénybe:</p>
         <ul>
           <li><strong>Web3Forms</strong> (web3forms.com) – a foglalási űrlap adatainak e-mailes továbbítása.</li>
           <li><strong>GitHub, Inc.</strong> (88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) – tárhely-szolgáltató (GitHub Pages). A kiszolgáló technikai naplóiban IP-cím és böngészőazonosító adatok rövid ideig tárolódhatnak biztonsági és üzemeltetési célból.</li>
+          <li><strong>Google LLC</strong> (1600 Amphitheatre Parkway, Mountain View, CA 94043, USA) – a weboldalon használt Google Fonts betűtípusok, valamint a Kapcsolat oldalon megjelenő Google Maps térképbeágyazás miatt a weboldal betöltésekor a látogató IP-címe és böngészőadatai továbbításra kerülnek a Google szerverei felé. Bővebben: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Adatvédelmi irányelvek</a>.</li>
         </ul>
         <p>Az adatokat harmadik félnek nem adjuk el, és marketing célra nem használjuk fel.</p>
 
@@ -579,7 +719,7 @@
         <p>Ha közvetlenül e-mailben vagy telefonon veszi fel velünk a kapcsolatot, az Ön által megadott adatokat (név, e-mail-cím, telefonszám, üzenet tartalma) a megkeresés megválaszolása és a szolgáltatás teljesítése céljából kezeljük, és a kapcsolatfelvételtől számított 2 évig őrizzük meg.</p>
 
         <h3>8. Sütik (cookie-k) és nyomkövetés</h3>
-        <p>A weboldal nem használ sütiket, analitikai eszközöket (pl. Google Analytics) vagy harmadik féltől származó nyomkövető szkripteket. A látogatók viselkedését semmilyen formában nem rögzítjük.</p>
+        <p>A weboldal nem használ sütiket, analitikai eszközöket (pl. Google Analytics) vagy nyomkövető szkripteket, és a látogatók viselkedését semmilyen formában nem rögzíti. A weboldal betöltésekor ugyanakkor a Google Fonts betűtípus-szolgáltatás, a Kapcsolat oldalon pedig a Google Maps térképbeágyazás miatt a látogató IP-címe eljut a Google szervereihez — ez a megjelenítéshez technikailag szükséges, de nem minősül nyomkövetésnek vagy profilalkotásnak. Részletek a 6. pontban.</p>
 
         <h3>9. Automatizált döntéshozatal</h3>
         <p>Az Ön személyes adataival kapcsolatban nem alkalmazunk automatizált döntéshozatalt vagy profilalkotást.</p>
@@ -655,7 +795,7 @@
         </ul>
         <p><strong>Általános szabályok</strong></p>
         <ul>
-          <li>A stúdióba kizárólag az időpontban megjelölt személyek léphetnek be. Maximális létszám: <strong>7 fő</strong> (fotós is beleszámítva). 7 fő feletti igény esetén kérjük, előzetesen egyeztess velünk.</li>
+          <li>A stúdióba kizárólag a foglaláskor megadott létszámú személy léphet be. Maximális létszám: <strong>7 fő</strong>. 7 fő feletti igény esetén kérjük, előzetesen egyeztess velünk.</li>
           <li>A stúdióban tilos a dohányzás és az alkohol fogyasztása.</li>
           <li>Állatok behozatala előzetes egyeztetést igényel.</li>
           <li>Kérjük, hozz váltócipőt — utcai cipővel a stúdióba belépni nem lehet.</li>
