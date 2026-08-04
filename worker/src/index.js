@@ -191,7 +191,7 @@ async function ujFoglalas(request, env) {
 
   const id = crypto.randomUUID();
   const submittedAt = new Date().toISOString();
-  const holdNap = Number(env.HOLD_DAYS || 2);
+  const holdNap = Number(env.HOLD_DAYS || 4);
   const holdTtl = Math.max(60, Math.round(holdNap * 24 * 60 * 60));
 
   const rekord = {

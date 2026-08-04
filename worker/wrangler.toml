@@ -15,7 +15,12 @@ ALLOWED_ORIGINS = "https://www.studiofreya.hu,https://studiofreya.hu"
 # Hány napig tartjuk fenn a még vissza nem igazolt foglalást. Ha ennyi idő
 # alatt nem nyomsz "✓ Elfogadom"-ot az adminban, az időpont felszabadul —
 # így a spam magától eltűnik, a valódi foglalásra viszont bőven van időd.
-HOLD_DAYS = "2"
+#
+# 4 nap, mert a feltételek "1 munkanapon belüli" visszaigazolást ígérnek: egy
+# péntek esti foglalásnál ez hétfő végét jelenti, amit csak a 4 nap fed le.
+# Ha ezt csökkented, hétvégén felszabadulhat egy időpont még azelőtt, hogy a
+# megígért határidő lejárna.
+HOLD_DAYS = "4"
 
 # Az admin jelszó NEM ide kerül, hanem titkosként:
 #   npx wrangler secret put ADMIN_TOKEN

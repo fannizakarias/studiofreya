@@ -91,7 +91,7 @@ A `wrangler.toml` `[vars]` szakaszában:
 
 - **`ALLOWED_ORIGINS`** — mely honlapokról fogadunk kérést. A `localhost` mindig
   engedélyezett, hogy a helyi admin is működjön.
-- **`HOLD_DAYS`** (alapból 2) — hány napig tartjuk fenn a még vissza nem
+- **`HOLD_DAYS`** (alapból 4) — hány napig tartjuk fenn a még vissza nem
   igazolt foglalást. Ha ennyi idő alatt nem nyomsz „✓ Elfogadom"-ot, az időpont
   felszabadul. Ez a spam ellen véd: fizetés nélkül bárki beküldhet foglalást,
   és ne ragadjon be tőle a naptár. Amint elfogadod, a foglalás véglegessé válik.
