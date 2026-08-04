@@ -37,13 +37,17 @@ function corsHeaders(request, env) {
   // A helyi admin (localhost) is hívhatja — ott fut az admin felület.
   const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
   const ok = allowed.includes(origin) || isLocal;
-  return {
-    'Access-Control-Allow-Origin': ok ? origin : allowed[0] || '*',
+  const fejek = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
+  // Ismeretlen origin esetén nem küldünk engedélyt — a böngésző így elzárja
+  // a választ. (A CORS csak a böngészőt köti; a végpont védelmét a
+  // darabszám-korlát és az admin jelszó adja, nem ez.)
+  if (ok) fejek['Access-Control-Allow-Origin'] = origin;
+  return fejek;
 }
 
 function json(obj, status, request, env) {
@@ -60,8 +64,17 @@ function ma() {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Budapest' });
 }
 
+/* Szövegmező tisztítása: hossz-korlát, vezérlőkarakterek kiszűrése, és a
+   táblázatkezelő-képlet kezdőkarakterek eltávolítása a szöveg elejéről.
+   Ez utóbbi azért kell, mert az adat a foglalasok.csv-be kerül, amit Excel
+   is megnyithat — egy "=..." kezdetű névből ott képlet lenne. A "+" és a "-"
+   szándékosan maradhat, mert a telefonszámok azzal kezdődnek. */
 function tisztit(v, max) {
-  return String(v == null ? '' : v).trim().slice(0, max || 300);
+  return String(v == null ? '' : v)
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/^[=@\t]+/, '')
+    .trim()
+    .slice(0, max || 300);
 }
 
 /* A beérkező foglalás átvizsgálása. Visszaad egy hibaüzenetet, vagy null-t,
@@ -138,6 +151,12 @@ async function foglaltLista(request, env) {
 /* Nyilvános: új foglalás. Ez az egyetlen írható végpont kívülről, ezért
    itt van óránkénti darabszám-korlát IP-címenként. */
 async function ujFoglalas(request, env) {
+  // Méretkorlát: egy foglalás pár száz bájt, minden ezen felüli gyanús.
+  const meret = Number(request.headers.get('Content-Length') || 0);
+  if (meret > 16 * 1024) {
+    return json({ error: 'Túl nagy kérés.' }, 413, request, env);
+  }
+
   let b;
   try {
     b = await request.json();
@@ -236,8 +255,15 @@ async function megerosit(request, env, id) {
   if (!nyers) return json({ error: 'Nincs ilyen foglalás.' }, 404, request, env);
 
   const rekord = JSON.parse(nyers);
+  /* A véglegesített óra a foglalás napja után 90 nappal jár le. Nem TTL nélkül
+     tesszük el, mert a lejárat nélküli kulcsok évek alatt felhalmozódnának, és
+     a nyilvános /api/foglalt listázása egyre lassulna. A múltbeli foglaltság
+     senkit nem érdekel — a naptár úgyis csak a mai naptól felfelé néz. */
+  const most = Math.floor(Date.now() / 1000);
+  const napVege = Math.floor(new Date(`${rekord.datum}T23:59:59Z`).getTime() / 1000);
+  const lejarat = Math.max(most + 86400, napVege + 90 * 86400);
   for (const h of orakListaja(rekord.ora, rekord.orak)) {
-    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id); // TTL nélkül = végleges
+    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expiration: lejarat });
   }
   rekord.allapot = 'megerositve';
   await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
@@ -305,7 +331,10 @@ export default {
 
       return json({ error: 'Ismeretlen végpont.' }, 404, request, env);
     } catch (err) {
-      return json({ error: `Szerverhiba: ${err.message}` }, 500, request, env);
+      // A részletek a Cloudflare naplójába mennek (npx wrangler tail), nem a
+      // válaszba — a belső hibaüzenet ne szivárogjon ki a hívónak.
+      console.error('Worker hiba:', err && err.stack ? err.stack : err);
+      return json({ error: 'Szerverhiba.' }, 500, request, env);
     }
   },
 };

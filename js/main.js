@@ -685,12 +685,18 @@ bookingForm.addEventListener('submit', async (e) => {
       });
       if (res.status === 409) {
         const valasz = await res.json().catch(() => ({}));
-        alert(valasz.error || 'Ezt az időpontot időközben lefoglalták. Kérlek válassz másikat.');
+        /* Ugyanabba az állapotba állunk vissza, mint a "Módosítás" gombnál:
+           kiválasztás törlése, űrlap becsukása, friss időpontlista. */
         await frissitFoglaltsagot();
         st.hour = null;
+        document.querySelectorAll('.bk-slot--selected')
+          .forEach(s => s.classList.remove('bk-slot--selected'));
+        hideForms();
         renderSlots();
         btn.disabled = false;
         btn.textContent = 'Foglalás elküldése';
+        alert(valasz.error || 'Ezt az időpontot időközben lefoglalták. Kérlek válassz másikat.');
+        document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
     } catch {
