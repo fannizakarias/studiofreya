@@ -82,6 +82,7 @@ Ha `{"ok":true,...}` jön vissza, működik.
 | `GET /api/foglalasok` | admin | az összes foglalás |
 | `POST /api/foglalas/<id>/megerosit` | admin | véglegesítés (nem jár le) |
 | `POST /api/foglalas/<id>/torol` | admin | időpont felszabadítása |
+| `POST /api/foglalas/<id>/visszaallit` | admin | lemondás visszavonása (ütközés esetén 409) |
 
 Az admin végpontok `Authorization: Bearer <ADMIN_TOKEN>` fejlécet kérnek.
 

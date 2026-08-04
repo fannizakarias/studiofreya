@@ -13,6 +13,7 @@
      GET  /api/foglalasok               — admin: az összes foglalás
      POST /api/foglalas/<id>/megerosit  — admin: véglegesítés (nem jár le)
      POST /api/foglalas/<id>/torol      — admin: időpont felszabadítása
+     POST /api/foglalas/<id>/visszaallit — admin: lemondás visszavonása
 
    Tárolás (Cloudflare KV):
      slot:<ÉÉÉÉ-HH-NN>:<ÓÓ>  → a foglalás azonosítója
@@ -289,6 +290,39 @@ async function torol(request, env, id) {
   return json({ ok: true }, 200, request, env);
 }
 
+/* Admin: tévesen lemondott foglalás visszaállítása. Az időpontot újra
+   lefoglalja, függő állapotban (mintha most érkezett volna) — de csak akkor,
+   ha időközben más nem vitte el. */
+async function visszaallit(request, env, id) {
+  const nyers = await env.FOGLALASOK.get(`fog:${id}`);
+  if (!nyers) return json({ error: 'Nincs ilyen foglalás.' }, 404, request, env);
+
+  const rekord = JSON.parse(nyers);
+  if (rekord.datum < ma()) {
+    return json({ error: 'A foglalás napja már elmúlt, nincs mit visszaállítani.' }, 400, request, env);
+  }
+
+  const orak = orakListaja(rekord.ora, rekord.orak);
+  for (const h of orak) {
+    const foglalo = await env.FOGLALASOK.get(slotKulcs(rekord.datum, h));
+    if (foglalo && foglalo !== id) {
+      return json({
+        error: 'Az időpontot időközben más lefoglalta, ezért nem állítható vissza.',
+        utkozes: true,
+      }, 409, request, env);
+    }
+  }
+
+  const holdTtl = Math.max(60, Math.round(Number(env.HOLD_DAYS || 4) * 24 * 60 * 60));
+  for (const h of orak) {
+    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expirationTtl: holdTtl });
+  }
+  rekord.allapot = 'fuggo';
+  await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
+
+  return json({ ok: true }, 200, request, env);
+}
+
 /* ─── Útvonalválasztás ───────────────────────────────────────────── */
 
 export default {
@@ -316,7 +350,7 @@ export default {
       }
 
       // Innentől admin jogosultság kell
-      const adminUt = /^\/api\/(foglalasok$|foglalas\/[^/]+\/(megerosit|torol)$)/.test(ut);
+      const adminUt = /^\/api\/(foglalasok$|foglalas\/[^/]+\/(megerosit|torol|visszaallit)$)/.test(ut);
       if (adminUt && !adminE(request, env)) {
         return json({ error: 'Nincs jogosultság.' }, 401, request, env);
       }
@@ -324,9 +358,11 @@ export default {
       if (ut === '/api/foglalasok' && request.method === 'GET') {
         return foglalasok(request, env);
       }
-      const m = ut.match(/^\/api\/foglalas\/([^/]+)\/(megerosit|torol)$/);
+      const m = ut.match(/^\/api\/foglalas\/([^/]+)\/(megerosit|torol|visszaallit)$/);
       if (m && request.method === 'POST') {
-        return m[2] === 'megerosit' ? megerosit(request, env, m[1]) : torol(request, env, m[1]);
+        if (m[2] === 'megerosit')   return megerosit(request, env, m[1]);
+        if (m[2] === 'visszaallit') return visszaallit(request, env, m[1]);
+        return torol(request, env, m[1]);
       }
 
       return json({ error: 'Ismeretlen végpont.' }, 404, request, env);
