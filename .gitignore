@@ -5,6 +5,10 @@ css/admin.css
 admin-start.command
 admin-server.py
 
+# Wrangler helyi gyorsítótára és állapota
+worker/.wrangler/
+.wrangler/
+
 # macOS
 .DS_Store
 **/.DS_Store

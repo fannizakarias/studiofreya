@@ -1,0 +1,21 @@
+name = "studiofreya-foglalas"
+main = "src/index.js"
+compatibility_date = "2026-08-04"
+
+# A foglalások tárolója. Az id-t a "wrangler kv namespace create FOGLALASOK"
+# írja ki — az alábbi sorba az kerül.
+[[kv_namespaces]]
+binding = "FOGLALASOK"
+id = "c6f489f75e544af6b4a0dfd927f700d4"
+
+[vars]
+# Mely honlapokról fogadunk kérést (vesszővel elválasztva).
+ALLOWED_ORIGINS = "https://www.studiofreya.hu,https://studiofreya.hu"
+
+# Hány napig tartjuk fenn a még vissza nem igazolt foglalást. Ha ennyi idő
+# alatt nem nyomsz "✓ Elfogadom"-ot az adminban, az időpont felszabadul —
+# így a spam magától eltűnik, a valódi foglalásra viszont bőven van időd.
+HOLD_DAYS = "7"
+
+# Az admin jelszó NEM ide kerül, hanem titkosként:
+#   npx wrangler secret put ADMIN_TOKEN

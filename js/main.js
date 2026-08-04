@@ -76,6 +76,12 @@ navLinks.querySelectorAll('a').forEach(link => {
 let SZABAD  = {};
 let FOGLALT = {};
 
+/* A foglalási Worker címe. A schedule.json csak azt tudja, mi volt foglalt a
+   legutóbbi közzétételkor; a Worker azt tudja, mi foglalt *most*. Ha üresen
+   hagyod, vagy a Worker nem elérhető, az oldal a schedule.json alapján
+   működik tovább — ugyanúgy, mint korábban. */
+const WORKER_URL = 'https://studiofreya-foglalas.fanni-zakarias.workers.dev';
+
 // schedule.json betöltése — no-cache hogy mindig a friss verziót kapjuk
 fetch('data/schedule.json', { cache: 'no-store' })
   .then(r => {
@@ -88,10 +94,29 @@ fetch('data/schedule.json', { cache: 'no-store' })
     jumpToEarliestAvailable();
     renderCalendar();
     if (st.dateStr) renderSlots();
+    frissitFoglaltsagot();   // az azóta érkezett foglalások ráolvasztása
   })
   .catch(() => {
     // Nincs elérhető fájl — üres naptár marad
   });
+
+/* Az élő foglaltság lekérése a Workertől és ráolvasztása a schedule.json-ra.
+   Csak hozzáad: amit a schedule.json foglaltnak jelöl, az foglalt marad. */
+async function frissitFoglaltsagot() {
+  if (!WORKER_URL) return;
+  try {
+    const r = await fetch(`${WORKER_URL}/api/foglalt`, { cache: 'no-store' });
+    if (!r.ok) return;
+    const elo = await r.json();
+    for (const [datum, orak] of Object.entries(elo)) {
+      FOGLALT[datum] = [...new Set([...(FOGLALT[datum] || []), ...orak])];
+    }
+    renderCalendar();
+    if (st.dateStr) renderSlots();
+  } catch {
+    // Nincs kapcsolat — marad a schedule.json szerinti állapot
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    BELSŐ LOGIKA — ezt nem kell szerkeszteni
@@ -628,6 +653,51 @@ bookingForm.addEventListener('submit', async (e) => {
   btn.disabled  = true;
   btn.textContent = 'Küldés…';
 
+  /* A foglalás adatai — ugyanaz megy a Workernek és a Web3Formsnak, hogy a
+     kettő ne tudjon szétcsúszni. */
+  const adatok = {
+    tipus:      st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
+    csomag:     st.withFanni ? (st.label || '') : '',
+    nev:        document.getElementById('b-nev').value,
+    email:      document.getElementById('b-email').value,
+    telefon:    document.getElementById('b-telefon').value,
+    szemelyek:  document.getElementById('b-szemelyek').value,
+    megjegyzes: document.getElementById('b-megjegyzes').value,
+    fizetesi_mod:     document.querySelector('input[name="fizetesi_mod"]:checked')?.value || '',
+    szamlazasi_nev:   document.getElementById('b-szamla-nev').value,
+    szamlazasi_cim:   `${document.getElementById('b-iranyitoszam').value} ${document.getElementById('b-telepules').value}, ${document.getElementById('b-kozterulet').value} ${document.getElementById('b-hazszam').value}.`,
+    adoszam:    document.getElementById('b-adoszam').value,
+    idotartam:  `${st.hours} óra`,
+    ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
+    datum:      st.dateStr,
+    idopont:    `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
+  };
+
+  /* A Worker rögzíti a foglalást, és közben ellenőrzi, hogy időközben nem
+     vitte-e el más ugyanazt az órát. Ha nem elérhető, a foglalás az e-maillel
+     akkor is elmegy — a rendszer a Worker nélkül is működik. */
+  if (WORKER_URL) {
+    try {
+      const res = await fetch(`${WORKER_URL}/api/foglalas`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...adatok, ora: st.hour, orak: st.hours }),
+      });
+      if (res.status === 409) {
+        const valasz = await res.json().catch(() => ({}));
+        alert(valasz.error || 'Ezt az időpontot időközben lefoglalták. Kérlek válassz másikat.');
+        await frissitFoglaltsagot();
+        st.hour = null;
+        renderSlots();
+        btn.disabled = false;
+        btn.textContent = 'Foglalás elküldése';
+        return;
+      }
+    } catch {
+      // Nem elérhető a Worker — megyünk tovább, az e-mail a fontos
+    }
+  }
+
   // Azonnali helyi frissítés (email és GitHub eredményétől függetlenül)
   if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
   const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
@@ -642,22 +712,8 @@ bookingForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({
       access_key: 'aba153bd-ed5e-4516-bfea-dc7e2ca838b4',
       subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
-      tipus:      st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
-      csomag:     st.withFanni ? (st.label || '') : '',
-      from_name:  document.getElementById('b-nev').value,
-      nev:        document.getElementById('b-nev').value,
-      email:      document.getElementById('b-email').value,
-      telefon:    document.getElementById('b-telefon').value,
-      szemelyek:  document.getElementById('b-szemelyek').value,
-      megjegyzes: document.getElementById('b-megjegyzes').value,
-      fizetesi_mod:     document.querySelector('input[name="fizetesi_mod"]:checked')?.value || '',
-      szamlazasi_nev:   document.getElementById('b-szamla-nev').value,
-      szamlazasi_cim:   `${document.getElementById('b-iranyitoszam').value} ${document.getElementById('b-telepules').value}, ${document.getElementById('b-kozterulet').value} ${document.getElementById('b-hazszam').value}.`,
-      adoszam:    document.getElementById('b-adoszam').value,
-      idotartam:  `${st.hours} óra`,
-      ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
-      datum:      st.dateStr,
-      idopont:    `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
+      from_name:  adatok.nev,
+      ...adatok,
     }),
   }).catch(() => {});
 
