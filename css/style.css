@@ -1201,11 +1201,15 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .parking-map {
-  margin-bottom: 2rem;
+  /* Teljes szélességben túl nagy lenne — a térkép olvashatóságához ennyi elég. */
+  max-width: 820px;
+  margin: 0 auto 2rem;
   border: 1px solid var(--c-border);
   border-radius: 2px;
   overflow: hidden;
 }
+
+.parking-map picture { display: block; }
 
 .parking-map img {
   width: 100%;
