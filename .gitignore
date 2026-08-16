@@ -20,10 +20,12 @@ __pycache__/
 # Visszaigazoló email sablonok — ne kerüljenek a publikus oldalra
 visszaigazolo-fotozas-zakarias-fanni.md
 visszaigazolo-studioberles.md
+ertekeles-keres.md
 
 # Foglalási adatok és generált visszaigazolók (személyes adat)
 foglalasok/foglalasok.csv
 foglalasok/modositasok.csv
+foglalasok/kezi-foglalasok.csv
 foglalasok/visszaigazolasok/
 
 # Visszaigazoló email generátor — ne kerüljön a publikus oldalra
