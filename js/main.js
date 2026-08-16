@@ -739,6 +739,12 @@ function showSuccess() {
   document.querySelector('.bk-main').hidden          = true;
   document.getElementById('bk-form-panel').hidden    = true;
   document.getElementById('booking-success').hidden  = false;
+
+  /* A siker-panel jóval alacsonyabb, mint a widget, amit lecserél: a szekció
+     ~1100 px-szel összemegy. A görgetési pozíció viszont marad, így a látogató
+     a lábléc környékén találná magát, és el sem olvasná a visszaigazolást.
+     Ezért — ahogy minden más állapotváltásnál — visszaléptetjük a szekcióra. */
+  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 document.getElementById('booking-reset').addEventListener('click', () => {
