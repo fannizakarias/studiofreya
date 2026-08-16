@@ -128,8 +128,15 @@ const HONAPOK = [
 ];
 
 // 0=V, 1=H, 2=K, 3=Sze, 4=Cs, 5=P, 6=Szo
-const ALLOWED_DAYS = new Set([0, 1, 3, 5, 6]); // V, H, Sze, P, Szo
+/* Stúdió módban nincs fix nap-lista: azt a naptár (schedule.json) dönti el,
+   így az adminban kézzel megnyitott kedd/csütörtök is foglalhatóvá válik.
+   Amelyik napra nincs meghirdetett óra, az magától zártnak látszik.
+   Fanni módban marad a fix hétvégi korlát — az az ő elérhetősége. */
 const FANNI_DAYS   = new Set([0, 6]);            // V, Szo
+
+function napEngedelyezett(date) {
+  return st.withFanni ? FANNI_DAYS.has(date.getDay()) : true;
+}
 const MIN_HOUR = 8;
 const MAX_HOUR = 18;
 
@@ -148,12 +155,11 @@ const st = {
 
 function jumpToEarliestAvailable() {
   const today   = new Date(); today.setHours(0,0,0,0);
-  const daySet  = st.withFanni ? FANNI_DAYS : ALLOWED_DAYS;
   const hours   = st.hours || 1;
 
   const earliest = Object.keys(SZABAD)
     .map(ds => new Date(ds))
-    .filter(d => d > today && daySet.has(d.getDay()) && hasAvail(toDateStr(d), hours))
+    .filter(d => d > today && napEngedelyezett(d) && hasAvail(toDateStr(d), hours))
     .sort((a, b) => a - b)[0];
 
   if (earliest) {
@@ -277,8 +283,7 @@ function renderCalendar() {
     const date    = new Date(yr, mo, d);
     const dateStr = toDateStr(date);
     const isPast   = date <= today;
-    const daySet   = st.withFanni ? FANNI_DAYS : ALLOWED_DAYS;
-    const isAllowed = daySet.has(date.getDay());
+    const isAllowed = napEngedelyezett(date);
 
     const el       = document.createElement('div');
     const numSpan  = document.createElement('span');
