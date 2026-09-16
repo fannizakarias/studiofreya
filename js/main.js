@@ -82,6 +82,9 @@ navLinks.querySelectorAll('a').forEach(link => {
 
 let SZABAD  = {};
 let FOGLALT = {};
+/* Napok, amikor az adminban kikapcsolták a stúdiófotózást — ezeken csak
+   stúdióbérlés foglalható. */
+let FOTOZAS_NELKUL = new Set();
 
 /* A foglalási Worker címe. A schedule.json csak azt tudja, mi volt foglalt a
    legutóbbi közzétételkor; a Worker azt tudja, mi foglalt *most*. Ha üresen
@@ -98,7 +101,7 @@ fetch('data/schedule.json', { cache: 'no-store' })
   .then(data => {
     SZABAD  = data.szabad  || {};
     FOGLALT = data.foglalt || {};
-    if (data.fotozas === false) fotozasKikapcsolasa();
+    FOTOZAS_NELKUL = new Set(data.fotozas_nelkul || []);
     jumpToEarliestAvailable();
     renderCalendar();
     if (st.dateStr) renderSlots();
@@ -107,27 +110,6 @@ fetch('data/schedule.json', { cache: 'no-store' })
   .catch(() => {
     // Nincs elérhető fájl — üres naptár marad
   });
-
-/* Az adminban kikapcsolt stúdiófotózás: a módválasztóból eltűnik, a
-   "Foglalok" gombok helyén felirat jelzi, hogy most nem foglalható. A
-   portfólió és a csomagok látszanak. Ha a látogató épp Fanni módban volt,
-   visszaváltunk stúdióbérlésre. */
-function fotozasKikapcsolasa() {
-  const fanniBtn  = document.querySelector('.bk-mode-btn[data-mode="fanni"]');
-  const studioBtn = document.querySelector('.bk-mode-btn[data-mode="studio"]');
-  if (st.withFanni && studioBtn) studioBtn.click();
-  if (fanniBtn) fanniBtn.hidden = true;
-  document.getElementById('bk-mode-bar')?.classList.add('bk-mode-bar--single');
-
-  ['btn-with-fotos', 'btn-with-fotos-pkg'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const felirat = document.createElement('span');
-    felirat.className = 'fotozas-szunetel';
-    felirat.textContent = 'A stúdiófotózás jelenleg nem foglalható';
-    el.replaceWith(felirat);
-  });
-}
 
 /* Az élő foglaltság lekérése a Workertől és ráolvasztása a schedule.json-ra.
    Csak hozzáad: amit a schedule.json foglaltnak jelöl, az foglalt marad. */
@@ -164,7 +146,8 @@ const HONAPOK = [
 const FANNI_DAYS   = new Set([0, 6]);            // Va, Szo
 
 function napEngedelyezett(date) {
-  return st.withFanni ? FANNI_DAYS.has(date.getDay()) : true;
+  if (!st.withFanni) return true;
+  return FANNI_DAYS.has(date.getDay()) && !FOTOZAS_NELKUL.has(toDateStr(date));
 }
 const MIN_HOUR = 8;
 const MAX_HOUR = 18;
