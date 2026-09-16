@@ -405,8 +405,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   background: var(--c-taken);
   vertical-align: .08em;
 }
-.hero-notice-text { font-size: .92rem; line-height: 1.6; }
-.hero-notice-text strong { font-weight: 500; color: #fff; }
+.hero-notice-napok { margin-top: .35rem; font-size: 1.02rem; font-weight: 500; color: #fff; }
+.hero-notice-ido   { font-size: 1.02rem; font-weight: 500; color: #fff; font-variant-numeric: tabular-nums; }
+.hero-notice-text  { margin-top: .35rem; font-size: .85rem; line-height: 1.5; }
 
 .scroll-hint {
   position: absolute;
