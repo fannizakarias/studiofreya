@@ -101,6 +101,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-muted);
 }
 
+/* Nyitvatartás-változás közleménye a foglalás fejlécében */
+.section-notice {
+  margin-top: .5rem;
+  font-size: .85rem;
+  color: var(--c-muted);
+}
+
 /* ─── Container ─────────────────────────────────────────────────── */
 .container {
   max-width: var(--max-w);
