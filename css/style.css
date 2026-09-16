@@ -103,10 +103,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* Nyitvatartás-változás közleménye a foglalás fejlécében */
 .section-notice {
-  margin-top: .5rem;
-  font-size: .85rem;
-  color: var(--c-muted);
+  display: inline-block;
+  margin-top: 1rem;
+  padding: .7rem 1.1rem;
+  font-size: .92rem;
+  line-height: 1.6;
+  color: var(--c-dark);
+  background: var(--c-accent-lt);
+  border-left: 3px solid var(--c-accent);
+  border-radius: 2px;
+  text-align: left;
 }
+.section-notice strong { font-weight: 500; color: var(--c-accent); }
 
 /* ─── Container ─────────────────────────────────────────────────── */
 .container {
@@ -361,6 +369,43 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* Nyitvatartás-változás a hero alján — a látogató elsőként ezt látja */
+.hero-notice {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  max-width: 520px;
+  margin-top: 2.2rem;
+  padding: 1rem 1.4rem;
+  background: rgba(26, 25, 22, .55);
+  border: 1px solid rgba(246, 245, 242, .35);
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(246, 245, 242, .9);
+  transition: border-color .2s, background .2s;
+}
+.hero-notice:hover { border-color: rgba(246, 245, 242, .7); background: rgba(26, 25, 22, .7); }
+.hero-notice-title {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.hero-notice-title::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: .55rem;
+  border-radius: 50%;
+  background: var(--c-free);
+  vertical-align: .08em;
+}
+.hero-notice-text { font-size: .92rem; line-height: 1.6; }
+.hero-notice-text strong { font-weight: 500; color: #fff; }
 
 .scroll-hint {
   position: absolute;

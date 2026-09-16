@@ -5,6 +5,13 @@
 /* ─── Év a láblécben ──────────────────────────────────────────── */
 document.getElementById('year').textContent = new Date().getFullYear();
 
+/* ─── Időszakos közlemények ───────────────────────────────────── */
+/* A data-eddig napja után magától eltűnik — nem kell emlékezni a levételére. */
+document.querySelectorAll('[data-eddig]').forEach(el => {
+  const ma = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Budapest' });
+  if (ma > el.dataset.eddig) el.remove();
+});
+
 /* ─── Fejléc árnyék görgetéskor ──────────────────────────────── */
 const header = document.querySelector('.site-header');
 const hero   = document.querySelector('.hero');
