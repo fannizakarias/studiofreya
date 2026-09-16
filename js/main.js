@@ -98,6 +98,7 @@ fetch('data/schedule.json', { cache: 'no-store' })
   .then(data => {
     SZABAD  = data.szabad  || {};
     FOGLALT = data.foglalt || {};
+    if (data.fotozas === false) fotozasKikapcsolasa();
     jumpToEarliestAvailable();
     renderCalendar();
     if (st.dateStr) renderSlots();
@@ -106,6 +107,27 @@ fetch('data/schedule.json', { cache: 'no-store' })
   .catch(() => {
     // Nincs elérhető fájl — üres naptár marad
   });
+
+/* Az adminban kikapcsolt stúdiófotózás: a módválasztóból eltűnik, a
+   "Foglalok" gombok helyén felirat jelzi, hogy most nem foglalható. A
+   portfólió és a csomagok látszanak. Ha a látogató épp Fanni módban volt,
+   visszaváltunk stúdióbérlésre. */
+function fotozasKikapcsolasa() {
+  const fanniBtn  = document.querySelector('.bk-mode-btn[data-mode="fanni"]');
+  const studioBtn = document.querySelector('.bk-mode-btn[data-mode="studio"]');
+  if (st.withFanni && studioBtn) studioBtn.click();
+  if (fanniBtn) fanniBtn.hidden = true;
+  document.getElementById('bk-mode-bar')?.classList.add('bk-mode-bar--single');
+
+  ['btn-with-fotos', 'btn-with-fotos-pkg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const felirat = document.createElement('span');
+    felirat.className = 'fotozas-szunetel';
+    felirat.textContent = 'A stúdiófotózás jelenleg nem foglalható';
+    el.replaceWith(felirat);
+  });
+}
 
 /* Az élő foglaltság lekérése a Workertől és ráolvasztása a schedule.json-ra.
    Csak hozzáad: amit a schedule.json foglaltnak jelöl, az foglalt marad. */
