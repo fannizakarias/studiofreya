@@ -1710,6 +1710,57 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .studio-hours { gap: 1.5rem; }
 }
 
+/* Stúdióbérlés árai */
+.studio-pricing {
+  margin-top: 1.75rem;
+  padding: 1.1rem 1.25rem 1.2rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 2px;
+}
+.studio-price-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .5rem;
+  margin-top: .7rem;
+}
+.studio-price-list li {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding: .55rem .6rem;
+  background: var(--c-bg);
+  border-radius: 2px;
+  text-align: center;
+}
+.studio-price-list span {
+  font-size: .75rem;
+  color: var(--c-muted);
+}
+.studio-price-list strong {
+  font-family: var(--f-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--c-dark);
+  white-space: nowrap;
+}
+.studio-price-note {
+  margin-top: .75rem;
+  font-size: .8rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+.studio-price-link {
+  display: inline-block;
+  margin-top: .6rem;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+.studio-price-link:hover { text-decoration: underline; }
+
+
 /* ─── Felszerelés-váltó ─────────────────────────────────────────── */
 .eq-explorer {
   margin-top: 2rem;
