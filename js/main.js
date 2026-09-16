@@ -134,12 +134,12 @@ const HONAPOK = [
   'Július','Augusztus','Szeptember','Október','November','December',
 ];
 
-// 0=V, 1=H, 2=K, 3=Sze, 4=Cs, 5=P, 6=Szo
+// 0=Va, 1=Hé, 2=Ke, 3=Sze, 4=Cs, 5=Pé, 6=Szo
 /* Stúdió módban nincs fix nap-lista: azt a naptár (schedule.json) dönti el,
    így az adminban kézzel megnyitott kedd/csütörtök is foglalhatóvá válik.
    Amelyik napra nincs meghirdetett óra, az magától zártnak látszik.
    Fanni módban marad a fix hétvégi korlát — az az ő elérhetősége. */
-const FANNI_DAYS   = new Set([0, 6]);            // V, Szo
+const FANNI_DAYS   = new Set([0, 6]);            // Va, Szo
 
 function napEngedelyezett(date) {
   return st.withFanni ? FANNI_DAYS.has(date.getDay()) : true;
