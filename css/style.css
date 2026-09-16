@@ -378,21 +378,22 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   max-width: 520px;
   margin-top: 2.2rem;
   padding: 1rem 1.4rem;
-  background: rgba(26, 25, 22, .55);
-  border: 1px solid rgba(246, 245, 242, .35);
+  background: rgba(26, 25, 22, .6);
+  border: 1px solid rgba(201, 64, 64, .6);
+  border-left: 3px solid var(--c-taken);
   border-radius: 2px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: rgba(246, 245, 242, .9);
   transition: border-color .2s, background .2s;
 }
-.hero-notice:hover { border-color: rgba(246, 245, 242, .7); background: rgba(26, 25, 22, .7); }
+.hero-notice:hover { border-color: var(--c-taken); background: rgba(26, 25, 22, .72); }
 .hero-notice-title {
   font-size: .72rem;
   font-weight: 500;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: #fff;
+  color: #f28b8b;   /* a --c-taken világosabb árnyalata — sötét háttéren is olvasható */
 }
 .hero-notice-title::before {
   content: '';
@@ -401,7 +402,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   height: 7px;
   margin-right: .55rem;
   border-radius: 50%;
-  background: var(--c-free);
+  background: var(--c-taken);
   vertical-align: .08em;
 }
 .hero-notice-text { font-size: .92rem; line-height: 1.6; }
