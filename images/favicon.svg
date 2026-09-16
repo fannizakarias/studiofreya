@@ -1,4 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="5" fill="#2D2926"/>
-  <text x="16" y="25" font-family="Georgia, serif" font-size="24" font-weight="400" text-anchor="middle" fill="#f6f5f2">F</text>
+  <rect width="32" height="32" rx="6" fill="#2D2926"/>
+  <!-- A logo-aperture.svg rekesz-ikonja, a 32×32-es kerethez igazítva -->
+  <g transform="translate(16 16) scale(0.95) translate(-100 -25)" fill="none" stroke="#f6f5f2" stroke-width="1.8" stroke-linecap="round">
+    <circle cx="100" cy="25" r="12"/>
+    <path d="M100 13 L106 25 M111 20 L100 25 M109 32 L100 25 M100 37 L94 25 M89 30 L100 25 M91 18 L100 25"/>
+  </g>
 </svg>
