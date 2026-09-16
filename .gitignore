@@ -20,13 +20,15 @@ __pycache__/
 # Visszaigazoló email sablonok — ne kerüljenek a publikus oldalra
 visszaigazolo-fotozas-zakarias-fanni.md
 visszaigazolo-studioberles.md
-ertekeles-keres.md
+szamla-ertekeles-email.md
 
 # Foglalási adatok és generált visszaigazolók (személyes adat)
 foglalasok/foglalasok.csv
 foglalasok/modositasok.csv
 foglalasok/kezi-foglalasok.csv
 foglalasok/visszaigazolasok/
+# Az admin naptára — a gépek közötti közös állapot (Dropbox szinkronizálja)
+foglalasok/naptar.json
 
 # Visszaigazoló email generátor — ne kerüljön a publikus oldalra
 generate_emails.py
