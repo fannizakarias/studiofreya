@@ -1751,15 +1751,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   line-height: 1.6;
   color: var(--c-muted);
 }
-.studio-price-link {
-  display: inline-block;
-  margin-top: .6rem;
-  font-size: .72rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--c-accent);
-}
-.studio-price-link:hover { text-decoration: underline; }
+.studio-price-btn { margin-top: 1rem; }
 
 
 /* ─── Felszerelés-váltó ─────────────────────────────────────────── */
