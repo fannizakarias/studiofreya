@@ -813,8 +813,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* Availability dot */
 .bk-day-dot {
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--c-free);
   flex-shrink: 0;
@@ -835,8 +835,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 .bk-cal-dot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--c-free);
   margin-right: .2rem;
