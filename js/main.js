@@ -657,7 +657,7 @@ bookingForm.addEventListener('submit', async (e) => {
   }
   if (!validateSzemelyek(document.getElementById('b-szemelyek').value)) {
     document.getElementById('b-szemelyek').focus();
-    alert('A résztvevők száma 1 és 6 között kell legyen.');
+    alert('A résztvevők száma 1 és 7 között kell legyen.');
     return;
   }
 
