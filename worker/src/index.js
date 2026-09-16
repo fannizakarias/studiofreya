@@ -88,12 +88,14 @@ function ellenoriz(b) {
   if (!Number.isInteger(ora) || ora < MIN_HOUR || ora >= MAX_HOUR) return 'Hibás időpont.';
 
   const orak = Number(b.orak);
-  if (!Number.isInteger(orak) || orak < 1 || orak > 2) return 'Hibás időtartam.';
+  // A honlap stúdióbérlésnél 2 óránál hosszabb foglalást is enged (a
+  // "+ bővítés" gombbal) — a felső határ itt csak a nyitvatartás.
+  if (!Number.isInteger(orak) || orak < 1) return 'Hibás időtartam.';
   if (ora + orak > MAX_HOUR) return 'A foglalás túlnyúlik a nyitvatartáson.';
 
   if (!b.nev) return 'A név megadása kötelező.';
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email || '')) return 'Hibás e-mail cím.';
-  if (!b.telefon) return 'A telefonszám megadása kötelező.';
+  // A telefonszám a honlapon nem kötelező, ezért itt sem az.
 
   return null;
 }

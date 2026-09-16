@@ -680,7 +680,9 @@ bookingForm.addEventListener('submit', async (e) => {
 
   /* A Worker rögzíti a foglalást, és közben ellenőrzi, hogy időközben nem
      vitte-e el más ugyanazt az órát. Ha nem elérhető, a foglalás az e-maillel
-     akkor is elmegy — a rendszer a Worker nélkül is működik. */
+     akkor is elmegy — a rendszer a Worker nélkül is működik. Ilyenkor viszont
+     az admin letöltése sem látja, ezért ezt az e-mail tárgyában jelezzük. */
+  let workerHiba = WORKER_URL ? '' : null;
   if (WORKER_URL) {
     try {
       const res = await fetch(`${WORKER_URL}/api/foglalas`, {
@@ -704,14 +706,19 @@ bookingForm.addEventListener('submit', async (e) => {
         document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
+      if (!res.ok) {
+        const valasz = await res.json().catch(() => ({}));
+        workerHiba = `${res.status}${valasz.error ? ` – ${valasz.error}` : ''}`;
+      }
     } catch {
       // Nem elérhető a Worker — megyünk tovább, az e-mail a fontos
+      workerHiba = 'nem elérhető';
     }
   }
 
   // Azonnali helyi frissítés (email és GitHub eredményétől függetlenül)
   if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
-  const bookedHours = st.hours === 2 ? [st.hour, st.hour + 1] : [st.hour];
+  const bookedHours = Array.from({ length: st.hours || 1 }, (_, i) => st.hour + i);
   bookedHours.forEach(h => {
     if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
   });
@@ -722,7 +729,8 @@ bookingForm.addEventListener('submit', async (e) => {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
       access_key: 'aba153bd-ed5e-4516-bfea-dc7e2ca838b4',
-      subject:    `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
+      subject:    `${workerHiba ? '⚠️ NINCS AZ ADMINBAN – ' : ''}Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
+      ...(workerHiba ? { worker_hiba: workerHiba } : {}),
       from_name:  adatok.nev,
       ...adatok,
     }),
