@@ -305,9 +305,10 @@ function renderCalendar() {
       if (hasSlots) {
         el.classList.add('bk-cal-day--avail');
 
-        // Zöld pont
+        // Zöld pont — félig piros, ha a napon már van foglalt óra is (mint az adminban)
+        const reszbenFoglalt = getSzabadOrak(dateStr, 1).some(s => s.taken);
         const dot = document.createElement('span');
-        dot.className = 'bk-day-dot';
+        dot.className = reszbenFoglalt ? 'bk-day-dot bk-day-dot--mixed' : 'bk-day-dot';
         el.appendChild(dot);
 
         el.addEventListener('click', () => {

@@ -813,17 +813,19 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* Availability dot */
 .bk-day-dot {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--c-free);
   flex-shrink: 0;
 }
 .bk-day-dot--taken { background: var(--c-taken); }
+.bk-day-dot--mixed { background: linear-gradient(135deg, var(--c-free) 50%, var(--c-taken) 50%); }
 
 /* Calendar legend */
 .bk-cal-legend {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: .5rem;
   margin-top: 1.2rem;
@@ -840,6 +842,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-right: .2rem;
 }
 .bk-cal-dot--taken { background: var(--c-taken); }
+.bk-cal-dot--mixed { background: linear-gradient(135deg, var(--c-free) 50%, var(--c-taken) 50%); }
+.bk-cal-legend > span { white-space: nowrap; }
 .bk-cal-legend > span + span { margin-left: 1rem; }
 
 /* ── Slots panel ──────────────────────────────────────────────── */
