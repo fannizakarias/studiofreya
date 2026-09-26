@@ -455,8 +455,20 @@ function hasAvail(dateStr, hours) {
    ═══════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.bk-mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    /* a már kiválasztott módra újra kattintva nem történik semmi (nem töröljük a kitöltöttet) */
-    if (btn.classList.contains('active') && bkWidget.dataset.chosen) return;
+    /* a már kiválasztott módra újra kattintva visszaáll a kezdő állapot: a naptár / csomagok
+       becsukódnak, és a nyíl is visszafordul (a CSS a data-chosen alapján forgatja) */
+    if (btn.classList.contains('active') && bkWidget.dataset.chosen) {
+      delete bkWidget.dataset.chosen;
+      Object.assign(st, { hours: null, price: null, label: null, desc: null,
+                          date: null, dateStr: null, hour: null });
+      document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('bk-packages').classList.remove('has-selection');
+      hideForms();
+      renderCalendar();
+      renderSlots();
+      bkFrissit();
+      return;
+    }
     document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     bkWidget.dataset.chosen = '1';
