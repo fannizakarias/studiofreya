@@ -467,6 +467,10 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
       renderCalendar();
       renderSlots();
       bkFrissit();
+      // gépen az egér még a gombon van: a ráhúzásos zöld kiemelés csak akkor jöjjön vissza, ha lement róla
+      btn.classList.add('bk-nohover');
+      btn.addEventListener('mouseleave', () => btn.classList.remove('bk-nohover'), { once: true });
+      btn.blur();
       return;
     }
     document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
