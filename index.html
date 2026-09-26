@@ -241,7 +241,6 @@
   <!-- Átmeneti sáv: a stúdióból a fotóshoz -->
   <section class="section-bridge">
     <h2 class="section-bridge-q">Stúdiófotózás</h2>
-    <a href="#fotos" class="btn section-bridge-btn">Ismerd meg Fannit</a>
     <a href="#fotos" class="section-bridge-down" aria-label="Tovább a fotóshoz">
       <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5 9 12 16 19 9"/></svg>
     </a>
@@ -355,7 +354,7 @@
   <section class="section section--booking" id="foglalas">
     <div class="container">
       <header class="section-header">
-        <h2 class="section-title">Foglalás</h2>
+        <h2 class="section-title section-title--caps">Foglalás</h2>
         <p class="section-sub">Válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy Zakariás Fannitól kérsz fotózást, majd jelölj ki egy szabad időpontot.<br>A foglalás kizárólag a visszaigazoló e-mail megérkezése után érvényes.</p>
         <p class="section-hours">Nyitvatartás: <strong>Sze · Cs · Pé · Szo · Va</strong> &nbsp;08:00–18:00</p>
         <p class="section-notice"><strong>Változik a nyitvatartás:</strong> 2026. október 1-től szerda, csütörtök, péntek, szombat és vasárnap, 08:00–18:00. A már lefoglalt időpontokat a változás nem érinti.</p>
@@ -399,6 +398,12 @@
             <span class="bk-pkg-desc">90 perces fotózás<br>30 retusált kép</span>
             <span class="bk-pkg-price">65 000 Ft</span>
           </button>
+        </div>
+
+        <!-- Ár kijelző — a naptár fölött, hogy a végösszeg mindig szem előtt legyen -->
+        <div class="bk-price-display" id="bk-price-display" hidden>
+          <span class="bk-price-label" id="bk-price-label"></span>
+          <span class="bk-price-amount" id="bk-price-amount"></span>
         </div>
 
         <!-- Naptár + időpontok -->
@@ -445,12 +450,6 @@
           </div>
 
         </div><!-- /.bk-main -->
-
-        <!-- Ár kijelző -->
-        <div class="bk-price-display" id="bk-price-display" hidden>
-          <span class="bk-price-label" id="bk-price-label"></span>
-          <span class="bk-price-amount" id="bk-price-amount"></span>
-        </div>
 
         <!-- Személyes adatok -->
         <div class="bk-form-panel" id="bk-form-panel" hidden>
@@ -537,7 +536,7 @@
                 <span class="bk-check-box"></span>
                 <span class="bk-check-text" id="feltetelek-text">
                   Elolvastam és elfogadom a
-                  <button type="button" class="privacy-link" id="open-feltetelek-form">Bérlési feltételeket</button> *
+                  <button type="button" class="privacy-link" id="open-feltetelek-form">Bérlési feltételeket</button> <span class="bk-check-date" id="feltetelek-hatalyos"></span> *
                 </span>
               </label>
               <span class="bk-field-error" id="b-feltetelek-err">Kérlek fogadd el a bérlési feltételeket.</span>
@@ -548,7 +547,7 @@
                 <span class="bk-check-box"></span>
                 <span class="bk-check-text">
                   Elolvastam és elfogadom az
-                  <button type="button" class="privacy-link" id="open-privacy">Adatkezelési tájékoztatót</button> *
+                  <button type="button" class="privacy-link" id="open-privacy">Adatkezelési tájékoztatót</button> <span class="bk-check-date" id="adatkezeles-hatalyos"></span> *
                 </span>
               </label>
               <span class="bk-field-error" id="b-adatkezeles-err">Kérlek fogadd el az adatkezelési tájékoztatót.</span>
@@ -573,41 +572,63 @@
   <section class="section" id="gyik">
     <div class="container">
       <header class="section-header">
-        <h2 class="section-title">Gyakori kérdések</h2>
+        <h2 class="section-title section-title--caps">Gyakori kérdések</h2>
       </header>
       <div class="faq-list">
-        <div class="faq-item">
-          <h3>Hogyan foglalhatok időpontot?</h3>
+        <!-- Karácsonyi díszlet — data-eddig után magától eltűnik -->
+        <details class="faq-item" data-eddig="2026-12-31">
+          <summary><h3>Milyen díszlet lesz a stúdióban október 19. után?</h3></summary>
+          <p>2026. október 19-től karácsonyi dekoráció van a stúdióban: fenyőfa, meleg fények, hintaló és piros zokni, családi, gyerek- és páros fotózásokhoz. Ha nem karácsonyi díszletben szeretnél fotózni vagy fotózkodni, a foglalás előtt vedd fel velünk a kapcsolatot az <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> címen vagy a <a href="tel:+36303066297">+36 30 306 6297</a> számon, és megbeszéljük a lehetőségeket.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Hogyan foglalhatok időpontot?</h3></summary>
           <p>A <a href="#foglalas">foglalási felületen</a> válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy Zakariás Fannitól kérsz fotózást, majd jelölj ki egy szabad időpontot a naptárban. A foglalás a visszaigazoló e-mail megérkezése után válik érvényessé, amelyet 1 munkanapon belül küldünk.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Mennyibe kerül a stúdióbérlés?</h3>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mennyibe kerül a stúdióbérlés?</h3></summary>
           <p>Az első óra 10 000 Ft, minden további megkezdett óra 8 000 Ft. Az ár tartalmazza a teljes felszerelés — világítás, hátterek, berendezett enteriőr — használatát. A fizetés a foglalás napján történik, készpénzben a helyszínen vagy banki átutalással.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Mi a különbség a stúdióbérlés és a stúdiófotózás között?</h3>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mi a különbség a stúdióbérlés és a stúdiófotózás között?</h3></summary>
           <p>Stúdióbérlés esetén a teret veszed igénybe önállóan — saját fényképezőgéppel vagy fotóssal érkezel. Stúdiófotózásnál Zakariás <a href="#fotos">Fanni</a> lesz a fotósod, és a csomagár már tartalmazza a stúdió használatát is, így nincs külön bérleti díj.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Le tudom mondani vagy módosítani a foglalást?</h3>
-          <p>Igen, az időpont előtt legalább 48 órával díjmentesen lemondható vagy módosítható e-mailben. 48 órán belüli lemondás esetén a díj 50%-a felszámításra kerülhet.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Mikor kapom meg a retusált képeket?</h3>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Le tudom mondani vagy módosítani a foglalást?</h3></summary>
+          <p>Igen, az időpont előtt legalább 48 órával díjmentesen lemondható vagy módosítható az <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> e-mail-címen. 48 órán belüli lemondás esetén a díj 50%-a, meg nem jelenés esetén a teljes díj felszámításra kerülhet.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mikor kapom meg a retusált képeket?</h3></summary>
           <p>A fotózás után Fanni előválogatja a képeket, és a sikerült felvételeket online galériában (Pixieset) megosztja veled. Ebből a megosztástól számított 7 napon belül te választod ki a csomagodnak megfelelő számú képet, a retusált képeket pedig a kiválogatást követő 14 munkanapon belül, szintén online galériában kapod meg. Extra retusált képek 1 000 Ft/db áron rendelhetők.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Hoznom kell saját ruhát vagy kelléket?</h3>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Hoznom kell saját ruhát vagy kelléket?</h3></summary>
           <p>Igen, az öltözékről és a kellékekről neked kell gondoskodnod. Ha szeretnéd, előre egyeztethetünk arról, mi illik leginkább az adott fotózáshoz.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Hol található a stúdió?</h3>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mire figyeljek a stúdióban?</h3></summary>
+          <p>Kérünk, hozz váltócipőt — utcai cipővel a stúdióba belépni nem lehet. Stúdióbérlésnél 5–10 perccel a kezdés előtt érkezz; minden foglalás utolsó 10 perce a rendbetételé (pl. 2 óra bérlés = 1 óra 50 perc használat), a bérlés végén pedig pontosan kell távozni. Hosszabbításra csak akkor van lehetőség, ha utánad nincs foglalás. A stúdióba legfeljebb 7 fő léphet be, a dohányzás és az alkoholfogyasztás tilos. Állatot előzetes egyeztetéssel hozhatsz.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mire bérelhető a stúdió?</h3></summary>
+          <p>Fotózásra (portré, termék, brand, divat stb.), videófelvételre, reklám- és tartalomgyártásra, valamint workshopra. Rendezvény, buli, összejövetel vagy más, fotózással nem összefüggő tevékenység céljára, illetve erotikus vagy aktfotózásra a stúdió nem bérelhető. Ha nem vagy biztos benne, írj nekünk előre.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Mi történik, ha késem a fotózásról?</h3></summary>
+          <p>A késés a fotózási időből vonódik le, a csomag ára nem változik. Ha tudod, hogy késni fogsz, jelezd nekünk minél előbb.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Megjelennek a képeim Fanni portfóliójában?</h3></summary>
+          <p>Csak a beleegyezéseddel. Ha Fanni vagy a stúdió szeretné felhasználni a rólad készült képeket (például a portfólióban, a weboldalon vagy közösségi médiában), előtte egyeztetünk veled. A hozzájárulásod nélkül egyetlen képet sem teszünk közzé, és a már megadott hozzájárulást is bármikor visszavonhatod az <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> címen.</p>
+        </details>
+        <details class="faq-item">
+          <summary><h3>Hol található a stúdió?</h3></summary>
           <p>A Studio Freya Veszprém belvárosában, a Rákóczi Ferenc utca 4. szám alatt van, sétatávolságra az Óváros tértől. Nyitvatartás: szerdán, csütörtökön, pénteken, szombaton és vasárnap 08:00–18:00 óra között (2026. október 1-től). A már lefoglalt időpontokat a változás nem érinti. Elérhetőségeink a <a href="#kapcsolat">Kapcsolat</a> szekcióban találhatók.</p>
-        </div>
+        </details>
       </div>
 
       <!-- Parkolás -->
       <div class="faq-parking" id="parkolas">
+        <p class="fanni-portfolio-label fanni-portfolio-label--flush">Parkolás</p>
         <h3>Hol tudok parkolni a stúdió közelében?</h3>
         <p class="parking-intro">A stúdiónak nincs saját parkolója, de a környező utcákban és két parkolóházban is találsz helyet pár perc sétára. A stúdió utcája és környéke a belváros piros zónájába tartozik, ahol hétköznap 7:00–17:00 között kell fizetni — hétvégén és ünnepnapokon a közterületi parkolás ingyenes.</p>
 
@@ -728,6 +749,7 @@
       <div class="modal-content">
         <h2 id="privacy-modal-title">Adatkezelési tájékoztató</h2>
         <p class="modal-date">Hatályos: 2026. szeptember 16-tól</p>
+        <p class="modal-archive">Korábbi változatok és hatályuk: <a href="feltetelek/">studiofreya.hu/feltetelek</a></p>
 
         <h3>1. Az adatkezelő</h3>
         <p>
@@ -814,7 +836,8 @@
       <button class="modal-close" id="close-aszf" aria-label="Bezárás">&times;</button>
       <div class="modal-content">
         <h2 id="aszf-modal-title">Bérlési feltételek</h2>
-        <p class="modal-date">Hatályos: 2026. szeptember 16-tól</p>
+        <p class="modal-date">Hatályos: 2026. szeptember 26-tól</p>
+        <p class="modal-archive">Korábbi változatok és hatályuk: <a href="feltetelek/">studiofreya.hu/feltetelek</a></p>
 
         <h3>1. Általános rendelkezések</h3>
         <p><strong>Szolgáltató:</strong> Zakariás Fanni egyéni vállalkozó<br>
@@ -860,7 +883,6 @@
           <li>A stúdióban tilos a dohányzás és az alkohol fogyasztása.</li>
           <li>Állatok behozatala előzetes egyeztetést igényel.</li>
           <li>Kérjük, hozz váltócipőt — utcai cipővel a stúdióba belépni nem lehet.</li>
-          <li>Nagy bútorok és berendezési tárgyak áthelyezése nem engedélyezett.</li>
           <li>Erotikus vagy aktfotózás céljára a stúdió nem bérelhető.</li>
           <li>A bérlő köteles a felszerelést rendeltetésszerűen használni, és a stúdiót abban az állapotban visszaadni, amelyben átvette.</li>
           <li>A felszerelésben okozott kárt a bérlő köteles megtéríteni. A kár mértékét a szolgáltató határozza meg az aktuális javítási vagy pótlási költségek alapján.</li>
@@ -913,7 +935,8 @@
       <button class="modal-close" id="close-fotozas" aria-label="Bezárás">&times;</button>
       <div class="modal-content">
         <h2 id="fotozas-modal-title">Fotózási feltételek</h2>
-        <p class="modal-date">Hatályos: 2026. szeptember 16-tól</p>
+        <p class="modal-date">Hatályos: 2026. szeptember 26-tól</p>
+        <p class="modal-archive">Korábbi változatok és hatályuk: <a href="feltetelek/">studiofreya.hu/feltetelek</a></p>
 
         <h3>1. Általános rendelkezések</h3>
         <p><strong>Szolgáltató:</strong> Zakariás Fanni egyéni vállalkozó<br>
@@ -951,6 +974,7 @@
         <h3>7. Felkészülés a fotózásra</h3>
         <p>Az ügyfél felelős saját öltözékéért, kiegészítőiért és kellékeiért. A fotózásra hozott tárgyakért a szolgáltató nem vállal felelősséget.</p>
         <p>Kérjük, a megbeszélt időpontban érkezz — a késés a fotózási időből vonódik le, a csomag ára nem változik.</p>
+        <p>Kérjük, hozz váltócipőt — utcai cipővel a stúdióba belépni nem lehet. (Külső helyszínen tartott fotózásra ez nem vonatkozik.)</p>
 
         <h3>8. Felelősség</h3>
         <p>A szolgáltató nem vállal felelősséget az ügyfél által behozott tárgyakban keletkezett kárért vagy elveszett értékekért. A szolgáltató nem felelős vis maior körülmények miatt meghiúsuló fotózásért.</p>

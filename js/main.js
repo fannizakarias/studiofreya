@@ -388,6 +388,10 @@ const SLOT_PLACEHOLDER = `
     <p>Kattints egy zöld pontos napra<br>az elérhető időpontok megtekintéséhez</p>
   </div>`;
 
+/* Karácsonyi díszlet: erre az időszakra eső nap kiválasztásakor figyelmeztetés jelenik meg */
+const KARACSONY = { tol: '2026-10-19', ig: '2026-12-31' };
+const KARACSONY_NOTE = `<p class="bk-slots-note"><strong>Karácsonyi díszlet</strong>Október 19-től karácsonyi dekoráció van a stúdióban. Ha nem ezt a díszletet szeretnéd, a foglalás előtt vedd fel velünk a kapcsolatot: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>, <a href="tel:+36303066297">+36 30 306 6297</a>.</p>`;
+
 function renderSlots() {
   const container = document.getElementById('time-slots');
   const header    = document.getElementById('slots-header');
@@ -399,7 +403,8 @@ function renderSlots() {
     return;
   }
 
-  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>`;
+  const karacsonyi = st.dateStr >= KARACSONY.tol && st.dateStr <= KARACSONY.ig;
+  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>${karacsonyi ? KARACSONY_NOTE : ''}`;
 
   if (st.withFanni) {
     if (!st.hours) {
@@ -873,8 +878,25 @@ const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open
 const closeFootozas   = makeModal('fotozas-modal',    'close-fotozas',    ['open-fotozas']);
 const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open-impresszum']);
 
+/* A visszaigazoló e-mailekből linkelhető feltételek: studiofreya.hu/#berlesi-feltetelek, /#fotozasi-feltetelek */
+const HASH_MODALS = { '#berlesi-feltetelek': 'open-aszf', '#fotozasi-feltetelek': 'open-fotozas' };
+function openModalFromHash() {
+  const btnId = HASH_MODALS[location.hash];
+  if (btnId) document.getElementById(btnId)?.click();
+}
+openModalFromHash();
+window.addEventListener('hashchange', openModalFromHash);
+
 /* ── Feltételek checkbox — módtól függő ──────────────────────── */
+/* A hatálydátum a modál „Hatályos: …” sorából jön, így csak egy helyen kell átírni */
+function hatalyos(modalId) {
+  const t = document.querySelector(`#${modalId} .modal-date`)?.textContent.trim() || '';
+  return t ? `(${t.charAt(0).toLowerCase()}${t.slice(1)})` : '';
+}
+document.getElementById('adatkezeles-hatalyos').textContent = hatalyos('privacy-modal');
+
 function updateFeltetelek() {
+  document.getElementById('feltetelek-hatalyos').textContent = hatalyos(st.withFanni ? 'fotozas-modal' : 'aszf-modal');
   const btn  = document.getElementById('open-feltetelek-form');
   const cb   = document.getElementById('b-feltetelek');
   const err  = document.getElementById('b-feltetelek-err');
