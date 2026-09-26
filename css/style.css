@@ -2194,6 +2194,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   max-width: 34rem;
 }
 
+.xmas-text--room { margin-top: -1rem; }
+.xmas-text strong { color: var(--c-bg); font-weight: 500; }
+
 .xmas-btn {
   background: var(--c-bg);
   color: #1f3325;
