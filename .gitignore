@@ -32,3 +32,6 @@ foglalasok/naptar.json
 
 # Visszaigazoló email generátor — ne kerüljön a publikus oldalra
 generate_emails.py
+
+# Céges szerződéssablonok és útmutató — belső, ne kerüljön a publikus repóba
+ceges/
