@@ -1861,22 +1861,21 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 @media (max-width: 900px) {
-  /* a szobák keskeny kijelzőn is egymás mellett, oldalra lapozhatóan;
-     a következő szoba széle kilátszik, így látszik, hogy lapozni lehet */
-  .rooms {
-    --rooms-pad: 3rem;   /* szekció + container oldalmargó */
+  /* keskeny kijelzőn a szobák egymás alatt, jól elválasztva:
+     elöl a név és a leírás, alatta a szoba saját, lapozható képei */
+  .rooms { grid-template-columns: 1fr; gap: 0; max-width: 520px; }
+  .room {
     display: flex;
-    gap: 1.2rem;
-    margin-inline: calc(-1 * var(--rooms-pad));
-    padding: 0 var(--rooms-pad) .5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--rooms-pad);
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    flex-direction: column;
+    padding: 2.2rem 0 2.6rem;
+    border-top: 1px solid var(--c-border);
   }
-  .rooms::-webkit-scrollbar { display: none; }
-  .room { flex: 0 0 min(46%, 340px); scroll-snap-align: start; }
+  .room:last-child { border-bottom: 1px solid var(--c-border); margin-bottom: 2.5rem; }
+  .room-label, .room-name, .room-myth, .room-text { order: -1; }
+  .room-text { margin-bottom: 1.2rem; }
+  .room-shots { aspect-ratio: 4 / 3; }
+  .room-dots { margin: .8rem 0 0; justify-content: center; }
+  .room-dots:empty { display: none; }
   .studio-bar { grid-template-columns: 1fr 1fr; }
   .studio-bar div:nth-child(3),
   .studio-bar .btn { grid-column: 1 / -1; text-align: center; }
@@ -2683,9 +2682,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 @media (max-width: 640px) {
   :root { --pad-sec: 4.5rem 1.25rem; }
-  .rooms { --rooms-pad: 2.75rem; gap: 1rem; }
-  .room { flex-basis: 80%; }
-  .room-name { font-size: 1.6rem; }
 
   .nav-links {
     display: none;
