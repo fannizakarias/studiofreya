@@ -1226,6 +1226,11 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-legend-dot--taken { background: var(--c-taken); }
 
 /* ── Form panel ───────────────────────────────────────────────── */
+@keyframes bk-lepes-be { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .bk-widget.bk-step-anim * { animation: none !important; }
+}
+
 /* összegző sorok, „Tovább” gomb és órákra vonatkozó tipp csak mobilon látszanak */
 .bk-summary, .bk-next-bar, .bk-step-title, .bk-slots-hint, .faq-all-toggle { display: none; }
 
@@ -2871,7 +2876,19 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   /* ── Lépésenként nyíló foglalás: típus → nap → időpont → adatok ──
      A js/main.js a #bk-widget data-step attribútumát állítja; ami már
      kész, az a tetején lévő összegző sorokba kerül. */
-  .bk-widget { scroll-margin-top: 5.5rem; overflow: clip; }   /* clip: így a ragadós „Tovább” sáv működik */
+  .bk-widget {
+    scroll-margin-top: 5.5rem;
+    overflow: clip;          /* clip: így a ragadós „Tovább” sáv működik */
+    overflow-anchor: none;   /* lépéscserénél a böngésző ne tologassa magától a görgetést */
+  }
+
+  /* lépéscserénél az új tartalom halványan úszik be */
+  .bk-widget.bk-step-anim .bk-step-title,
+  .bk-widget.bk-step-anim .bk-mode-bar,
+  .bk-widget.bk-step-anim .bk-duration-bar,
+  .bk-widget.bk-step-anim .bk-packages,
+  .bk-widget.bk-step-anim .bk-main,
+  .bk-widget.bk-step-anim .bk-form-panel { animation: bk-lepes-be .28s ease-out; }
 
   .bk-widget:not([data-step="mode"]) .bk-mode-bar,
   .bk-widget:not([data-step="mode"]) .bk-duration-bar,
@@ -2964,22 +2981,23 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-widget:not([data-chosen]) .bk-mode-btn.active::after { transform: scaleX(0); }
 
   /* csomagok a foglalásban: kártyák, fent név és ár, alatta a leírás */
-  .bk-packages { grid-template-columns: 1fr; gap: .7rem; padding: 0 1.25rem 1.2rem; border-bottom: 0; }
+  .bk-packages { grid-template-columns: 1fr; gap: .7rem; padding: 1rem 1.25rem 1.2rem; border-bottom: 0; }
   .bk-packages .bk-pkg-btn {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: .25rem .8rem;
+    gap: .25rem .6rem;
     overflow: hidden;
-    padding: 1rem 1.1rem;
+    padding: 1rem;
     border: 1px solid var(--c-border);
     border-radius: 4px;
     background: var(--c-surface);
   }
   .bk-packages .bk-pkg-btn.active { background: var(--c-accent-lt); border-color: var(--c-accent); }
   .bk-packages .bk-pkg-flag { position: static; order: 0; flex: 0 0 100%; }
-  .bk-packages .bk-pkg-name { order: 1; flex: 1 1 auto; }
-  .bk-packages .bk-pkg-price { order: 2; flex: none; padding-top: 0; }
+  .bk-packages .bk-pkg-name { order: 1; flex: 1 1 0; min-width: 0; font-size: 1.3rem; }
+  .bk-packages .bk-pkg-price { order: 2; flex: none; padding-top: 0; font-size: 1.2rem; white-space: nowrap; }
   .bk-packages .bk-pkg-desc { order: 3; flex: 0 0 100%; }
 
   /* időpontok: két oszlop, kompakt csempék */

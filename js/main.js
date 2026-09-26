@@ -289,13 +289,20 @@ function setStep(step, scroll = true) {
   bkTitle.innerHTML = info ? `<span class="bk-step-n">${info.n} / 4</span>${info.title}` : '';
   renderSummary();
   updateNextBtn();
-  /* csak akkor görgetünk, ha a foglalás teteje kikerült a látómezőből — különben a tartalom a helyén cserélődik */
-  if (scroll && kompakt()) {
-    const top = bkWidget.getBoundingClientRect().top;
-    if (top < 70 || top > window.innerHeight * 0.5) {
-      bkWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  if (!scroll || !kompakt()) return;
+
+  /* Ha a foglalás teteje kikerült a látómezőből, azonnal (nem animálva) a tetejére ugrunk. A html-en
+     `scroll-behavior: smooth` van: egy animált görgetés a közben összezsugorodó oldalon „úszkálna”,
+     ezért itt kifejezetten `instant`. Ha a teteje látszik, a tartalom a helyén cserélődik. */
+  const off = parseFloat(getComputedStyle(bkWidget).scrollMarginTop) || 88;
+  const top = bkWidget.getBoundingClientRect().top;
+  if (top < off - 4 || top > window.innerHeight * 0.45) {
+    window.scrollTo({ top: window.scrollY + top - off, behavior: 'instant' });
   }
+  // az új lépés halványan úszik be, így a tartalomcsere nem érződik ugrásnak
+  bkWidget.classList.remove('bk-step-anim');
+  void bkWidget.offsetWidth;
+  bkWidget.classList.add('bk-step-anim');
 }
 bkNextBtn.addEventListener('click', () => setStep('form'));
 
