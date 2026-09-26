@@ -38,8 +38,8 @@ document.querySelectorAll('.hero-notices').forEach(sav => {
    magunk animálunk: minden képkockán újraszámoljuk a célt, így pontosan oda érkezünk. */
 const mobilNezet = () => window.matchMedia('(max-width: 640px)').matches;
 let gorgetesId = 0;
-function gorgessIde(el) {
-  const off = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+function gorgessIde(el, eltolas) {
+  const off = eltolas ?? (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
   const cel = () => el.getBoundingClientRect().top + window.scrollY - off;
   const kezdet = window.scrollY;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -269,92 +269,127 @@ const st = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   LÉPÉSEK (mobilon) — mód → nap → időpont → adatok
-   A widget data-step attribútuma dönti el, mi látszik (a CSS csak
-   ≤640px-en használja); a kitöltött lépések összegző sorokba zsugorodnak.
+   FOGLALÁS MENETE
+   A #bk-widget attribútumai döntik el, mi látszik (a CSS-ben):
+   · data-step="pick"  — kiválasztás: a típus (Stúdióbérlés / Stúdiófotózás) mindig ott marad,
+                          a naptár és az időpontok csak a típus (és Fanninál a csomag) kiválasztása után nyílnak le
+   · data-step="form"  — az időpont kiválasztása után a kiválasztós rész eltűnik, csak az adatok kitöltése marad
+   · data-chosen       — a látogató már választott típust
+   · data-ready        — a naptár már megnyitható (stúdiónál a típus után, Fanninál a csomag után)
+   · data-day          — van kiválasztott nap (telefonon ekkor a naptár helyett az időpontok látszanak)
    ═══════════════════════════════════════════════════════════════════ */
 const bkWidget  = document.getElementById('bk-widget');
 const bkSummary = document.getElementById('bk-summary');
-const bkNextBar = document.getElementById('bk-next-bar');
-const bkNextBtn = document.getElementById('bk-next-btn');
 const bkTitle   = document.getElementById('bk-step-title');
 const kompakt   = () => window.matchMedia('(max-width: 640px)').matches;
 
-const BK_STEPS = {
-  mode: { label: 'Típus',    n: 1, title: 'Mit szeretnél foglalni?', done: () => !st.withFanni || st.hours !== null },
-  date: { label: 'Nap',      n: 2, title: 'Válassz napot',           done: () => st.dateStr !== null },
-  time: { label: 'Időpont',  n: 3, title: 'Válassz időpontot',       done: () => st.hour !== null },
-  form: { label: 'Adatok', n: 4, title: 'Add meg az adataidat', done: () => false },   // nincs összegző sora
-};
+const bkKesz = () => !!bkWidget.dataset.chosen && (!st.withFanni || st.hours !== null);
 
-function summaryValue(step) {
-  if (step === 'mode') {
-    return st.withFanni
-      ? ['Stúdiófotózás', st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '']
-      : ['Stúdióbérlés', ''];
+/* az állapotot (st) átvezeti a widget attribútumaira */
+function bkFrissit() {
+  bkWidget.toggleAttribute('data-ready', bkKesz());
+  bkWidget.toggleAttribute('data-day', st.dateStr !== null);
+}
+
+/* gördítés, ha a megnyílt rész a képernyő alsó felébe esik — animálva, de minden képkockán újraszámolva (lásd gorgessIde) */
+function bkMutasd(el) {
+  if (!el || el.offsetParent === null) return;
+  const top = el.getBoundingClientRect().top;
+  if (top > window.innerHeight * 0.6) gorgessIde(el, Math.round(window.innerHeight * 0.38));   // a típus még látszik fölötte
+}
+
+/* összegző sorok az adatlap fölött: a választott típus és időpont; stúdióbérlésnél az időtartam +/− gombokkal módosítható */
+function summaryRows() {
+  const nap = st.date ? st.date.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric', weekday: 'long' }) : '';
+  const rows = [{
+    k: 'Típus',
+    v: st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
+    s: st.withFanni && st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '',
+  }];
+  if (st.hour !== null) {
+    const hosszabbithato = !st.withFanni && (getSzabadOrak(st.dateStr, 1)
+      .find(x => x.hour === st.hour + st.hours) || { taken: true }).taken === false;
+    rows.push({
+      k: 'Időpont',
+      v: `${nap} · ${fmtHour(st.hour, st.hours || 1)}`,
+      s: st.withFanni ? '' : `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`,
+      stepper: !st.withFanni ? { le: st.hours > 1, fel: hosszabbithato } : null,
+    });
   }
-  if (step === 'date') {
-    return [st.date.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric', weekday: 'long' }), ''];
-  }
-  const len = st.hours || 1;
-  return [fmtHour(st.hour, len), st.withFanni ? '' : `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`];
+  return rows;
 }
 
 function renderSummary() {
-  const current = bkWidget.dataset.step;
   bkSummary.innerHTML = '';
-  Object.keys(BK_STEPS).forEach(step => {
-    if (current === 'done' || step === current || !BK_STEPS[step].done()) return;
-    const [main, sub] = summaryValue(step);
-    const row = document.createElement('button');
-    row.type = 'button';
+  if (bkWidget.dataset.step !== 'form') { bkSummary.hidden = true; return; }
+  summaryRows().forEach(r => {
+    const row = document.createElement('div');
     row.className = 'bk-sum-row';
     row.innerHTML = `
-      <span class="bk-sum-k">${BK_STEPS[step].label}</span>
+      <span class="bk-sum-k">${r.k}</span>
       <span class="bk-sum-text">
-        <span class="bk-sum-v">${main}</span>
-        ${sub ? `<span class="bk-sum-s">${sub}</span>` : ''}
-      </span>
-      <span class="bk-sum-edit">Módosítás</span>`;
-    row.addEventListener('click', () => setStep(step));
+        <span class="bk-sum-v">${r.v}</span>
+        ${r.s || r.stepper ? `<span class="bk-sum-s">${r.s}${r.stepper ? `
+          <span class="bk-dur">
+            <button type="button" data-d="-1" aria-label="Egy órával rövidebb"${r.stepper.le ? '' : ' disabled'}>−</button>
+            <button type="button" data-d="1" aria-label="Egy órával hosszabb"${r.stepper.fel ? '' : ' disabled'}>+</button>
+          </span>` : ''}</span>` : ''}
+      </span>`;
     bkSummary.appendChild(row);
   });
   bkSummary.hidden = !bkSummary.children.length;
 }
 
-/* a „Tovább” sáv a képernyő alján marad, amíg van kijelölt időpont — így nem kell a lista aljáig görgetni */
-function updateNextBtn() {
-  const show = bkWidget.dataset.step === 'time' && st.hour !== null;
-  bkNextBar.hidden = !show;
-  if (show) {
-    bkNextBtn.textContent = st.withFanni
-      ? 'Tovább az adataimhoz'
-      : `Tovább · ${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+/* stúdióbérlés időtartama az adatlapon: +1 óra csak akkor, ha a következő óra szabad */
+bkSummary.addEventListener('click', e => {
+  const b = e.target.closest('.bk-dur button');
+  if (!b || b.disabled || st.withFanni || st.hour === null) return;
+  const d = Number(b.dataset.d);
+  if (d > 0) {
+    const kov = getSzabadOrak(st.dateStr, 1).find(x => x.hour === st.hour + st.hours);
+    if (!kov || kov.taken) return;
   }
-}
+  if (st.hours + d < 1) return;
+  st.hours += d;
+  st.price = calcStudioPrice(st.hours);
+  st.label = `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+  showFormPanel();
+  renderSlots();
+  renderSummary();
+});
 
 function setStep(step, scroll = true) {
+  const valtott = bkWidget.dataset.step !== step;
   bkWidget.dataset.step = step;
-  const info = BK_STEPS[step];
-  bkTitle.innerHTML = info ? `<span class="bk-step-n">${info.n} / 4</span>${info.title}` : '';
+  bkFrissit();
+  bkTitle.innerHTML = step === 'pick'
+    ? '<span class="bk-step-t">Mit szeretnél foglalni?</span>'
+    : step === 'form'
+      ? '<span class="bk-step-t">Add meg az adataidat</span><button type="button" class="bk-back"><span aria-hidden="true">‹</span> Vissza</button>'
+      : '';
   renderSummary();
-  updateNextBtn();
-  if (!scroll || !kompakt()) return;
+  if (!valtott) return;   // ugyanazon a lépésen belül nincs görgetés és animáció
 
   /* Ha a foglalás teteje kikerült a látómezőből, azonnal (nem animálva) a tetejére ugrunk. A html-en
      `scroll-behavior: smooth` van: egy animált görgetés a közben összezsugorodó oldalon „úszkálna”,
      ezért itt kifejezetten `instant`. Ha a teteje látszik, a tartalom a helyén cserélődik. */
-  const off = parseFloat(getComputedStyle(bkWidget).scrollMarginTop) || 88;
-  const top = bkWidget.getBoundingClientRect().top;
-  if (top < off - 4 || top > window.innerHeight * 0.45) {
-    window.scrollTo({ top: window.scrollY + top - off, behavior: 'instant' });
+  if (scroll) {
+    const off = parseFloat(getComputedStyle(bkWidget).scrollMarginTop) || 88;
+    const top = bkWidget.getBoundingClientRect().top;
+    if (top < off - 4 || top > window.innerHeight * 0.45) {
+      window.scrollTo({ top: window.scrollY + top - off, behavior: 'instant' });
+    }
   }
-  // az új lépés halványan úszik be, így a tartalomcsere nem érződik ugrásnak
+  // az új rész halványan úszik be, így a tartalomcsere nem érződik ugrásnak
   bkWidget.classList.remove('bk-step-anim');
   void bkWidget.offsetWidth;
   bkWidget.classList.add('bk-step-anim');
 }
-bkNextBtn.addEventListener('click', () => setStep('form'));
+
+/* „Vissza”: az adatlapról vissza a kiválasztáshoz; a kiválasztott nap és időpont megmarad */
+bkTitle.addEventListener('click', e => {
+  if (e.target.closest('.bk-back')) setStep('pick');
+});
 
 function jumpToEarliestAvailable() {
   const today   = new Date(); today.setHours(0,0,0,0);
@@ -417,12 +452,8 @@ function hasAvail(dateStr, hours) {
    ═══════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.bk-mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    /* mobilon a már kiválasztott módra koppintva nem töröljük a kitöltöttet, csak továbblépünk */
-    if (kompakt() && btn.classList.contains('active') && (!st.withFanni || st.hours !== null)) {
-      bkWidget.dataset.chosen = '1';
-      setStep('date');
-      return;
-    }
+    /* a már kiválasztott módra újra kattintva nem történik semmi (nem töröljük a kitöltöttet) */
+    if (btn.classList.contains('active') && bkWidget.dataset.chosen) return;
     document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     bkWidget.dataset.chosen = '1';
@@ -442,8 +473,9 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     jumpToEarliestAvailable();
     renderCalendar();
     renderSlots();
-    // stúdióbérlésnél nincs több teendő a típussal; Fanninál a csomagra várunk
-    setStep(st.withFanni ? 'mode' : 'date', !st.withFanni);
+    // a típus ott marad; stúdiónál rögtön lenyílik a naptár, Fanninál előbb a csomagok
+    bkFrissit();
+    bkMutasd(document.querySelector(st.withFanni ? '.bk-pkg-note' : '.bk-main'));
   });
 });
 
@@ -465,7 +497,8 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
     updatePriceDisplay();
     renderCalendar();
     if (st.dateStr) renderSlots();
-    setStep('date');
+    bkFrissit();
+    bkMutasd(document.querySelector('.bk-main'));   // a csomag után lenyílik a naptár
   });
 });
 
@@ -533,7 +566,7 @@ function renderCalendar() {
           st.hour    = null;
           hideForms();
           renderSlots();
-          setStep('time');
+          bkFrissit();   // telefonon a naptár helyére az időpontok kerülnek
         });
       } else {
         // Nincs szabad slot — megkülönböztetjük: "teljesen foglalt" vs "nincs munkaidő"
@@ -590,11 +623,20 @@ const SLOT_PLACEHOLDER = `
 const KARACSONY = { tol: '2026-10-19', ig: '2026-12-31' };
 const KARACSONY_NOTE = `<p class="bk-slots-note bk-slots-note--xmas"><strong><svg class="bk-xmas-fenyo" viewBox="0 0 12 14" aria-hidden="true"><path d="M6 1.2 9.6 6.2H7.9L10.8 10.4H1.2L4.1 6.2H2.4Z" fill="#8cc08a"/><rect x="5.2" y="10.4" width="1.6" height="2.4" fill="#c9a36b"/><circle cx="6" cy="1.2" r="1.1" fill="#f3cf6f"/></svg>Karácsonyi díszlet</strong>Október 19-től karácsonyi dekoráció van a stúdióban. Ha nem ezt a díszletet szeretnéd, a foglalás előtt vedd fel velünk a kapcsolatot: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>, <a href="tel:+36303066297">+36 30 306 6297</a>.</p>`;
 
+/* telefonon: „‹ Másik nap” — vissza a naptárhoz */
+document.getElementById('slots-header').addEventListener('click', e => {
+  if (!e.target.closest('.bk-daybtn')) return;
+  Object.assign(st, { date: null, dateStr: null, hour: null });
+  hideForms();
+  renderCalendar();
+  renderSlots();
+  bkFrissit();
+});
+
 function renderSlots() {
   const container = document.getElementById('time-slots');
   const header    = document.getElementById('slots-header');
   container.innerHTML = '';
-  updateNextBtn();
 
   if (!st.dateStr) {
     header.innerHTML = '<span class="bk-slots-title">Válassz napot a naptárból</span>';
@@ -603,8 +645,10 @@ function renderSlots() {
   }
 
   const karacsonyi = st.dateStr >= KARACSONY.tol && st.dateStr <= KARACSONY.ig;
-  const orakTipp = st.withFanni ? '' : '<span class="bk-slots-hint">Több egymás utáni órát is kijelölhetsz.</span>';
-  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>${orakTipp}${karacsonyi ? KARACSONY_NOTE : ''}`;
+  const orakTipp = st.withFanni ? '' : '<span class="bk-slots-hint">Az időpont kiválasztása után az adatlapon az időtartam még módosítható.</span>';
+  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>` +
+    '<button type="button" class="bk-daybtn"><span aria-hidden="true">‹</span> Másik nap</button>' +   // telefonon a naptárhoz vissza
+    `${orakTipp}${karacsonyi ? KARACSONY_NOTE : ''}`;
 
   if (st.withFanni) {
     if (!st.hours) {
@@ -678,7 +722,7 @@ function renderSlotsStudio(container) {
 
         renderSlots();
         updatePriceDisplay();
-        if (st.hour !== null) showFormPanel();
+        if (st.hour !== null) { showFormPanel(); setStep('form'); }
         else hideForms();
       });
     }
@@ -1010,7 +1054,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   renderSlots();
   hideForms();
   delete bkWidget.dataset.chosen;
-  setStep('mode', false);
+  setStep('pick', false);
 
   document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
 });
@@ -1018,7 +1062,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 /* ─── Inicializálás ───────────────────────────────────────────── */
 renderCalendar();
 renderSlots();
-setStep('mode', false);
+setStep('pick', false);
 
 /* ─── "Stúdiófotózást foglalok" gomb: Fanni módba vált, és a foglaláshoz görget ─────
    Az állapotot előbb állítjuk be, és csak utána görgetünk — így a cél már végleges
@@ -1041,7 +1085,7 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
   updateFeltetelek();
   renderCalendar();
   renderSlots();
-  setStep('mode', false);
+  setStep('pick', false);
 
   const cel = document.getElementById('foglalas');
   if (mobilNezet()) gorgessIde(cel);

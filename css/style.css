@@ -102,14 +102,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   line-height: 1.65;
 }
 
-.section-hours {
-  margin-top: .75rem;
-  font-size: .8rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-}
-
 /* Nyitvatartás-változás közleménye a foglalás fejlécében */
 .section-notice {
   max-width: 46rem;
@@ -1231,8 +1223,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-widget.bk-step-anim * { animation: none !important; }
 }
 
-/* összegző sorok, „Tovább” gomb és órákra vonatkozó tipp csak mobilon látszanak */
-.bk-summary, .bk-next-bar, .bk-step-title, .bk-slots-hint, .faq-all-toggle { display: none; }
+.faq-all-toggle { display: none; }   /* csak telefonon látszik */
 
 .bk-form-panel {
   border-top: 1px solid var(--c-border);
@@ -1369,6 +1360,109 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 .bk-success p { color: var(--c-muted); font-size: .93rem; margin-bottom: 2.5rem; line-height: 1.7; }
+
+/* ── A foglalás menete ──
+   A js/main.js a #bk-widget attribútumait állítja (data-step, -chosen, -ready, -day):
+   a típus (Stúdióbérlés / Stúdiófotózás) mindig ott marad, a naptár csak választás után nyílik le,
+   az időpont kiválasztása után pedig csak az adatlap marad. */
+.bk-widget { overflow-anchor: none; }   /* lépéscserénél a böngésző ne tologassa magától a görgetést */
+
+/* lépéscserénél az új tartalom halványan úszik be */
+.bk-widget.bk-step-anim .bk-step-title,
+.bk-widget.bk-step-anim .bk-mode-bar,
+.bk-widget.bk-step-anim .bk-form-panel { animation: bk-lepes-be .28s ease-out; }
+
+/* amíg nincs típus választva: csak a két lehetőség látszik, egyik sem kiemelt */
+.bk-widget:not([data-chosen]) .bk-duration-bar,
+.bk-widget:not([data-chosen]) .bk-packages,
+.bk-widget:not([data-chosen]) .bk-pkg-note { display: none; }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active { background: none; }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active::after { transform: scaleX(0); }
+
+/* a naptár és az időpontok akkor nyílnak le, ha van típus (Fanninál csomag is) */
+.bk-widget:not([data-ready]) .bk-main { display: none; }
+
+/* az időpont kiválasztása után csak az adatlap marad */
+.bk-widget[data-step="form"] .bk-mode-bar,
+.bk-widget[data-step="form"] .bk-duration-bar,
+.bk-widget[data-step="form"] .bk-packages,
+.bk-widget[data-step="form"] .bk-pkg-note,
+.bk-widget[data-step="form"] .bk-main { display: none; }
+.bk-widget:not([data-step="form"]) .bk-form-panel { display: none; }
+
+/* az űrlap fejlécét (dátum + Módosítás) az összegző sorok váltják ki */
+.bk-form-header { display: none; }
+.bk-form-panel { border-top: 0; padding-top: 1.6rem; }
+
+/* összegző sorok az adatlap fölött */
+.bk-summary:not([hidden]) { display: block; border-bottom: 1px solid var(--c-border); }
+.bk-sum-row {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1rem;
+  padding: .95rem 2rem;
+  background: var(--c-bg);
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-dark);
+}
+.bk-sum-row:last-child { border-bottom: 0; }
+.bk-sum-k {
+  font-size: .66rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.bk-sum-text { display: flex; flex-direction: column; min-width: 0; }
+.bk-sum-v { font-family: var(--f-serif); font-size: 1.2rem; line-height: 1.3; }
+.bk-sum-s { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem .8rem; font-size: .82rem; color: var(--c-muted); }
+
+/* stúdióbérlés időtartama: − / + gombok */
+.bk-dur { display: inline-flex; gap: .4rem; }
+.bk-dur button {
+  width: 30px; height: 30px;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--c-dark);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.bk-dur button:hover:not(:disabled) { border-color: var(--c-accent); background: var(--c-accent-lt); }
+.bk-dur button:disabled { opacity: .35; cursor: not-allowed; }
+
+/* az aktuális rész címe; az adatlapnál a „‹ Vissza” a jobb szélen */
+.bk-step-title {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0;
+  padding: 1.8rem 2rem .6rem;
+  font-family: var(--f-serif);
+  font-size: 1.7rem;
+  line-height: 1.2;
+  color: var(--c-dark);
+}
+.bk-step-title:empty { display: none; }
+.bk-back {
+  margin-left: auto;
+  padding: .45rem .3rem .45rem .7rem;
+  font-family: var(--f-sans);
+  font-size: .85rem;
+  color: var(--c-accent);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.bk-back span { display: inline-block; margin-right: .15rem; font-size: 1.2em; line-height: 1; }
+.bk-back:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.bk-slots-hint { display: block; margin-top: .4rem; font-size: .85rem; color: var(--c-muted); }
+.bk-daybtn { display: none; }   /* csak telefonon: vissza a naptárhoz */
 
 /* ═══════════════════════════════════════════════════════════════════
    CONTACT
@@ -2927,54 +3021,19 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-legend { padding: .75rem 1.25rem; }
   .bk-form-panel { padding: 2rem 1.25rem 2.5rem; }
 
-  /* ── Lépésenként nyíló foglalás: típus → nap → időpont → adatok ──
-     A js/main.js a #bk-widget data-step attribútumát állítja; ami már
-     kész, az a tetején lévő összegző sorokba kerül. */
-  .bk-widget {
-    scroll-margin-top: 5.5rem;
-    overflow: clip;          /* clip: így a ragadós „Tovább” sáv működik */
-    overflow-anchor: none;   /* lépéscserénél a böngésző ne tologassa magától a görgetést */
-  }
+  /* ── Foglalás telefonon (a közös szabályok feljebb vannak) ── */
+  .bk-widget { scroll-margin-top: 5.5rem; }
+  /* van kiválasztott nap: a naptár helyére az időpontok kerülnek; „‹ Másik nap” visz vissza */
+  .bk-widget[data-day] .bk-calendar { display: none; }
+  .bk-widget:not([data-day]) .bk-slots-panel { display: none; }
+  .bk-form-panel { padding-top: 1.2rem; }
 
-  /* lépéscserénél az új tartalom halványan úszik be */
-  .bk-widget.bk-step-anim .bk-step-title,
-  .bk-widget.bk-step-anim .bk-mode-bar,
-  .bk-widget.bk-step-anim .bk-duration-bar,
-  .bk-widget.bk-step-anim .bk-packages,
-  .bk-widget.bk-step-anim .bk-main,
-  .bk-widget.bk-step-anim .bk-form-panel { animation: bk-lepes-be .28s ease-out; }
-
-  .bk-widget:not([data-step="mode"]) .bk-mode-bar,
-  .bk-widget:not([data-step="mode"]) .bk-duration-bar,
-  .bk-widget:not([data-step="mode"]) .bk-packages,
-  .bk-widget:not([data-step="mode"]) .bk-pkg-note,
-  .bk-widget:not([data-step="date"]):not([data-step="time"]) .bk-main,
-  .bk-widget:not([data-step="date"]) .bk-calendar,
-  .bk-widget:not([data-step="time"]) .bk-slots-panel,
-  .bk-widget:not([data-step="form"]) .bk-form-panel { display: none; }
-
-  /* az űrlap fejlécét (dátum + Módosítás) az összegző sorok váltják ki */
-  .bk-form-header { display: none; }
-  .bk-form-panel { border-top: 0; padding-top: 1.2rem; }
-
-  /* összegző sorok: egy sor egy kitöltött lépés, koppintásra újranyílik */
-  .bk-summary:not([hidden]) { display: block; border-bottom: 1px solid var(--c-border); }
+  /* összegző sorok */
   .bk-sum-row {
-    display: grid;
-    grid-template-columns: 4.3rem minmax(0, 1fr) auto;
-    align-items: baseline;
+    grid-template-columns: 4.3rem minmax(0, 1fr);
     gap: .6rem;
-    width: 100%;
     padding: .75rem 1.25rem;
-    background: var(--c-bg);
-    border: 0;
-    border-bottom: 1px solid var(--c-border);
-    text-align: left;
-    font-family: var(--f-sans);
-    color: var(--c-dark);
-    cursor: pointer;
   }
-  .bk-sum-row:last-child { border-bottom: 0; }
   .bk-sum-k {
     font-size: .62rem;
     letter-spacing: .16em;
@@ -2984,33 +3043,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-sum-text { display: flex; flex-direction: column; min-width: 0; }
   .bk-sum-v { font-family: var(--f-serif); font-size: 1.08rem; line-height: 1.3; }
   .bk-sum-s { font-size: .78rem; color: var(--c-muted); }
-  .bk-sum-edit {
-    font-size: .74rem;
-    color: var(--c-accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
 
-  /* az aktuális lépés címe: „2 / 4 Válassz napot” */
-  .bk-step-title {
-    display: flex;
-    align-items: baseline;
-    gap: .8rem;
-    margin: 0;
-    padding: 1.3rem 1.25rem .4rem;
-    font-family: var(--f-serif);
-    font-size: 1.45rem;
-    line-height: 1.2;
-    color: var(--c-dark);
-  }
-  .bk-step-title:empty { display: none; }
-  .bk-step-n {
-    font-family: var(--f-sans);
-    font-size: .64rem;
-    letter-spacing: .2em;
-    color: var(--c-accent);
-    white-space: nowrap;
-  }
+  .bk-step-title { gap: .8rem; padding: 1.3rem 1.25rem .4rem; font-size: 1.45rem; }
 
   /* 1. lépés: a két lehetőség egy-egy koppintható kártya, amíg nincs választás, egyik sem kiemelt */
   .bk-mode-bar { grid-template-columns: 1fr; gap: .7rem; padding: .8rem 1.25rem 1.2rem; border-bottom: 0; }
@@ -3069,24 +3103,30 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-slot-time { flex: none; font-size: .86rem; white-space: nowrap; }
   .bk-slot-label { font-size: .58rem; letter-spacing: .14em; }
 
-  /* a napot az összegző sor már kiírja; a fejléc csak akkor marad, ha van benne tipp vagy közlemény */
-  .bk-slots-header .bk-slots-title { display: none; }
-  .bk-slots-header:not(:has(.bk-slots-hint, .bk-slots-note)) { display: none; }
-  .bk-slots-header { padding: 1rem 1.25rem .2rem; border-bottom: 0; }
-  .bk-slots-hint { display: block; font-size: .82rem; color: var(--c-muted); }
-
-  /* „Tovább” sáv: a képernyő alján ragad, amíg van kijelölt időpont */
-  .bk-next-bar:not([hidden]) {
-    display: block;
-    position: sticky;
-    bottom: 0;
-    z-index: 5;
-    padding: .8rem 1.25rem calc(.8rem + env(safe-area-inset-bottom, 0px));
-    background: var(--c-surface);
-    border-top: 1px solid var(--c-border);
-    box-shadow: 0 -8px 20px rgba(26,25,22,.07);
+  /* időpontok fejléce: a kiválasztott nap és a „‹ Másik nap” gomb egy sorban */
+  .bk-slots-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .2rem .8rem;
+    padding: 1.1rem 1.25rem .3rem;
+    border-bottom: 0;
   }
-  .bk-next-btn { display: block; width: 100%; text-align: center; }
+  .bk-slots-title { font-size: 1.3rem; }
+  .bk-slots-hint, .bk-slots-note { flex: 0 0 100%; }
+  .bk-daybtn {
+    display: inline-block;
+    padding: .4rem .2rem .4rem .6rem;
+    font-family: var(--f-sans);
+    font-size: .85rem;
+    color: var(--c-accent);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .bk-daybtn span { display: inline-block; margin-right: .15rem; font-size: 1.2em; line-height: 1; }
 
   /* GYIK: az egész lista egy koppintással nyílik, alapból zárva */
   #gyik .section-header { position: relative; margin-bottom: 0; padding-right: 2.2rem; }
