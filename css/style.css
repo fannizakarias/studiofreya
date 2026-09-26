@@ -2211,6 +2211,16 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   gap: .75rem;
 }
 
+.xmas-shots figure { margin: 0; }
+
+.xmas-shots figcaption {
+  margin-top: .7rem;
+  font-family: var(--f-serif);
+  font-size: 1.25rem;
+  text-align: center;
+  color: var(--c-bg);
+}
+
 .xmas-shots img {
   display: block;
   width: 100%;
