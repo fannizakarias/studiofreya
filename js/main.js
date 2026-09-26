@@ -201,6 +201,75 @@ const st = {
   calMonth: new Date().getMonth(),
 };
 
+/* ═══════════════════════════════════════════════════════════════════
+   LÉPÉSEK (mobilon) — mód → nap → időpont → adatok
+   A widget data-step attribútuma dönti el, mi látszik (a CSS csak
+   ≤640px-en használja); a kitöltött lépések összegző sorokba zsugorodnak.
+   ═══════════════════════════════════════════════════════════════════ */
+const bkWidget  = document.getElementById('bk-widget');
+const bkSummary = document.getElementById('bk-summary');
+const bkNextBtn = document.getElementById('bk-next-btn');
+const kompakt   = () => window.matchMedia('(max-width: 640px)').matches;
+
+const BK_STEPS = {
+  mode: { label: 'Típus',    done: () => !st.withFanni || st.hours !== null },
+  date: { label: 'Nap',      done: () => st.dateStr !== null },
+  time: { label: 'Időpont',  done: () => st.hour !== null },
+};
+
+function summaryValue(step) {
+  if (step === 'mode') {
+    return st.withFanni
+      ? ['Stúdiófotózás', st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '']
+      : ['Stúdióbérlés', ''];
+  }
+  if (step === 'date') return [fmtDateHU(st.date), ''];
+  const len = st.hours || 1;
+  return [fmtHour(st.hour, len), st.withFanni ? '' : `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`];
+}
+
+function renderSummary() {
+  const current = bkWidget.dataset.step;
+  bkSummary.innerHTML = '';
+  Object.keys(BK_STEPS).forEach(step => {
+    if (current === 'done' || step === current || !BK_STEPS[step].done()) return;
+    const [main, sub] = summaryValue(step);
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'bk-sum-row';
+    row.innerHTML = `
+      <span class="bk-sum-text">
+        <span class="bk-sum-k">${BK_STEPS[step].label}</span>
+        <span class="bk-sum-v">${main}</span>
+        ${sub ? `<span class="bk-sum-s">${sub}</span>` : ''}
+      </span>
+      <span class="bk-sum-edit">Módosítás</span>`;
+    row.addEventListener('click', () => setStep(step));
+    bkSummary.appendChild(row);
+  });
+  bkSummary.hidden = !bkSummary.children.length;
+}
+
+function updateNextBtn() {
+  const show = bkWidget.dataset.step === 'time' && st.hour !== null;
+  bkNextBtn.hidden = !show;
+  if (show) {
+    bkNextBtn.textContent = st.withFanni
+      ? 'Tovább az adataimhoz'
+      : `Tovább · ${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+  }
+}
+
+function setStep(step, scroll = true) {
+  bkWidget.dataset.step = step;
+  renderSummary();
+  updateNextBtn();
+  if (scroll && kompakt()) {
+    bkWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+bkNextBtn.addEventListener('click', () => setStep('form'));
+
 function jumpToEarliestAvailable() {
   const today   = new Date(); today.setHours(0,0,0,0);
   const hours   = st.hours || 1;
@@ -262,6 +331,11 @@ function hasAvail(dateStr, hours) {
    ═══════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.bk-mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
+    /* mobilon a már kiválasztott módra koppintva nem töröljük a kitöltöttet, csak továbblépünk */
+    if (kompakt() && btn.classList.contains('active') && (!st.withFanni || st.hours !== null)) {
+      setStep('date');
+      return;
+    }
     document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     st.withFanni = btn.dataset.mode === 'fanni';
@@ -280,6 +354,8 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     jumpToEarliestAvailable();
     renderCalendar();
     renderSlots();
+    // stúdióbérlésnél nincs több teendő a típussal; Fanninál a csomagra várunk
+    setStep(st.withFanni ? 'mode' : 'date', !st.withFanni);
   });
 });
 
@@ -301,6 +377,7 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
     updatePriceDisplay();
     renderCalendar();
     if (st.dateStr) renderSlots();
+    setStep('date');
   });
 });
 
@@ -368,6 +445,7 @@ function renderCalendar() {
           st.hour    = null;
           hideForms();
           renderSlots();
+          setStep('time');
         });
       } else {
         // Nincs szabad slot — megkülönböztetjük: "teljesen foglalt" vs "nincs munkaidő"
@@ -428,6 +506,7 @@ function renderSlots() {
   const container = document.getElementById('time-slots');
   const header    = document.getElementById('slots-header');
   container.innerHTML = '';
+  updateNextBtn();
 
   if (!st.dateStr) {
     header.innerHTML = '<span class="bk-slots-title">Válassz napot a naptárból</span>';
@@ -436,7 +515,8 @@ function renderSlots() {
   }
 
   const karacsonyi = st.dateStr >= KARACSONY.tol && st.dateStr <= KARACSONY.ig;
-  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>${karacsonyi ? KARACSONY_NOTE : ''}`;
+  const orakTipp = st.withFanni ? '' : '<span class="bk-slots-hint">Több egymás utáni órát is kijelölhetsz.</span>';
+  header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>${orakTipp}${karacsonyi ? KARACSONY_NOTE : ''}`;
 
   if (st.withFanni) {
     if (!st.hours) {
@@ -546,6 +626,7 @@ function renderSlotsFanni(container) {
         el.classList.add('bk-slot--selected');
         st.hour = hour;
         showFormPanel();
+        setStep('form');
       });
     }
 
@@ -808,6 +889,7 @@ function showSuccess() {
   document.querySelector('.bk-main').hidden          = true;
   document.getElementById('bk-form-panel').hidden    = true;
   document.getElementById('booking-success').hidden  = false;
+  setStep('done', false);
 
   /* A siker-panel jóval alacsonyabb, mint a widget, amit lecserél: a szekció
      ~1100 px-szel összemegy. A görgetési pozíció viszont marad, így a látogató
@@ -839,6 +921,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   renderCalendar();
   renderSlots();
   hideForms();
+  setStep('mode', false);
 
   document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
 });
@@ -846,6 +929,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
 /* ─── Inicializálás ───────────────────────────────────────────── */
 renderCalendar();
 renderSlots();
+setStep('mode', false);
 
 /* ─── "Csomagot foglalok" gomb ────────────────────────────────── */
 document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => {
@@ -865,6 +949,7 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
     hideForms();
     renderCalendar();
     renderSlots();
+    setStep('mode', false);
   }, 600);
 });
 
@@ -952,27 +1037,6 @@ document.addEventListener('keydown', (e) => {
   if (!document.getElementById('fotozas-modal').hidden)     closeFootozas();
   if (!document.getElementById('impresszum-modal').hidden)  closeImpresszum();
   if (!document.getElementById('studio-lightbox').hidden)   lbClose();
-});
-
-/* ─── "Fotóst is kérek" gomb → Fanni módra vált ──────────────── */
-document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => {
-    document.querySelectorAll('.bk-mode-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.mode === 'fanni');
-    });
-    st.withFanni = true;
-    Object.assign(st, { hours: null, price: null, label: null,
-                        date: null, dateStr: null, hour: null });
-    document.getElementById('bk-duration-bar').hidden = true;
-    document.getElementById('bk-packages').hidden     = false;
-    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('bk-packages').classList.remove('has-selection');
-    hideForms();
-    renderCalendar();
-    renderSlots();
-  }, 600);
 });
 
 /* ═══════════════════════════════════════════════════════════════════

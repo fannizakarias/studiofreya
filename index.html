@@ -267,9 +267,6 @@
               <p class="photographer-name">Zakariás Fanni</p>
               <blockquote class="photographer-quote">„A legtöbben csak egy jó képet szeretnének. Én ebben segítek."</blockquote>
               <p class="photographer-bio">Veszprémi fotós vagyok, portré- és brand fotózással foglalkozom. Ha még sosem fotózkodtál stúdióban, ne izgulj — együtt kitaláljuk, mi illik hozzád. A végén olyan képeid lesznek, amiket tényleg szívesen megmutatsz.</p>
-              <div class="photographer-actions">
-                <a href="#foglalas" class="btn" id="btn-with-fotos">Foglalok</a>
-              </div>
             </div>
           </div>
 
@@ -367,7 +364,10 @@
         <p class="section-notice"><strong>Változik a nyitvatartás:</strong> 2026. október 1-től szerda, csütörtök, péntek, szombat és vasárnap, 08:00–18:00. A már lefoglalt időpontokat a változás nem érinti.</p>
       </header>
 
-      <div class="bk-widget" id="bk-widget">
+      <div class="bk-widget" id="bk-widget" data-step="mode">
+
+        <!-- Mobilon: a már kitöltött lépések ide zsugorodnak, egy koppintással újranyithatók -->
+        <div class="bk-summary" id="bk-summary" hidden></div>
 
         <!-- Módválasztó -->
         <div class="bk-mode-bar" id="bk-mode-bar">
@@ -444,6 +444,7 @@
                 <p>Kattints egy zöld pontos napra<br>az elérhető időpontok megtekintéséhez</p>
               </div>
             </div>
+            <button type="button" class="btn bk-next-btn" id="bk-next-btn" hidden>Tovább az adataimhoz</button>
             <div class="bk-legend">
               <span class="bk-legend-dot bk-legend-dot--free"></span>Szabad &ensp;
               <span class="bk-legend-dot bk-legend-dot--taken"></span>Foglalt

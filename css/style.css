@@ -1227,6 +1227,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-legend-dot--taken { background: var(--c-taken); }
 
 /* ── Form panel ───────────────────────────────────────────────── */
+/* összegző sorok, „Tovább” gomb és órákra vonatkozó tipp csak mobilon látszanak */
+.bk-summary, .bk-next-btn, .bk-slots-hint { display: none; }
+
 .bk-form-panel {
   border-top: 1px solid var(--c-border);
   padding: 2.5rem 2rem 3rem;
@@ -1885,11 +1888,24 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .room-shots { aspect-ratio: 4 / 3; }
   .room-dots { margin: .8rem 0 0; justify-content: center; }
   .room-dots:empty { display: none; }
-  .studio-bar { grid-template-columns: 1fr 1fr; }
-  .studio-bar div:nth-child(3),
-  .studio-bar .btn { grid-column: 1 / -1; text-align: center; }
-  .studio-bar div:nth-child(3) { text-align: left; }
-  .studio-bar strong { font-size: 1.4rem; white-space: nowrap; }
+  /* árak és nyitvatartás: egy sor = felirat balra, érték jobbra */
+  .studio-bar {
+    display: block;
+    max-width: 520px;
+    padding: 0;
+  }
+  .studio-bar > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--c-border);
+  }
+  .studio-bar-label { margin-bottom: 0; }
+  .studio-bar strong { font-size: 1.25rem; text-align: right; }
+  .studio-bar .btn { display: block; margin: 1.4rem 0; text-align: center; }
+  .studio-bar-note { max-width: 520px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2140,11 +2156,28 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 @media (max-width: 900px) {
-  .fanni-pkg-cards { grid-template-columns: 1fr; }
-  .fanni-pkg-card { padding: 2.2rem 0 1.4rem; }
-  .fanni-pkg-badge { top: .8rem; }
-  .fanni-pkg-card--featured { padding-left: 1.2rem; padding-right: 1.2rem; }
+  /* a három csomag egymás alatt, azonos szerkezettel: bal oldalt név és leírás, jobbra az ár */
+  .fanni-pkg-cards { grid-template-columns: 1fr; max-width: 520px; }
+  .fanni-pkg-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 0;
+  }
+  .fanni-pkg-card:first-child { padding-left: 0; }
   .fanni-pkg-card + .fanni-pkg-card { border-left: 0; border-top: 1px solid var(--c-border); }
+  .fanni-pkg-body h4 { font-size: 1.35rem; }
+  .fanni-pkg-body p { font-size: .82rem; }
+  .fanni-pkg-price { margin-top: 0; font-size: 1.25rem; white-space: nowrap; }
+  /* az ajánlott sor háttere kilóg a szélekre, a szöveg így ugyanott kezdődik, mint a többié */
+  .fanni-pkg-card--featured {
+    margin: 0 -1rem;
+    padding: 2.2rem 1rem 1.5rem;
+  }
+  .fanni-pkg-card--featured + .fanni-pkg-card { border-top: 0; }
+  .fanni-pkg-badge { top: .8rem; }
+  .fanni-packages-foot { max-width: 520px; }
 }
 
 @media (max-width: 640px) {
@@ -2318,13 +2351,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   margin-bottom: .75rem;
 }
 
-.photographer-actions {
-  display: flex;
-  gap: .8rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
-
 /* ─── Fanni portfólió grid ───────────────────────────────────────── */
 /* Alcímke (Stúdióbérlés árai, Portfólió, Csomagok) — mint a „Foglaláskor mindhárom szobát…” sor */
 .fanni-portfolio-label {
@@ -2419,7 +2445,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .fanni-portfolio-item.is-active:hover img { transform: scale(1.04); }
 
 @media (max-width: 900px) {
-  .fanni-portfolio-columns { grid-template-columns: 1fr; gap: 3rem; max-width: 520px; }
+  .fanni-portfolio-label { margin: 3rem 0 1.2rem; }
+  /* mint a szobáknál: kategória neve elöl, alatta a lapozható kép, blokkok elválasztva */
+  .fanni-portfolio-columns { grid-template-columns: 1fr; gap: 0; max-width: 520px; }
+  .fanni-portfolio-col {
+    padding: 2.2rem 0 2.6rem;
+    border-top: 1px solid var(--c-border);
+  }
+  .fanni-portfolio-col:last-child { border-bottom: 1px solid var(--c-border); margin-bottom: 1rem; }
+  .fanni-portfolio-category-title { order: -1; margin-bottom: 1.2rem; }
+  .fanni-portfolio-item img { aspect-ratio: 4 / 3; }
+  .fanni-portfolio-dots { margin: .8rem 0 0; justify-content: center; }
+  .fanni-portfolio-dots:empty { display: none; }
 }
 
 /* ─── Booking: form section title (fizetés / számlázás) ──────── */
@@ -2747,6 +2784,72 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .bk-slots-header { padding: 1.6rem 1.25rem .8rem; }
   .bk-legend { padding: .75rem 1.25rem; }
   .bk-form-panel { padding: 2rem 1.25rem 2.5rem; }
+
+  /* ── Lépésenként nyíló foglalás: típus → nap → időpont → adatok ──
+     A js/main.js a #bk-widget data-step attribútumát állítja; ami már
+     kész, az a tetején lévő összegző sorokba kerül. */
+  .bk-widget { scroll-margin-top: 5.5rem; }
+
+  .bk-widget:not([data-step="mode"]) .bk-mode-bar,
+  .bk-widget:not([data-step="mode"]) .bk-duration-bar,
+  .bk-widget:not([data-step="mode"]) .bk-packages,
+  .bk-widget:not([data-step="mode"]) .bk-pkg-note,
+  .bk-widget:not([data-step="date"]):not([data-step="time"]) .bk-main,
+  .bk-widget:not([data-step="date"]) .bk-calendar,
+  .bk-widget:not([data-step="time"]) .bk-slots-panel,
+  .bk-widget:not([data-step="form"]) .bk-form-panel { display: none; }
+
+  /* az űrlap fejlécét (dátum + Módosítás) az összegző sorok váltják ki */
+  .bk-form-header { display: none; }
+  .bk-form-panel { border-top: 0; }
+
+  .bk-summary { border-bottom: 1px solid var(--c-border); }
+  .bk-summary:not([hidden]) { display: block; }
+  .bk-sum-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: .9rem 1.25rem;
+    background: var(--c-accent-lt);
+    border: 0;
+    border-bottom: 1px solid var(--c-border);
+    box-shadow: inset 3px 0 0 var(--c-accent);
+    text-align: left;
+    font-family: var(--f-sans);
+    color: var(--c-dark);
+    cursor: pointer;
+  }
+  .bk-sum-row:last-child { border-bottom: 0; }
+  .bk-sum-text { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+  .bk-sum-k {
+    font-size: .64rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+  .bk-sum-v { font-family: var(--f-serif); font-size: 1.15rem; line-height: 1.3; }
+  .bk-sum-s { font-size: .82rem; color: var(--c-muted); }
+  .bk-sum-edit {
+    flex: none;
+    font-size: .68rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+  }
+
+  /* a napot az összegző sor már kiírja; a fejléc csak akkor marad, ha van benne tipp vagy közlemény */
+  .bk-slots-header .bk-slots-title { display: none; }
+  .bk-slots-header:not(:has(.bk-slots-hint, .bk-slots-note)) { display: none; }
+  .bk-slots-header { padding-top: 1.2rem; }
+  .bk-slots-hint { display: block; margin-top: .4rem; font-size: .82rem; color: var(--c-muted); }
+  .bk-next-btn:not([hidden]) {
+    display: block;
+    width: calc(100% - 2.5rem);
+    margin: .4rem 1.25rem 1.2rem;
+    text-align: center;
+  }
 
   .form-row { grid-template-columns: 1fr; }
 
