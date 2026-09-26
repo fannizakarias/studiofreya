@@ -134,9 +134,8 @@ function onSwipe(el, cb) {
   }, { passive: true });
 }
 
-/* Léptető nyilak és „2 / 4” számláló a képlapozókra: így telefonon és gépen is egyértelmű, hogy több kép van.
-   Visszaad egy függvényt, amit a lapozáskor kell hívni az aktuális kép sorszámával. */
-function addCarouselArrows(container, step, total) {
+/* Léptető nyilak a képlapozókra: így telefonon és gépen is egyértelmű, hogy több kép van. */
+function addCarouselArrows(container, step) {
   [['prev', -1, '15 6 9 12 15 18'], ['next', 1, '9 6 15 12 9 18']].forEach(([name, dir, points]) => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -146,11 +145,6 @@ function addCarouselArrows(container, step, total) {
     b.addEventListener('click', e => { e.stopPropagation(); step(dir); });
     container.appendChild(b);
   });
-  const count = document.createElement('span');
-  count.className = 'car-count';
-  count.setAttribute('aria-hidden', 'true');
-  container.appendChild(count);
-  return i => { count.textContent = `${i + 1} / ${total}`; };
 }
 
 /* ─── Stúdió szobák: pöttyökkel és ujjal lapozható képek ─────── */
@@ -158,18 +152,15 @@ document.querySelectorAll('.room').forEach(room => {
   const imgs = [...room.querySelectorAll('.room-shots img')];
   const dots = [...room.querySelectorAll('.room-dots button')];
   let current = Math.max(0, imgs.findIndex(img => img.classList.contains('is-active')));
-  let setCount = () => {};
   const show = i => {
     current = i;
     imgs.forEach((img, k) => img.classList.toggle('is-active', k === i));
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
-    setCount(i);
   };
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
 
   if (imgs.length > 1) {
-    setCount = addCarouselArrows(room.querySelector('.room-shots'), d => show((current + d + imgs.length) % imgs.length), imgs.length);
-    setCount(current);
+    addCarouselArrows(room.querySelector('.room-shots'), d => show((current + d + imgs.length) % imgs.length));
   }
 
   /* ujjal csak a szoba saját képei között lapoz, körbe — mint a portfóliónál */
@@ -1221,18 +1212,15 @@ document.addEventListener('keydown', (e) => {
       return b;
     });
 
-    let setCount = () => {};
     function show(idx) {
       items[current].classList.remove('is-active');
       buttons[current].classList.remove('is-active');
       current = idx;
       items[current].classList.add('is-active');
       buttons[current].classList.add('is-active');
-      setCount(current);
     }
 
-    setCount = addCarouselArrows(carousel, d => show((current + d + items.length) % items.length), items.length);
-    setCount(current);
+    addCarouselArrows(carousel, d => show((current + d + items.length) % items.length));
     onSwipe(carousel, dir => show((current + dir + items.length) % items.length));
   });
 })();
@@ -1273,11 +1261,13 @@ document.addEventListener('keydown', (e) => {
     return { imgs, srcIndex };
   }
 
-  const studioGroup     = buildGroup(document.querySelectorAll('.room-shots img'));
+  /* szobánként külön csoport: a nagyításban csak az adott szoba képei között lehet lapozni */
+  const roomGroups      = Array.from(document.querySelectorAll('.room-shots'))
+    .map(shots => buildGroup(shots.querySelectorAll('img')));
   const portfolioGroups = Array.from(document.querySelectorAll('.fanni-portfolio-carousel'))
     .map(carousel => buildGroup(carousel.querySelectorAll('.fanni-portfolio-item img')));
 
-  let activeGroup = studioGroup;
+  let activeGroup = roomGroups[0];
   let current = 0;
 
   function lbOpen(group, idx) {
@@ -1304,11 +1294,7 @@ document.addEventListener('keydown', (e) => {
     lbImg.alt = imgs[current].alt;
   }
 
-  studioGroup.imgs.forEach(img => img.addEventListener('click', () => {
-    const idx = studioGroup.srcIndex.get(img.src);
-    if (idx !== undefined) lbOpen(studioGroup, idx);
-  }));
-  portfolioGroups.forEach(group => {
+  [...roomGroups, ...portfolioGroups].forEach(group => {
     group.imgs.forEach(img => img.addEventListener('click', () => {
       const idx = group.srcIndex.get(img.src);
       if (idx !== undefined) lbOpen(group, idx);
