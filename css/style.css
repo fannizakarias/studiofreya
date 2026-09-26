@@ -118,6 +118,16 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .section-notice strong { display: block; font-weight: 500; color: var(--c-taken); }
 .section-notice a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
+/* Céges / egyedi projekt: halk megjegyzés a foglalás fejlécében */
+.section-custom {
+  max-width: 46rem;
+  margin-top: 1rem;
+  font-size: .92rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+.section-custom a { color: var(--c-dark); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+
 
 /* ─── Container ─────────────────────────────────────────────────── */
 .container {
@@ -2574,6 +2584,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
     gap: 2rem;
   }
   .photographer-portrait {
+    width: 100%;   /* fix szélesség nélkül a doboz a lusta betöltésű képpel együtt nőne, és az oldal megugrana */
     max-width: 360px;
     margin: 0 auto;
   }
