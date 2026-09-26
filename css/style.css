@@ -477,9 +477,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   border-bottom: 1px solid rgba(255, 255, 255, .8);
   transition: border-color .2s;
 }
-.hero-choice-meta span { display: inline-block; transition: transform .25s; }
 .hero-choice:hover .hero-choice-meta { border-color: #fff; }
-.hero-choice:hover .hero-choice-meta span { transform: translateX(4px); }
 
 /* Görgetés-jelzés: vékony lefelé mutató nyíl a kép alján, finoman ugrál */
 .hero-scroll {
