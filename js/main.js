@@ -76,14 +76,39 @@ navLinks.querySelectorAll('a').forEach(link => {
   });
 });
 
-/* ─── Stúdió szobák: a pöttyökkel lapozható képek ────────────── */
+/* Ujjal húzás balra/jobbra: cb(1) a következő, cb(-1) az előző képre.
+   A függőleges görgetést nem zavarja (touch-action: pan-y a CSS-ben). */
+function onSwipe(el, cb) {
+  let x0 = null, y0 = 0;
+  el.addEventListener('touchstart', e => {
+    x0 = e.touches[0].clientX;
+    y0 = e.touches[0].clientY;
+  }, { passive: true });
+  el.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    const dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) cb(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+/* ─── Stúdió szobák: pöttyökkel és ujjal lapozható képek ─────── */
 document.querySelectorAll('.room').forEach(room => {
   const imgs = [...room.querySelectorAll('.room-shots img')];
   const dots = [...room.querySelectorAll('.room-dots button')];
-  dots.forEach((dot, i) => dot.addEventListener('click', () => {
+  let current = Math.max(0, imgs.findIndex(img => img.classList.contains('is-active')));
+  const show = i => {
+    current = i;
     imgs.forEach((img, k) => img.classList.toggle('is-active', k === i));
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
-  }));
+  };
+  dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+
+  /* ujjal csak a szoba saját képei között lapoz, körbe — mint a portfóliónál */
+  onSwipe(room.querySelector('.room-shots'), dir => {
+    if (imgs.length > 1) show((current + dir + imgs.length) % imgs.length);
+  });
 });
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -359,6 +384,13 @@ function renderCalendar() {
     }
 
     if (st.dateStr === dateStr) el.classList.add('bk-cal-day--selected');
+    grid.appendChild(el);
+  }
+
+  /* mindig 6 sor, hogy hónapváltáskor ne ugráljon a naptár magassága */
+  while (grid.children.length < 42) {
+    const el = document.createElement('div');
+    el.className = 'bk-cal-day bk-cal-day--empty';
     grid.appendChild(el);
   }
 }
@@ -975,6 +1007,8 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
       items[current].classList.add('is-active');
       buttons[current].classList.add('is-active');
     }
+
+    onSwipe(carousel, dir => show((current + dir + items.length) % items.length));
   });
 })();
 
@@ -1060,6 +1094,7 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
   backdrop.addEventListener('click', lbClose);
   document.getElementById('studio-lb-prev').addEventListener('click', () => lbStep(-1));
   document.getElementById('studio-lb-next').addEventListener('click', () => lbStep(1));
+  onSwipe(lb, dir => { if (activeGroup.imgs.length > 1) lbStep(dir); });
 
   document.addEventListener('keydown', (e) => {
     if (lb.hidden) return;

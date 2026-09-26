@@ -192,7 +192,7 @@
       <div class="rooms">
         <article class="room">
           <figure class="room-shots">
-            <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal, barna lambéria előtt" style="object-position:40% center" class="is-active" loading="lazy" />
+            <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal, angol falpanel előtt" style="object-position:40% center" class="is-active" loading="lazy" />
             <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé pampafűvel" style="object-position:30% center" loading="lazy" />
             <img src="images/studio/web/IMG_1822.jpg" alt="Bambusz létra csíkos takaróval" style="object-position:center" loading="lazy" />
             <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal" style="object-position:center" loading="lazy" />
@@ -201,7 +201,7 @@
           <span class="room-label">1. szoba</span>
           <h3 class="room-name">Sol</h3>
           <p class="room-myth">A Nap istennője az északi mitológiában</p>
-          <p class="room-text">Meleg tónusú szoba barna lambériával: bézs és mustár kanapé, létra csíkos takaróval, buborék váza, pampafű. Lifestyle-, családi és páros képekhez.</p>
+          <p class="room-text">Meleg tónusú szoba angol falpanellel: bézs és mustár kanapé, létra csíkos takaróval, buborék váza, pampafű. Lifestyle-, családi és páros képekhez.</p>
         </article>
         <article class="room">
           <figure class="room-shots">
@@ -215,10 +215,9 @@
         </article>
         <article class="room">
           <figure class="room-shots">
-            <img src="images/studio/web/IMG_1853.jpg" alt="Rózsaszín váza cappuccino papírháttér előtt" style="object-position:center" class="is-active" loading="lazy" />
-            <img src="images/studio/web/papirhatter-lampak.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" style="object-position:center" loading="lazy" />
+            <img src="images/studio/web/papirhatter-lampak.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" style="object-position:center" class="is-active" loading="lazy" />
           </figure>
-          <div class="room-dots"><button type="button" aria-label="1. kép" class="is-active"></button><button type="button" aria-label="2. kép"></button></div>
+          <div class="room-dots"></div>
           <span class="room-label">3. szoba</span>
           <h3 class="room-name">Saga</h3>
           <p class="room-myth">A történetek és az emlékezés istennője</p>
@@ -400,12 +399,6 @@
           </button>
         </div>
 
-        <!-- Ár kijelző — a naptár fölött, hogy a végösszeg mindig szem előtt legyen -->
-        <div class="bk-price-display" id="bk-price-display" hidden>
-          <span class="bk-price-label" id="bk-price-label"></span>
-          <span class="bk-price-amount" id="bk-price-amount"></span>
-        </div>
-
         <!-- Naptár + időpontok -->
         <div class="bk-main">
 
@@ -551,6 +544,11 @@
                 </span>
               </label>
               <span class="bk-field-error" id="b-adatkezeles-err">Kérlek fogadd el az adatkezelési tájékoztatót.</span>
+            </div>
+            <!-- Végösszeg — közvetlenül a küldés gomb fölött -->
+            <div class="bk-price-display" id="bk-price-display" hidden>
+              <span class="bk-price-label" id="bk-price-label"></span>
+              <span class="bk-price-amount" id="bk-price-amount"></span>
             </div>
             <button type="submit" class="btn" id="booking-submit">Foglalás elküldése</button>
           </form>
