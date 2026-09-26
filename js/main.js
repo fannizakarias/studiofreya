@@ -11,13 +11,44 @@ document.querySelectorAll('[data-eddig]').forEach(el => {
   const ma = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Budapest' });
   if (ma > el.dataset.eddig) el.remove();
 });
+// ha a hero összes közleménye lejárt, a sávjuk se maradjon ott üresen
+document.querySelectorAll('.hero-notices').forEach(sav => {
+  if (!sav.querySelector('.hero-notice')) sav.remove();
+});
+
+/* ─── Hero diavetítés ─────────────────────────────────────────── */
+(() => {
+  const slides = [...document.querySelectorAll('.hero-slide')];
+  if (slides.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // a lusta betöltésű képek előtöltése, hogy váltáskor ne villanjon
+  slides.forEach(sl => { sl.querySelector('img').loading = 'eager'; });
+  let i = 0;
+  setInterval(() => {
+    if (document.hidden) return;
+    slides[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+  }, 6500);
+})();
+
+
+/* ─── „Görgess lejjebb”: a hero utáni első szakaszhoz görget
+   (a karácsonyi sáv idővel eltűnik, ezért nem fix horgonyra) ─── */
+document.querySelector('.hero-scroll')?.addEventListener('click', e => {
+  const next = document.querySelector('.hero')?.nextElementSibling;
+  if (!next) return;
+  e.preventDefault();
+  next.scrollIntoView({ behavior: 'smooth' });
+});
 
 /* ─── Fejléc árnyék görgetéskor ──────────────────────────────── */
 const header = document.querySelector('.site-header');
-const hero   = document.querySelector('.hero');
-let scrollThreshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
+/* A hero felett nincs fejléc (a nagy logó a hero közepén van);
+   amikor a hero nagyrészt kifutott, a fejléc becsúszik felülről. */
+const hero = document.querySelector('.hero');
+let scrollThreshold = hero ? hero.offsetHeight * 0.8 : 24;
 window.addEventListener('resize', () => {
-  scrollThreshold = hero ? hero.offsetHeight * 0.85 : window.innerHeight * 0.85;
+  scrollThreshold = hero ? hero.offsetHeight * 0.8 : 24;
 }, { passive: true });
 window.addEventListener('scroll', () => {
   if (!navLinks.classList.contains('open')) {
@@ -45,35 +76,15 @@ navLinks.querySelectorAll('a').forEach(link => {
   });
 });
 
-/* ─── Felszerelés-váltó ───────────────────────────────────────── */
-(function () {
-  const tablist = document.querySelector('.eq-tabs');
-  if (!tablist) return;
-  const tabs = Array.from(tablist.querySelectorAll('.eq-tab'));
-
-  function select(tab, focus) {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.classList.toggle('is-active', on);
-      t.setAttribute('aria-selected', on);
-      t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-    if (focus) tab.focus();
-  }
-
-  tabs.forEach(tab => tab.addEventListener('click', () => select(tab)));
-
-  tablist.addEventListener('keydown', (e) => {
-    const i = tabs.indexOf(document.activeElement);
-    if (i < 0) return;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-      e.preventDefault();
-      const dir = e.key === 'ArrowRight' ? 1 : -1;
-      select(tabs[(i + dir + tabs.length) % tabs.length], true);
-    }
-  });
-})();
+/* ─── Stúdió szobák: a pöttyökkel lapozható képek ────────────── */
+document.querySelectorAll('.room').forEach(room => {
+  const imgs = [...room.querySelectorAll('.room-shots img')];
+  const dots = [...room.querySelectorAll('.room-dots button')];
+  dots.forEach((dot, i) => dot.addEventListener('click', () => {
+    imgs.forEach((img, k) => img.classList.toggle('is-active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
+  }));
+});
 
 /* ═══════════════════════════════════════════════════════════════════
    IDŐPONTOK — a data/schedule.json fájlból töltődnek be.
@@ -916,24 +927,32 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
 (function () {
   document.querySelectorAll('.fanni-portfolio-carousel').forEach(carousel => {
     const items = Array.from(carousel.querySelectorAll('.fanni-portfolio-item'));
-    const prevBtn = carousel.querySelector('.fanni-portfolio-nav--prev');
-    const nextBtn = carousel.querySelector('.fanni-portfolio-nav--next');
-    if (items.length <= 1) {
-      if (prevBtn) prevBtn.hidden = true;
-      if (nextBtn) nextBtn.hidden = true;
-      return;
-    }
+    // lapozó csíkok a kép alá, mint a stúdió szobáinál
+    const dots = document.createElement('div');
+    dots.className = 'fanni-portfolio-dots';
+    carousel.after(dots);
+    if (items.length <= 1) return;
+
     let current = items.findIndex(item => item.classList.contains('is-active'));
     if (current < 0) current = 0;
 
+    const buttons = items.map((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `${i + 1}. kép`);
+      b.classList.toggle('is-active', i === current);
+      b.addEventListener('click', () => show(i));
+      dots.appendChild(b);
+      return b;
+    });
+
     function show(idx) {
       items[current].classList.remove('is-active');
-      current = (idx + items.length) % items.length;
+      buttons[current].classList.remove('is-active');
+      current = idx;
       items[current].classList.add('is-active');
+      buttons[current].classList.add('is-active');
     }
-
-    prevBtn?.addEventListener('click', () => show(current - 1));
-    nextBtn?.addEventListener('click', () => show(current + 1));
   });
 })();
 
@@ -973,7 +992,7 @@ document.getElementById('btn-with-fotos')?.addEventListener('click', (e) => {
     return { imgs, srcIndex };
   }
 
-  const studioGroup     = buildGroup(document.querySelectorAll('.studio-grid-item img'));
+  const studioGroup     = buildGroup(document.querySelectorAll('.room-shots img'));
   const portfolioGroups = Array.from(document.querySelectorAll('.fanni-portfolio-carousel'))
     .map(carousel => buildGroup(carousel.querySelectorAll('.fanni-portfolio-item img')));
 

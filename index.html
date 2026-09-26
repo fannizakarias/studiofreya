@@ -87,8 +87,8 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        <li><a href="#studio">Stúdió</a></li>
-        <li><a href="#fotos">Zakariás Fanni</a></li>
+        <li><a href="#studio">A stúdió</a></li>
+        <li><a href="#fotos">A fotós</a></li>
         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
         <li><a href="#gyik">GYIK</a></li>
         <li><a href="#kapcsolat">Kapcsolat</a></li>
@@ -98,147 +98,155 @@
 
   <!-- Hero -->
   <section class="hero">
-    <img src="images/studio/web/IMG_1930.jpg" alt="Studio Freya fotóstúdió Veszprém" class="hero-bg" aria-hidden="true" fetchpriority="high" />
-    <div class="hero-content">
-      <img src="images/logo-aperture.svg" alt="Studio Freya" class="hero-logo" />
-      <p class="hero-eyebrow">Veszprém · Rákóczi Ferenc utca 4.</p>
-      <h1 class="hero-tagline">Otthonos fotóstúdió<br><em>a város szívében</em></h1>
-      <p class="hero-sub">Berendezett enteriőr, profi világítás és háttér — bérelhető fotóssal vagy önállóan.</p>
-      <div class="hero-actions">
-        <a href="#foglalas" class="btn">Foglalok időpontot</a>
-        <a href="#studio" class="btn btn--ghost">A stúdió</a>
+    <!-- Egy keret: felül a kép (diavetítés), alul fehér sávon a közlemények és az infósáv -->
+    <div class="hero-frame">
+      <div class="hero-stage">
+        <!-- Diavetítés: a js/main.js váltja a képeket, lassú ráközelítéssel -->
+        <div class="hero-slides">
+          <div class="hero-slide is-active"><picture>
+            <source media="(max-width: 640px)" srcset="images/studio/hero/kanape-mobil.jpg" />
+            <img src="images/studio/hero/kanape.jpg" alt="Bézs kanapé boho párnákkal és növényekkel" fetchpriority="high" />
+          </picture></div>
+          <div class="hero-slide"><picture>
+            <source media="(max-width: 640px)" srcset="images/studio/hero/fotel-mobil.jpg" />
+            <img src="images/studio/hero/fotel.jpg" alt="Bézs fotel, fehér asztalka eukaliptusszal az ablak előtt" loading="lazy" />
+          </picture></div>
+          <div class="hero-slide"><picture>
+            <source media="(max-width: 640px)" srcset="images/studio/hero/vilagitas-mobil.jpg" />
+            <img src="images/studio/hero/vilagitas.jpg" alt="Stúdióvaku softboxszal, papírháttér előtt" loading="lazy" />
+          </picture></div>
+        </div>
+        <!-- Keresősarkok: a keret belső sarkaiban, mint egy fényképezőgép keresőjében -->
+        <span class="hero-corner hero-corner--tl" aria-hidden="true"></span>
+        <span class="hero-corner hero-corner--tr" aria-hidden="true"></span>
+        <span class="hero-corner hero-corner--bl" aria-hidden="true"></span>
+        <span class="hero-corner hero-corner--br" aria-hidden="true"></span>
+        <div class="hero-content">
+          <img src="images/logo-aperture.svg" alt="Studio Freya" class="hero-logo" />
+          <h1 class="hero-tagline">Otthonos fotóstúdió <em>Veszprémben</em></h1>
+          <!-- A két lehetőség: a kártya a hozzá tartozó bemutató szekcióhoz visz -->
+          <div class="hero-choices">
+            <a href="#studio" class="hero-choice">
+              <span class="hero-choice-title">Stúdióbérlés</span>
+              <span class="hero-choice-text">Önállóan vagy saját fotóssal</span>
+              <span class="hero-choice-meta">A stúdió <span aria-hidden="true">→</span></span>
+            </a>
+            <a href="#fotos" class="hero-choice">
+              <span class="hero-choice-title">Stúdiófotózás</span>
+              <span class="hero-choice-text">Zakariás Fannival</span>
+              <span class="hero-choice-meta">A fotós <span aria-hidden="true">→</span></span>
+            </a>
+          </div>
+        </div>
+        <a href="#studio" class="hero-scroll" aria-label="Görgess lejjebb">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5 9 12 16 19 9"/></svg>
+        </a>
       </div>
-      <a href="#foglalas" class="hero-notice" data-eddig="2026-10-31">
-        <span class="hero-notice-title">2026. október 1-től változik a nyitvatartás!</span>
-        <span class="hero-notice-napok">Szerda, csütörtök, péntek, szombat, vasárnap</span>
-        <span class="hero-notice-ido">08:00–18:00</span>
-        <span class="hero-notice-text">A már lefoglalt időpontokat a változás nem érinti.</span>
-      </a>
+      <!-- A kép alja: balra a cím, középen a rövid közlemények (a data-eddig napja után maguktól eltűnnek), jobbra az Instagram -->
+      <div class="hero-foot">
+        <span class="hero-foot-addr">Veszprém, Rákóczi Ferenc utca 4.</span>
+        <div class="hero-notices">
+          <a href="#foglalas" class="hero-notice" data-eddig="2026-10-31">
+            <span class="hero-notice-dot" aria-hidden="true"></span>Október 1-től új nyitvatartás: <span class="hero-notice-nw">szerda–vasárnap, 08:00–18:00</span>
+          </a>
+          <a href="#karacsony" class="hero-notice" data-eddig="2026-12-31">
+            <svg class="hero-notice-fenyo" viewBox="0 0 12 14" aria-hidden="true">
+              <path d="M6 1.2 9.6 6.2H7.9L10.8 10.4H1.2L4.1 6.2H2.4Z" fill="#8cc08a"/>
+              <rect x="5.2" y="10.4" width="1.6" height="2.4" fill="#c9a36b"/>
+              <circle cx="6" cy="1.2" r="1.1" fill="#f3cf6f"/>
+            </svg>Október 19-től elérhető a karácsonyi dekoráció
+          </a>
+        </div>
+        <a href="https://www.instagram.com/studiofreyaveszprem/" class="hero-foot-insta" target="_blank" rel="noopener" aria-label="Instagram – studiofreyaveszprem">@studiofreyaveszprem</a>
+      </div>
     </div>
-    <a href="#studio" class="scroll-hint" aria-label="Görgess le">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
-    </a>
+  </section>
+
+  <!-- Karácsonyi beharangozó — data-eddig után magától eltűnik -->
+  <section class="xmas" id="karacsony" data-eddig="2026-12-31">
+    <div class="container xmas-layout">
+      <div class="xmas-copy">
+        <p class="xmas-eyebrow">2026 · Karácsony</p>
+        <h2 class="xmas-title">Október 19-től elérhető<br>a <em>karácsonyi dekoráció</em></h2>
+        <p class="xmas-text">Fenyőfa, meleg fények, hintaló és piros zokni — karácsonyi díszletben várunk családi, gyerek- és páros fotózásokra.</p>
+        <a href="#foglalas" class="btn xmas-btn">Időpontot foglalok</a>
+      </div>
+      <div class="xmas-shots">
+        <img src="images/studio/web/karacsony-hintalo.jpg" alt="Fa hintaló karácsonyfa előtt — október 19-től karácsonyi dekoráció" loading="lazy" />
+        <img src="images/studio/web/karacsony-zokni.jpg" alt="Cukorpálca a fenyőágon, piros karácsonyi zokni a háttérben" loading="lazy" />
+      </div>
+    </div>
   </section>
 
   <!-- Stúdió -->
   <section class="section section--studio" id="studio">
     <div class="container">
-      <div class="studio-layout">
+      <header class="section-header studio-head">
+        <h2 class="section-title section-title--caps">A stúdió</h2>
+        <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában. Bérelhető önállóan, vagy foglalható stúdiófotózásra Zakariás Fannival. A bútorok, a fények és a hátterek már a helyükön várnak, neked csak a fényképezőgépet kell hoznod.</p>
+      </header>
 
-      <!-- Szöveges oszlop -->
-      <div class="studio-copy">
-        <header class="section-header">
-          <h2 class="section-title">A stúdió</h2>
-          <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában. Bérelhető önállóan, vagy foglalható stúdiófotózásra Zakariás Fannival.</p>
-        </header>
-        <div class="studio-intro">
-          <p>Portré-, lifestyle-, család- és termékfotózáshoz egyaránt alkalmas, teljesen berendezett tér: a bútorok, a fények és a hátterek már a helyükön várnak, neked csak a fényképezőgépet kell hoznod.</p>
-          <p>A felszerelés használata benne van a bérleti díjban, minimum időtartam nélkül — annyi órára foglalsz, amennyire szükséged van, a szabad időpontokat a naptárban látod.</p>
-        </div>
+      <p class="rooms-note">Foglaláskor mindhárom szobát használhatod, nem kell előre választanod.</p>
 
-        <div class="studio-hours">
-          <div class="studio-hours-item">
-            <span class="studio-hours-label">Cím</span>
-            <span>8200 Veszprém<br>Rákóczi Ferenc utca 4.</span>
-          </div>
-          <div class="studio-hours-item">
-            <span class="studio-hours-label">Nyitva</span>
-            <span>Sze · Cs · Pé · Szo · Va · 08:00–18:00</span>
-          </div>
-        </div>
-
-        <!-- Stúdióbérlés árai — a js/main.js calcStudioPrice() képletével egyezik -->
-        <div class="studio-pricing">
-          <span class="studio-hours-label">Stúdióbérlés árai</span>
-          <ul class="studio-price-list">
-            <li><span>Első óra</span><strong>10 000 Ft</strong></li>
-            <li><span>Minden további óra</span><strong>8 000 Ft</strong></li>
-          </ul>
-          <p class="studio-price-note">Minden foglalás utolsó 10 perce a stúdió rendbetételére szolgál.</p>
-          <a href="#foglalas" class="btn studio-price-btn">Időpontot foglalok</a>
-        </div>
-
-        <!-- Felszerelés-váltó -->
-        <div class="eq-explorer">
-          <div class="eq-tabs" role="tablist" aria-label="Felszerelés">
-            <button type="button" class="eq-tab is-active" role="tab" id="eq-tab-light" aria-controls="eq-panel-light" aria-selected="true">Világítás</button>
-            <button type="button" class="eq-tab" role="tab" id="eq-tab-bg" aria-controls="eq-panel-bg" aria-selected="false" tabindex="-1">Hátterek</button>
-            <button type="button" class="eq-tab" role="tab" id="eq-tab-interior" aria-controls="eq-panel-interior" aria-selected="false" tabindex="-1">Enteriőr</button>
-          </div>
-
-          <div class="eq-panel is-active" id="eq-panel-light" role="tabpanel" aria-labelledby="eq-tab-light">
-            <figure class="eq-shot eq-shot--light">
-              <img src="images/studio/web/IMG_1964.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" loading="lazy" />
-            </figure>
-            <div class="eq-detail">
-              <p class="eq-lead">Vaku és állandó fény — portréhoz és termékfotóhoz egyaránt.</p>
-              <ul class="eq-specs">
-                <li>Godox MS-300V stúdióvaku</li>
-                <li>Godox SL300IIIBi bi-color LED lámpa</li>
-                <li>60×90 cm-es ernyős softbox</li>
-                <li>120 cm-es Octa softbox</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="eq-panel" id="eq-panel-bg" role="tabpanel" aria-labelledby="eq-tab-bg" hidden>
-            <figure class="eq-shot">
-              <img src="images/studio/web/IMG_1853.jpg" alt="Rózsaszín váza cappuccino színű papírháttér előtt" loading="lazy" />
-            </figure>
-            <div class="eq-detail">
-              <p class="eq-lead">Tiszta, egyszínű háttér, ha nem az enteriőr a főszereplő.</p>
-              <ul class="eq-specs">
-                <li>Colorama papírháttér</li>
-                <li>Super white — semleges, világos alap</li>
-                <li>Lemon — élénk, sárga tónus</li>
-                <li>Cappuccino — meleg, földszínű tónus</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="eq-panel" id="eq-panel-interior" role="tabpanel" aria-labelledby="eq-tab-interior" hidden>
-            <figure class="eq-shot">
-              <img src="images/studio/web/IMG_1822.jpg" alt="Bézs kanapé tufted párnákkal, fa lábú asztalka növénnyel" loading="lazy" />
-            </figure>
-            <div class="eq-detail">
-              <p class="eq-lead">Kész díszlet — nem kell külön berendezkedned.</p>
-              <ul class="eq-specs">
-                <li>Kanapé és fotel</li>
-                <li>Vázák, növények, textilek</li>
-                <li>Dekorok és apró kellékek</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <!-- A három szoba; a pöttyökkel lapozható, a képre kattintva nagyítható -->
+      <div class="rooms">
+        <article class="room">
+          <figure class="room-shots">
+            <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal, barna lambéria előtt" style="object-position:40% center" class="is-active" loading="lazy" />
+            <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé pampafűvel" style="object-position:30% center" loading="lazy" />
+            <img src="images/studio/web/IMG_1822.jpg" alt="Bambusz létra csíkos takaróval" style="object-position:center" loading="lazy" />
+            <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal" style="object-position:center" loading="lazy" />
+          </figure>
+          <div class="room-dots"><button type="button" aria-label="1. kép" class="is-active"></button><button type="button" aria-label="2. kép"></button><button type="button" aria-label="3. kép"></button><button type="button" aria-label="4. kép"></button></div>
+          <span class="room-label">1. szoba</span>
+          <h3 class="room-name">Sol</h3>
+          <p class="room-myth">A Nap istennője az északi mitológiában</p>
+          <p class="room-text">Meleg tónusú szoba barna lambériával: bézs és mustár kanapé, létra csíkos takaróval, buborék váza, pampafű. Lifestyle-, családi és páros képekhez.</p>
+        </article>
+        <article class="room">
+          <figure class="room-shots">
+            <img src="images/studio/web/fotel-eukaliptusz.jpg" alt="Bézs fotel eukaliptusszal az ablak előtt" style="object-position:center" class="is-active" loading="lazy" />
+          </figure>
+          <div class="room-dots"></div>
+          <span class="room-label">2. szoba</span>
+          <h3 class="room-name">Mani</h3>
+          <p class="room-myth">A Hold istene, Sol testvére</p>
+          <p class="room-text">Világos sarok fa lamellás fallal és nagy ablakkal: fotel, eukaliptusz. Természetes fényű portrékhoz.</p>
+        </article>
+        <article class="room">
+          <figure class="room-shots">
+            <img src="images/studio/web/IMG_1853.jpg" alt="Rózsaszín váza cappuccino papírháttér előtt" style="object-position:center" class="is-active" loading="lazy" />
+            <img src="images/studio/web/papirhatter-lampak.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" style="object-position:center" loading="lazy" />
+          </figure>
+          <div class="room-dots"><button type="button" aria-label="1. kép" class="is-active"></button><button type="button" aria-label="2. kép"></button></div>
+          <span class="room-label">3. szoba</span>
+          <h3 class="room-name">Saga</h3>
+          <p class="room-myth">A történetek és az emlékezés istennője</p>
+          <p class="room-text">A papírhátteres szoba: Colorama háttér super white, lemon és cappuccino színben, Godox vakuval és bi-color LED lámpával. Termék- és portréfotózáshoz.</p>
+        </article>
       </div>
 
-      <!-- Stúdió képgalléria -->
-      <div class="studio-grid">
-        <figure class="studio-grid-item studio-img">
-          <img src="images/studio/web/IMG_1946.jpg" alt="Tipi sátor cseresznyevirág girlanddal és mackóval" loading="lazy" />
-        </figure>
-        <figure class="studio-grid-item studio-img">
-          <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal, bézs asztalka" loading="lazy" />
-        </figure>
-        <figure class="studio-grid-item studio-img">
-          <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé karfa közelkép, pampas fű vázában" loading="lazy" />
-        </figure>
-        <figure class="studio-grid-item studio-img">
-          <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal és növényekkel — stúdió összképe" loading="lazy" />
-        </figure>
+      <!-- Stúdióbérlés árai — a js/main.js calcStudioPrice() képletével egyezik -->
+      <div class="studio-bar">
+        <div><span class="studio-bar-label">Első óra</span><strong>10 000 Ft</strong></div>
+        <div><span class="studio-bar-label">Minden további óra</span><strong>8 000 Ft</strong></div>
+        <div><span class="studio-bar-label">Nyitva</span><strong>Szerda–vasárnap, 8–18</strong></div>
+        <a href="#foglalas" class="btn">Időpontot foglalok</a>
       </div>
-
-      </div><!-- /studio-layout -->
+      <p class="studio-bar-note">Nincs minimum időtartam. Minden foglalás utolsó 10 perce a stúdió rendbetételére szolgál. · 8200 Veszprém, Rákóczi Ferenc utca 4.</p>
     </div>
   </section>
 
-  <!-- Átmeneti sáv -->
-  <div class="section-bridge">
-    <p>Fotóst is szeretnél a stúdióba?</p>
-    <a href="#fotos" class="section-bridge-link">Ismerd meg Fannit ↓</a>
-  </div>
+  <!-- Átmeneti sáv: a stúdióból a fotóshoz -->
+  <section class="section-bridge">
+    <span class="section-bridge-eyebrow">Stúdiófotózás</span>
+    <h2 class="section-bridge-q">Fotóst is szeretnél a stúdióba?</h2>
+    <p class="section-bridge-text">Zakariás Fanni végigvezet a fotózáson, a stúdió használata benne van az árban.</p>
+    <a href="#fotos" class="btn section-bridge-btn">Ismerd meg Fannit</a>
+    <a href="#fotos" class="section-bridge-down" aria-label="Tovább a fotóshoz">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5 9 12 16 19 9"/></svg>
+    </a>
+  </section>
 
   <!-- Zakariás Fanni — Fotós -->
   <section class="section section--photographer" id="fotos">
@@ -250,8 +258,8 @@
               <img src="images/portfolio/web/IMG_0237.jpg" alt="Zakariás Fanni fotós portréja" loading="lazy" />
             </div>
             <div class="photographer-text">
-              <span class="eyebrow">A fotós</span>
-              <h2 class="section-title">Zakariás Fanni</h2>
+              <h2 class="section-title section-title--caps">A fotós</h2>
+              <p class="photographer-name">Zakariás Fanni</p>
               <blockquote class="photographer-quote">„A legtöbben csak egy jó képet szeretnének. Én ebben segítek."</blockquote>
               <p class="photographer-bio">Veszprémi fotós vagyok, portré- és brand fotózással foglalkozom. Ha még sosem fotózkodtál stúdióban, ne izgulj — együtt kitaláljuk, mi illik hozzád. A végén olyan képeid lesznek, amiket tényleg szívesen megmutatsz.</p>
               <div class="photographer-actions">
@@ -261,15 +269,11 @@
           </div>
 
           <!-- Portfólió grid -->
-          <h3 class="fanni-portfolio-label"><span>Portfólió</span></h3>
+          <p class="fanni-portfolio-label">Portfólió</p>
           <div class="fanni-portfolio-columns">
 
                 <div class="fanni-portfolio-col">
-                  <h4 class="fanni-portfolio-category-title">Portré</h4>
                   <div class="fanni-portfolio-carousel">
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
-                    </button>
                     <div class="fanni-portfolio-viewport">
                       <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/portre/web/IMG_0066_4-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/web/IMG_0081-Edit-2-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
@@ -277,35 +281,23 @@
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/web/IMG_2844-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/zsofi1.jpeg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                     </div>
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
-                    </button>
                   </div>
+                  <h4 class="fanni-portfolio-category-title">Portré</h4>
                 </div>
 
                 <div class="fanni-portfolio-col">
-                  <h4 class="fanni-portfolio-category-title">Brand</h4>
                   <div class="fanni-portfolio-carousel">
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
-                    </button>
                     <div class="fanni-portfolio-viewport">
                       <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/brand/web/IMG_0196_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/IMG_0233_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/IMG_0286.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                     </div>
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
-                    </button>
                   </div>
+                  <h4 class="fanni-portfolio-category-title">Brand</h4>
                 </div>
 
                 <div class="fanni-portfolio-col">
-                  <h4 class="fanni-portfolio-category-title">Kismama</h4>
                   <div class="fanni-portfolio-carousel">
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--prev" aria-label="Előző kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5L3 5l3.5 3.5"/></svg>
-                    </button>
                     <div class="fanni-portfolio-viewport">
                       <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/kismama/IMG_2084.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2110.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
@@ -314,23 +306,18 @@
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2574.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2621.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                       <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2760.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2782.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
                     </div>
-                    <button type="button" class="fanni-portfolio-nav fanni-portfolio-nav--next" aria-label="Következő kép">
-                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>
-                    </button>
                   </div>
+                  <h4 class="fanni-portfolio-category-title">Kismama</h4>
                 </div>
 
           </div>
         </div>
 
-      </div>
-
       <!-- Csomagok -->
       <div class="fanni-packages-info">
-        <h3 class="fanni-portfolio-title">Csomagok</h3>
-        <p class="fanni-packages-sub">Minden csomag tartalmazza a stúdió használatát — nincs külön stúdióbérlési díj. Extra retusált képek <strong>1 000 Ft/db</strong> áron rendelhetők.</p>
+        <p class="fanni-portfolio-label">Csomagok</p>
+        <p class="fanni-packages-sub">Minden csomag tartalmazza a stúdió használatát, nincs külön stúdióbérlési díj. Extra retusált képek <strong>1 000 Ft/db</strong> áron rendelhetők.</p>
         <div class="fanni-pkg-cards">
           <div class="fanni-pkg-card">
             <div class="fanni-pkg-body">
@@ -340,8 +327,8 @@
             <span class="fanni-pkg-price">25 000 Ft</span>
           </div>
           <div class="fanni-pkg-card fanni-pkg-card--featured">
-            <span class="fanni-pkg-badge">Ajánlott</span>
             <div class="fanni-pkg-body">
+              <span class="fanni-pkg-badge">Ajánlott</span>
               <h4>Közepes csomag</h4>
               <p>60 perces fotózás · 20 retusált kép</p>
             </div>
@@ -355,7 +342,10 @@
             <span class="fanni-pkg-price">65 000 Ft</span>
           </div>
         </div>
-        <p class="fanni-packages-note">Amennyiben kültéri fotózást szeretnél Fannival, vedd fel vele a kapcsolatot a <a href="mailto:fanni.zakarias@gmail.com">fanni.zakarias@gmail.com</a> email címen.</p>
+        <div class="fanni-packages-foot">
+          <p class="fanni-packages-note">Amennyiben kültéri fotózást szeretnél Fannival, vedd fel vele a kapcsolatot a <a href="mailto:fanni.zakarias@gmail.com">fanni.zakarias@gmail.com</a> email címen.</p>
+          <a href="#foglalas" class="btn" id="btn-with-fotos-pkg">Stúdiófotózást foglalok</a>
+        </div>
       </div>
 
     </div>
@@ -713,8 +703,8 @@
         <span class="footer-address">8200 Veszprém, Rákóczi Ferenc utca 4.</span>
       </div>
       <nav class="footer-nav" aria-label="Lábléc navigáció">
-        <a href="#studio">Stúdió</a>
-        <a href="#fotos">Zakariás Fanni</a>
+        <a href="#studio">A stúdió</a>
+        <a href="#fotos">A fotós</a>
         <a href="#foglalas">Foglalás</a>
         <a href="#gyik">GYIK</a>
         <a href="#kapcsolat">Kapcsolat</a>
