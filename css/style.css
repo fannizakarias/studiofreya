@@ -2479,9 +2479,21 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 /* ─── Karácsonyi beharangozó ────────────────────────────────────── */
 .xmas {
+  position: relative;
+  overflow: hidden;
   background: #1f3325;          /* a karácsonyi grafikák sötétzöldje */
   color: var(--c-bg);
-  padding: 5rem 0;
+  padding: 7rem 0 5rem;   /* felül több hely: a koszorú a szöveg fölött ül a sarokban */
+}
+
+/* Koszorú a sáv bal felső sarkában: dísz, nem kattintható */
+.xmas-wreath {
+  position: absolute;
+  top: .7rem;
+  left: clamp(.9rem, 2.4vw, 2.2rem);
+  width: clamp(64px, 7vw, 96px);
+  height: auto;
+  pointer-events: none;
 }
 
 .xmas-layout {
@@ -2551,7 +2563,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 @media (max-width: 768px) {
-  .xmas { padding: 3.5rem 0; }
+  .xmas { padding: 5.6rem 0 3.5rem; }
+  .xmas-wreath { top: .6rem; }
   .xmas-shots { gap: .5rem; }
 }
 
