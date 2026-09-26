@@ -422,7 +422,7 @@ const SLOT_PLACEHOLDER = `
 
 /* Karácsonyi díszlet: erre az időszakra eső nap kiválasztásakor figyelmeztetés jelenik meg */
 const KARACSONY = { tol: '2026-10-19', ig: '2026-12-31' };
-const KARACSONY_NOTE = `<p class="bk-slots-note"><strong>Karácsonyi díszlet</strong>Október 19-től karácsonyi dekoráció van a stúdióban. Ha nem ezt a díszletet szeretnéd, a foglalás előtt vedd fel velünk a kapcsolatot: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>, <a href="tel:+36303066297">+36 30 306 6297</a>.</p>`;
+const KARACSONY_NOTE = `<p class="bk-slots-note bk-slots-note--xmas"><strong><svg class="bk-xmas-fenyo" viewBox="0 0 12 14" aria-hidden="true"><path d="M6 1.2 9.6 6.2H7.9L10.8 10.4H1.2L4.1 6.2H2.4Z" fill="#8cc08a"/><rect x="5.2" y="10.4" width="1.6" height="2.4" fill="#c9a36b"/><circle cx="6" cy="1.2" r="1.1" fill="#f3cf6f"/></svg>Karácsonyi díszlet</strong>Október 19-től karácsonyi dekoráció van a stúdióban. Ha nem ezt a díszletet szeretnéd, a foglalás előtt vedd fel velünk a kapcsolatot: <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a>, <a href="tel:+36303066297">+36 30 306 6297</a>.</p>`;
 
 function renderSlots() {
   const container = document.getElementById('time-slots');
