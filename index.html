@@ -234,14 +234,16 @@
       </div>
 
       <!-- Stúdióbérlés árai — a js/main.js calcStudioPrice() képletével egyezik -->
-      <p class="fanni-portfolio-label fanni-portfolio-label--plain">Stúdióbérlés</p>
-      <div class="studio-bar">
-        <div><span class="studio-bar-label">Első óra</span><strong>10 000 Ft</strong></div>
-        <div><span class="studio-bar-label">Minden további óra</span><strong>8 000 Ft</strong></div>
-        <div><span class="studio-bar-label">Nyitva</span><strong>Szerda–vasárnap, 8–18</strong></div>
-        <a href="#foglalas" class="btn">Időpontot foglalok</a>
+      <div class="rent-box">
+        <h3 class="rent-title">Stúdióbérlés</h3>
+        <div class="studio-bar">
+          <div><span class="studio-bar-label">Első óra</span><strong>10 000 Ft</strong></div>
+          <div><span class="studio-bar-label">Minden további óra</span><strong>8 000 Ft</strong></div>
+          <div><span class="studio-bar-label">Nyitva</span><strong>Szerda–vasárnap, 8–18</strong></div>
+          <a href="#foglalas" class="btn">Időpontot foglalok</a>
+        </div>
+        <p class="studio-bar-note">Minden foglalás utolsó 10 perce a stúdió rendbetételére szolgál.<br>8200 Veszprém, Rákóczi Ferenc utca 4.</p>
       </div>
-      <p class="studio-bar-note">Minden foglalás utolsó 10 perce a stúdió rendbetételére szolgál.<br>8200 Veszprém, Rákóczi Ferenc utca 4.</p>
     </div>
   </section>
 
@@ -368,6 +370,7 @@
 
         <!-- Mobilon: a már kitöltött lépések ide zsugorodnak, egy koppintással újranyithatók -->
         <div class="bk-summary" id="bk-summary" hidden></div>
+        <p class="bk-step-title" id="bk-step-title"></p>
 
         <!-- Módválasztó -->
         <div class="bk-mode-bar" id="bk-mode-bar">
@@ -444,7 +447,9 @@
                 <p>Kattints egy zöld pontos napra<br>az elérhető időpontok megtekintéséhez</p>
               </div>
             </div>
-            <button type="button" class="btn bk-next-btn" id="bk-next-btn" hidden>Tovább az adataimhoz</button>
+            <div class="bk-next-bar" id="bk-next-bar" hidden>
+              <button type="button" class="btn bk-next-btn" id="bk-next-btn">Tovább</button>
+            </div>
             <div class="bk-legend">
               <span class="bk-legend-dot bk-legend-dot--free"></span>Szabad &ensp;
               <span class="bk-legend-dot bk-legend-dot--taken"></span>Foglalt
@@ -580,8 +585,10 @@
     <div class="container">
       <header class="section-header">
         <h2 class="section-title section-title--caps">Gyakori kérdések</h2>
+        <!-- csak mobilon látszik: az egész GYIK egy koppintással nyílik / záródik -->
+        <button type="button" class="faq-all-toggle" id="faq-all-toggle" aria-expanded="false" aria-controls="faq-list" aria-label="Gyakori kérdések"></button>
       </header>
-      <div class="faq-list">
+      <div class="faq-list" id="faq-list">
         <!-- Karácsonyi díszlet — data-eddig után magától eltűnik -->
         <details class="faq-item" data-eddig="2026-12-31">
           <summary><h3>Milyen díszlet lesz a stúdióban október 19. után?</h3></summary>

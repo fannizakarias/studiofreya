@@ -93,6 +93,19 @@ function onSwipe(el, cb) {
   }, { passive: true });
 }
 
+/* Léptető nyilak a képlapozókra (gépen, egérrel) — a vékony csík könnyen elkerülhető */
+function addCarouselArrows(container, step) {
+  [['prev', -1, '15 6 9 12 15 18'], ['next', 1, '9 6 15 12 9 18']].forEach(([name, dir, points]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `car-arrow car-arrow--${name}`;
+    b.setAttribute('aria-label', dir < 0 ? 'Előző kép' : 'Következő kép');
+    b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="${points}"/></svg>`;
+    b.addEventListener('click', e => { e.stopPropagation(); step(dir); });
+    container.appendChild(b);
+  });
+}
+
 /* ─── Stúdió szobák: pöttyökkel és ujjal lapozható képek ─────── */
 document.querySelectorAll('.room').forEach(room => {
   const imgs = [...room.querySelectorAll('.room-shots img')];
@@ -104,6 +117,10 @@ document.querySelectorAll('.room').forEach(room => {
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
   };
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+
+  if (imgs.length > 1) {
+    addCarouselArrows(room.querySelector('.room-shots'), d => show((current + d + imgs.length) % imgs.length));
+  }
 
   /* ujjal csak a szoba saját képei között lapoz, körbe — mint a portfóliónál */
   onSwipe(room.querySelector('.room-shots'), dir => {
@@ -208,13 +225,16 @@ const st = {
    ═══════════════════════════════════════════════════════════════════ */
 const bkWidget  = document.getElementById('bk-widget');
 const bkSummary = document.getElementById('bk-summary');
+const bkNextBar = document.getElementById('bk-next-bar');
 const bkNextBtn = document.getElementById('bk-next-btn');
+const bkTitle   = document.getElementById('bk-step-title');
 const kompakt   = () => window.matchMedia('(max-width: 640px)').matches;
 
 const BK_STEPS = {
-  mode: { label: 'Típus',    done: () => !st.withFanni || st.hours !== null },
-  date: { label: 'Nap',      done: () => st.dateStr !== null },
-  time: { label: 'Időpont',  done: () => st.hour !== null },
+  mode: { label: 'Típus',    n: 1, title: 'Mit szeretnél foglalni?', done: () => !st.withFanni || st.hours !== null },
+  date: { label: 'Nap',      n: 2, title: 'Válassz napot',           done: () => st.dateStr !== null },
+  time: { label: 'Időpont',  n: 3, title: 'Válassz időpontot',       done: () => st.hour !== null },
+  form: { label: 'Adatok', n: 4, title: 'Add meg az adataidat', done: () => false },   // nincs összegző sora
 };
 
 function summaryValue(step) {
@@ -223,7 +243,9 @@ function summaryValue(step) {
       ? ['Stúdiófotózás', st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '']
       : ['Stúdióbérlés', ''];
   }
-  if (step === 'date') return [fmtDateHU(st.date), ''];
+  if (step === 'date') {
+    return [st.date.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric', weekday: 'long' }), ''];
+  }
   const len = st.hours || 1;
   return [fmtHour(st.hour, len), st.withFanni ? '' : `${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`];
 }
@@ -238,8 +260,8 @@ function renderSummary() {
     row.type = 'button';
     row.className = 'bk-sum-row';
     row.innerHTML = `
+      <span class="bk-sum-k">${BK_STEPS[step].label}</span>
       <span class="bk-sum-text">
-        <span class="bk-sum-k">${BK_STEPS[step].label}</span>
         <span class="bk-sum-v">${main}</span>
         ${sub ? `<span class="bk-sum-s">${sub}</span>` : ''}
       </span>
@@ -250,9 +272,10 @@ function renderSummary() {
   bkSummary.hidden = !bkSummary.children.length;
 }
 
+/* a „Tovább” sáv a képernyő alján marad, amíg van kijelölt időpont — így nem kell a lista aljáig görgetni */
 function updateNextBtn() {
   const show = bkWidget.dataset.step === 'time' && st.hour !== null;
-  bkNextBtn.hidden = !show;
+  bkNextBar.hidden = !show;
   if (show) {
     bkNextBtn.textContent = st.withFanni
       ? 'Tovább az adataimhoz'
@@ -262,10 +285,16 @@ function updateNextBtn() {
 
 function setStep(step, scroll = true) {
   bkWidget.dataset.step = step;
+  const info = BK_STEPS[step];
+  bkTitle.innerHTML = info ? `<span class="bk-step-n">${info.n} / 4</span>${info.title}` : '';
   renderSummary();
   updateNextBtn();
+  /* csak akkor görgetünk, ha a foglalás teteje kikerült a látómezőből — különben a tartalom a helyén cserélődik */
   if (scroll && kompakt()) {
-    bkWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const top = bkWidget.getBoundingClientRect().top;
+    if (top < 70 || top > window.innerHeight * 0.5) {
+      bkWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 }
 bkNextBtn.addEventListener('click', () => setStep('form'));
@@ -333,11 +362,13 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     /* mobilon a már kiválasztott módra koppintva nem töröljük a kitöltöttet, csak továbblépünk */
     if (kompakt() && btn.classList.contains('active') && (!st.withFanni || st.hours !== null)) {
+      bkWidget.dataset.chosen = '1';
       setStep('date');
       return;
     }
     document.querySelectorAll('.bk-mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    bkWidget.dataset.chosen = '1';
     st.withFanni = btn.dataset.mode === 'fanni';
 
     document.getElementById('bk-duration-bar').hidden = st.withFanni;
@@ -921,6 +952,7 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   renderCalendar();
   renderSlots();
   hideForms();
+  delete bkWidget.dataset.chosen;
   setStep('mode', false);
 
   document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
@@ -939,6 +971,7 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
     document.querySelectorAll('.bk-mode-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.mode === 'fanni');
     });
+    bkWidget.dataset.chosen = '1';
     st.withFanni = true;
     Object.assign(st, { hours: null, price: null, label: null,
                         date: null, dateStr: null, hour: null });
@@ -952,6 +985,21 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
     setStep('mode', false);
   }, 600);
 });
+
+/* ─── GYIK: mobilon az egész lista egy koppintással nyílik / záródik ─── */
+(function () {
+  const section = document.getElementById('gyik');
+  const toggle  = document.getElementById('faq-all-toggle');
+  if (!section || !toggle) return;
+  const setOpen = open => {
+    section.classList.toggle('faq-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  };
+  toggle.addEventListener('click', () => setOpen(!section.classList.contains('faq-open')));
+  // a menüből / láblécből érkezve rögtön látszódjon a lista
+  document.querySelectorAll('a[href="#gyik"]').forEach(a => a.addEventListener('click', () => setOpen(true)));
+  if (location.hash === '#gyik') setOpen(true);
+})();
 
 /* ─── Adatkezelési tájékoztató modál ─────────────────────────── */
 const privacyModal   = document.getElementById('privacy-modal');
@@ -1072,6 +1120,7 @@ document.addEventListener('keydown', (e) => {
       buttons[current].classList.add('is-active');
     }
 
+    addCarouselArrows(carousel, d => show((current + d + items.length) % items.length));
     onSwipe(carousel, dir => show((current + dir + items.length) % items.length));
   });
 })();
