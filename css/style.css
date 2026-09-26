@@ -1824,14 +1824,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   }
 }
 
-.room-label {
-  display: block;
-  font-size: .68rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--c-accent);
-  margin-bottom: .3rem;
-}
 .room-name { font-size: 1.8rem; margin-bottom: .1rem; }
 .room-myth {
   font-family: var(--f-serif);
@@ -1954,7 +1946,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
     border-top: 1px solid var(--c-border);
   }
   .room:last-child { border-bottom: 1px solid var(--c-border); margin-bottom: 2.5rem; }
-  .room-label, .room-name, .room-myth, .room-text { order: -1; }
+  .room-name, .room-myth, .room-text { order: -1; }
   .room-text { margin-bottom: 1.2rem; }
   .room-dots { margin: .8rem 0 0; justify-content: center; }
   .room-dots:empty { display: none; }
