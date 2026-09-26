@@ -733,24 +733,46 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-mode-bar {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: .6rem 2rem 1.8rem;
   border-bottom: 1px solid var(--c-border);
 }
 
+/* A két lehetőség kattintható kártya: kerettel, nyíllal, ráhúzásra kiemelődik */
 .bk-mode-btn {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: .35rem;
-  padding: 1.8rem 2rem 1.6rem;
-  background: none;
-  border: none;
+  overflow: hidden;
+  padding: 1.5rem 4.6rem 1.4rem 1.6rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
   cursor: pointer;
   text-align: left;
   font-family: var(--f-sans);
-  transition: background .18s;
+  transition: background .18s, border-color .18s, box-shadow .18s;
 }
-.bk-mode-btn + .bk-mode-btn { border-left: 1px solid var(--c-border); }
+
+/* nyíl körben a jobb oldalon: ez jelzi, hogy rá lehet kattintani */
+.bk-mode-btn::before {
+  content: '›';
+  position: absolute;
+  right: 1.3rem; top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.2rem; height: 2.2rem;
+  padding-bottom: .2rem;
+  border: 1px solid var(--c-accent);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--c-accent);
+  transition: background .18s, color .18s;
+}
 
 .bk-mode-btn::after {
   content: '';
@@ -761,9 +783,21 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transform: scaleX(0);
   transition: transform .2s;
 }
-.bk-mode-btn:hover { background: rgba(232,239,233,.5); }
-.bk-mode-btn.active { background: var(--c-accent-lt); }
+.bk-mode-btn:hover {
+  background: var(--c-accent-lt);
+  border-color: var(--c-accent);
+  box-shadow: 0 6px 18px rgba(26,25,22,.08);
+}
+.bk-mode-btn:hover::before,
+.bk-mode-btn.active::before { background: var(--c-accent); color: #fff; }
+.bk-mode-btn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.bk-mode-btn.active { background: var(--c-accent-lt); border-color: var(--c-accent); }
 .bk-mode-btn.active::after { transform: scaleX(1); }
+
+/* szűkebb kijelzőn a két kártya egymás alatt, hogy a nap-felirat ne törjön */
+@media (max-width: 900px) {
+  .bk-mode-bar { grid-template-columns: 1fr; }
+}
 
 .bk-mode-title {
   font-family: var(--f-serif);
@@ -1388,8 +1422,11 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-widget:not([data-chosen]) .bk-duration-bar,
 .bk-widget:not([data-chosen]) .bk-packages,
 .bk-widget:not([data-chosen]) .bk-pkg-note { display: none; }
-.bk-widget:not([data-chosen]) .bk-mode-btn.active { background: none; }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active { background: var(--c-bg); border-color: var(--c-border); }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active::before { background: none; color: var(--c-accent); }
 .bk-widget:not([data-chosen]) .bk-mode-btn.active::after { transform: scaleX(0); }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active:hover { background: var(--c-accent-lt); border-color: var(--c-accent); }
+.bk-widget:not([data-chosen]) .bk-mode-btn.active:hover::before { background: var(--c-accent); color: #fff; }
 
 /* a naptár és az időpontok akkor nyílnak le, ha van típus (Fanninál csomag is) */
 .bk-widget:not([data-ready]) .bk-main { display: none; }
@@ -3006,8 +3043,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
 
   .bk-mode-bar { grid-template-columns: 1fr; }
-  .bk-mode-btn { padding: 1.4rem 1.25rem 1.2rem; }
-  .bk-mode-btn + .bk-mode-btn { border-left: none; border-top: 1px solid var(--c-border); }
+  .bk-mode-btn { padding: 1.4rem 4.2rem 1.2rem 1.25rem; }
 
   .bk-packages { grid-template-columns: 1fr; }
   .bk-pkg-btn { padding: 2.2rem 1.25rem 1.2rem; }
@@ -3055,25 +3091,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 
   /* 1. lépés: a két lehetőség egy-egy koppintható kártya, amíg nincs választás, egyik sem kiemelt */
   .bk-mode-bar { grid-template-columns: 1fr; gap: .7rem; padding: .8rem 1.25rem 1.2rem; border-bottom: 0; }
-  .bk-mode-bar .bk-mode-btn {
-    overflow: hidden;
-    padding: 1.15rem 2.8rem 1.05rem 1.2rem;
-    background: var(--c-bg);
-    border: 1px solid var(--c-border);
-    border-radius: 4px;
-  }
-  .bk-mode-bar .bk-mode-btn::before {
-    content: '›';
-    position: absolute;
-    right: 1.2rem; top: 50%;
-    transform: translateY(-52%);
-    font-size: 1.7rem;
-    line-height: 1;
-    color: var(--c-accent);
-  }
-  .bk-mode-bar .bk-mode-btn.active { background: var(--c-accent-lt); border-color: var(--c-accent); }
-  .bk-widget:not([data-chosen]) .bk-mode-bar .bk-mode-btn.active { background: var(--c-bg); border-color: var(--c-border); }
-  .bk-widget:not([data-chosen]) .bk-mode-btn.active::after { transform: scaleX(0); }
+  .bk-mode-bar .bk-mode-btn { padding: 1.15rem 3rem 1.05rem 1.2rem; }
+  .bk-mode-bar .bk-mode-btn::before { right: .8rem; width: 1.8rem; height: 1.8rem; font-size: 1.25rem; }
+  .bk-mode-bar .bk-mode-sub { font-size: .64rem; letter-spacing: .12em; }   /* a napok egy sorban maradjanak, ne törjön a „VA” külön sorba */
 
   /* csomagok a foglalásban: kártyák, fent név és ár, alatta a leírás */
   .bk-packages { grid-template-columns: 1fr; gap: .7rem; padding: 1rem 1.25rem 1.2rem; border-bottom: 0; }
