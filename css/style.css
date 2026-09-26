@@ -573,8 +573,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .hero-scroll { bottom: 10.2rem; }
   .hero-corner--bl,
   .hero-corner--br { display: none; }   /* telefonon itt vannak a közlemények */
-  .hero-logo { margin-bottom: 1.8rem; }
-  .hero-choices { grid-template-columns: 1fr; gap: 1.6rem; }
+  /* kisebb logó és cím, hogy a landing kis telefonon is egy képernyőn elférjen,
+     és a cím ne törjön két sorba */
+  .hero-logo { width: min(260px, 62vw); margin-bottom: 1.4rem; }
+  .hero-tagline { font-size: clamp(1.9rem, 9vw, 2.4rem); margin-bottom: 1.7rem; }
+  .hero-choices { grid-template-columns: 1fr; gap: 1.2rem; }
+  .hero-choice-title { font-size: 1.5rem; }
+  .hero-choice-meta { margin-top: .5rem; }
   .hero-choice + .hero-choice { border-left: 0; }
   .hero-foot { grid-template-columns: 1fr; justify-items: center; text-align: center; padding: 0 1.25rem 1.1rem; font-size: .66rem; }
   .hero-foot-insta { justify-self: center; }
@@ -583,6 +588,16 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .hero-notice-dot,
   .hero-notice-fenyo { display: inline-block; margin-right: .45rem; vertical-align: -.1em; }
   .hero-notice-dot { vertical-align: .1em; }
+}
+
+/* alacsony telefonokon (pl. iPhone SE) még szorosabban, hogy a landing egy képernyő legyen */
+@media (max-width: 640px) and (max-height: 700px) {
+  .hero-stage { padding: 2.6rem 1.25rem 12.6rem; }
+  .hero-scroll { bottom: 9.2rem; }
+  .hero-logo { width: min(220px, 56vw); margin-bottom: 1.1rem; }
+  .hero-tagline { margin-bottom: 1.3rem; }
+  .hero-choices { gap: .9rem; }
+  .hero-choice-text { font-size: .85rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
