@@ -1390,6 +1390,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .bk-widget[data-step="form"] .bk-main { display: none; }
 .bk-widget:not([data-step="form"]) .bk-form-panel { display: none; }
 
+/* „Tovább” sáv: az időpont(ok) kijelölése után jelenik meg, a képernyő alján marad, így nem kell a lista aljáig görgetni */
+.bk-next-bar:not([hidden]) {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  padding: .8rem 1.25rem calc(.8rem + env(safe-area-inset-bottom, 0px));
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-border);
+  box-shadow: 0 -8px 20px rgba(26,25,22,.07);
+}
+.bk-next-btn { display: block; width: 100%; text-align: center; }
+
 /* az űrlap fejlécét (dátum + Módosítás) az összegző sorok váltják ki */
 .bk-form-header { display: none; }
 .bk-form-panel { border-top: 0; padding-top: 1.6rem; }
@@ -2811,11 +2823,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   border-left: 1.5px solid #fff;
   border-bottom: 1.5px solid #fff;
   transform: rotate(-45deg) translateY(-1px);
-}
-
-.bk-check-date {
-  font-size: .78rem;
-  color: var(--c-muted);
 }
 
 .bk-check-text {

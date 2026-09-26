@@ -281,6 +281,8 @@ const st = {
 const bkWidget  = document.getElementById('bk-widget');
 const bkSummary = document.getElementById('bk-summary');
 const bkTitle   = document.getElementById('bk-step-title');
+const bkNextBar = document.getElementById('bk-next-bar');
+const bkNextBtn = document.getElementById('bk-next-btn');
 const kompakt   = () => window.matchMedia('(max-width: 640px)').matches;
 
 const bkKesz = () => !!bkWidget.dataset.chosen && (!st.withFanni || st.hours !== null);
@@ -358,6 +360,14 @@ bkSummary.addEventListener('click', e => {
   renderSummary();
 });
 
+/* stúdióbérlésnél az időpont kijelölése után még lehet több órára bővíteni — az adatlapra a „Tovább” gombbal lépünk */
+function updateNextBtn() {
+  const show = !st.withFanni && st.hour !== null && bkWidget.dataset.step === 'pick';
+  bkNextBar.hidden = !show;
+  if (show) bkNextBtn.textContent = `Tovább · ${st.hours} óra · ${st.price.toLocaleString('hu-HU')} Ft`;
+}
+bkNextBtn.addEventListener('click', () => { showFormPanel(); setStep('form'); });
+
 function setStep(step, scroll = true) {
   const valtott = bkWidget.dataset.step !== step;
   bkWidget.dataset.step = step;
@@ -368,6 +378,7 @@ function setStep(step, scroll = true) {
       ? '<span class="bk-step-t">Add meg az adataidat</span><button type="button" class="bk-back"><span aria-hidden="true">‹</span> Vissza</button>'
       : '';
   renderSummary();
+  updateNextBtn();
   if (!valtott) return;   // ugyanazon a lépésen belül nincs görgetés és animáció
 
   /* Ha a foglalás teteje kikerült a látómezőből, azonnal (nem animálva) a tetejére ugrunk. A html-en
@@ -637,6 +648,7 @@ function renderSlots() {
   const container = document.getElementById('time-slots');
   const header    = document.getElementById('slots-header');
   container.innerHTML = '';
+  updateNextBtn();
 
   if (!st.dateStr) {
     header.innerHTML = '<span class="bk-slots-title">Válassz napot a naptárból</span>';
@@ -645,7 +657,7 @@ function renderSlots() {
   }
 
   const karacsonyi = st.dateStr >= KARACSONY.tol && st.dateStr <= KARACSONY.ig;
-  const orakTipp = st.withFanni ? '' : '<span class="bk-slots-hint">Az időpont kiválasztása után az adatlapon az időtartam még módosítható.</span>';
+  const orakTipp = st.withFanni ? '' : '<span class="bk-slots-hint">Több egymás utáni órát is kijelölhetsz.</span>';
   header.innerHTML = `<span class="bk-slots-title">${fmtDateHU(st.date)}</span>` +
     '<button type="button" class="bk-daybtn"><span aria-hidden="true">‹</span> Másik nap</button>' +   // telefonon a naptárhoz vissza
     `${orakTipp}${karacsonyi ? KARACSONY_NOTE : ''}`;
@@ -722,8 +734,7 @@ function renderSlotsStudio(container) {
 
         renderSlots();
         updatePriceDisplay();
-        if (st.hour !== null) { showFormPanel(); setStep('form'); }
-        else hideForms();
+        if (st.hour === null) hideForms();
       });
     }
 
@@ -1159,15 +1170,7 @@ openModalFromHash();
 window.addEventListener('hashchange', openModalFromHash);
 
 /* ── Feltételek checkbox — módtól függő ──────────────────────── */
-/* A hatálydátum a modál „Hatályos: …” sorából jön, így csak egy helyen kell átírni */
-function hatalyos(modalId) {
-  const t = document.querySelector(`#${modalId} .modal-date`)?.textContent.trim() || '';
-  return t ? `(${t.charAt(0).toLowerCase()}${t.slice(1)})` : '';
-}
-document.getElementById('adatkezeles-hatalyos').textContent = hatalyos('privacy-modal');
-
 function updateFeltetelek() {
-  document.getElementById('feltetelek-hatalyos').textContent = hatalyos(st.withFanni ? 'fotozas-modal' : 'aszf-modal');
   const btn  = document.getElementById('open-feltetelek-form');
   const cb   = document.getElementById('b-feltetelek');
   const err  = document.getElementById('b-feltetelek-err');
