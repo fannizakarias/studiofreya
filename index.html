@@ -83,10 +83,11 @@
       <a href="#" class="logo-link" aria-label="Studio Freya — Főoldal">
         <img src="images/logo-aperture.svg" alt="Studio Freya" class="logo-svg" />
       </a>
-      <button class="nav-toggle" aria-label="Menü megnyitása" aria-expanded="false">
+      <a href="#foglalas" class="nav-cta">Foglalás</a>
+      <button class="nav-toggle" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#studio">A stúdió</a></li>
         <li><a href="#fotos">A fotós</a></li>
         <li><a href="#foglalas" class="nav-link-booking">Foglalás</a></li>
@@ -481,21 +482,21 @@
             <div class="bk-form-grid">
               <div class="bk-field">
                 <label for="b-nev">Teljes név *</label>
-                <input type="text" id="b-nev" name="nev" placeholder="Példa Anna" required />
+                <input type="text" id="b-nev" name="nev" placeholder="Példa Anna" autocomplete="name" autocapitalize="words" required />
               </div>
               <div class="bk-field">
                 <label for="b-email">E-mail cím *</label>
-                <input type="email" id="b-email" name="email" placeholder="pelda.anna@gmail.com" required />
+                <input type="email" id="b-email" name="email" placeholder="pelda.anna@gmail.com" autocomplete="email" autocapitalize="off" spellcheck="false" required />
                 <span class="bk-field-error" id="b-email-err">Érvényes e-mail címet adj meg (pl. neve@gmail.com).</span>
               </div>
               <div class="bk-field">
                 <label for="b-telefon">Telefonszám</label>
-                <input type="tel" id="b-telefon" name="telefon" placeholder="+36 70 1234 567" inputmode="tel" />
+                <input type="tel" id="b-telefon" name="telefon" placeholder="+36 70 1234 567" inputmode="tel" autocomplete="tel" />
                 <span class="bk-field-error" id="b-telefon-err">Érvényes telefonszámot adj meg (pl. +36 70 123 4567).</span>
               </div>
               <div class="bk-field">
                 <label for="b-szemelyek">Résztvevők száma <span class="bk-field-hint">(max. 7 fő)</span></label>
-                <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="7" placeholder="1" required />
+                <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="7" placeholder="1" inputmode="numeric" required />
               </div>
               <div class="bk-field bk-field--full">
                 <label for="b-megjegyzes">Megjegyzés</label>
@@ -518,18 +519,18 @@
             </div>
 
             <p class="bk-form-section-title">Számlázási adatok</p>
-            <div class="bk-form-grid">
+            <div class="bk-form-grid bk-form-grid--addr">
               <div class="bk-field bk-field--full">
                 <label for="b-szamla-nev">Teljes név *</label>
-                <input type="text" id="b-szamla-nev" name="szamlazasi_nev" placeholder="Példa Anna" required />
+                <input type="text" id="b-szamla-nev" name="szamlazasi_nev" placeholder="Példa Anna" autocomplete="billing name" autocapitalize="words" required />
               </div>
               <div class="bk-field">
                 <label for="b-iranyitoszam">Irányítószám *</label>
-                <input type="text" id="b-iranyitoszam" name="iranyitoszam" placeholder="8200" inputmode="numeric" maxlength="4" required />
+                <input type="text" id="b-iranyitoszam" name="iranyitoszam" placeholder="8200" inputmode="numeric" maxlength="4" autocomplete="billing postal-code" required />
               </div>
               <div class="bk-field">
                 <label for="b-telepules">Település *</label>
-                <input type="text" id="b-telepules" name="telepules" placeholder="Veszprém" required />
+                <input type="text" id="b-telepules" name="telepules" placeholder="Veszprém" autocomplete="billing address-level2" required />
               </div>
               <div class="bk-field">
                 <label for="b-kozterulet">Közterület neve és jellege *</label>
@@ -537,11 +538,11 @@
               </div>
               <div class="bk-field">
                 <label for="b-hazszam">Házszám *</label>
-                <input type="text" id="b-hazszam" name="hazszam" placeholder="4" required />
+                <input type="text" id="b-hazszam" name="hazszam" placeholder="4" autocomplete="off" required />
               </div>
               <div class="bk-field bk-field--full">
                 <label for="b-adoszam">Adószám <span class="bk-field-hint">(cégeknek)</span></label>
-                <input type="text" id="b-adoszam" name="adoszam" placeholder="12345678-1-42" />
+                <input type="text" id="b-adoszam" name="adoszam" placeholder="12345678-1-42" autocomplete="off" />
               </div>
             </div>
 
@@ -701,7 +702,7 @@
     <div class="container">
       <div class="contact-top">
         <div>
-          <h2 class="section-title">Kapcsolat</h2>
+          <h2 class="section-title section-title--caps">Kapcsolat</h2>
         </div>
         <div class="contact-reach">
           <p class="contact-reach-title">Kérdésed van vagy egyedi projektet tervezel?</p>

@@ -100,21 +100,22 @@ window.addEventListener('scroll', () => {
 /* ─── Mobil navigáció ─────────────────────────────────────────── */
 const toggle   = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('.nav-links');
-toggle.addEventListener('click', () => {
-  const open = navLinks.classList.toggle('open');
+/* nyitott menünél a gomb X-re vált (CSS), és a háttér nem görög a menü alatt */
+function setMenu(open) {
+  navLinks.classList.toggle('open', open);
   toggle.setAttribute('aria-expanded', open);
-  if (open) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
-  }
+  toggle.setAttribute('aria-label', open ? 'Menü bezárása' : 'Menü megnyitása');
+  document.body.style.overflow = open ? 'hidden' : '';
+  if (open) header.classList.add('scrolled');
+  else header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
+}
+toggle.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
+// a menü linkjei és a fejléc „Foglalás” gombja bezárják a menüt
+document.querySelectorAll('.nav-links a, .nav-cta').forEach(link => {
+  link.addEventListener('click', () => { if (navLinks.classList.contains('open')) setMenu(false); });
 });
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    toggle.setAttribute('aria-expanded', false);
-    header.classList.toggle('scrolled', window.scrollY > scrollThreshold);
-  });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) { setMenu(false); toggle.focus(); }
 });
 
 /* Ujjal húzás balra/jobbra: cb(1) a következő, cb(-1) az előző képre.
