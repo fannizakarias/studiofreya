@@ -32,13 +32,54 @@ document.querySelectorAll('.hero-notices').forEach(sav => {
 })();
 
 
+/* ─── Horgonyra görgetés telefonon ─────────────────────────────
+   A böngésző saját animált görgetése hosszú távon „ugrik”: közben a telefon címsora
+   be- és kicsúszik, a lusta képek betöltődnek, és a célpont elmozdul. Ezért telefonon
+   magunk animálunk: minden képkockán újraszámoljuk a célt, így pontosan oda érkezünk. */
+const mobilNezet = () => window.matchMedia('(max-width: 640px)').matches;
+let gorgetesId = 0;
+function gorgessIde(el) {
+  const off = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  const cel = () => el.getBoundingClientRect().top + window.scrollY - off;
+  const kezdet = window.scrollY;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.scrollTo({ top: cel(), behavior: 'instant' });
+    return;
+  }
+  const id = ++gorgetesId;
+  const idotartam = Math.min(900, 350 + Math.abs(cel() - kezdet) * 0.04);
+  const t0 = performance.now();
+  const megszakit = () => { gorgetesId++; };   // ha a látogató közben hozzáér, átadjuk neki az irányítást
+  window.addEventListener('touchstart', megszakit, { once: true, passive: true });
+  (function kocka(most) {
+    if (id !== gorgetesId) return;
+    const t = Math.min(1, (most - t0) / idotartam);
+    const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;   // lassú indulás és érkezés
+    window.scrollTo({ top: kezdet + (cel() - kezdet) * e, behavior: 'instant' });
+    if (t < 1) requestAnimationFrame(kocka);
+    else window.removeEventListener('touchstart', megszakit);
+  })(t0);
+}
+// minden belső, szakaszra mutató hivatkozás (menü, gombok, közlemények) ezt használja; a saját kezelővel rendelkezők kimaradnak
+document.addEventListener('click', e => {
+  if (e.defaultPrevented || !mobilNezet()) return;
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || a.getAttribute('href') === '#') return;
+  const el = document.querySelector(a.getAttribute('href'));
+  if (!el || el.tagName !== 'SECTION') return;
+  e.preventDefault();
+  gorgessIde(el);
+  history.replaceState(null, '', a.getAttribute('href'));
+});
+
 /* ─── „Görgess lejjebb”: a hero utáni első szakaszhoz görget
    (a karácsonyi sáv idővel eltűnik, ezért nem fix horgonyra) ─── */
 document.querySelector('.hero-scroll')?.addEventListener('click', e => {
   const next = document.querySelector('.hero')?.nextElementSibling;
   if (!next) return;
   e.preventDefault();
-  next.scrollIntoView({ behavior: 'smooth' });
+  if (mobilNezet()) gorgessIde(next);
+  else next.scrollIntoView({ behavior: 'smooth' });
 });
 
 /* ─── Fejléc árnyék görgetéskor ──────────────────────────────── */
@@ -93,8 +134,9 @@ function onSwipe(el, cb) {
   }, { passive: true });
 }
 
-/* Léptető nyilak a képlapozókra (gépen, egérrel) — a vékony csík könnyen elkerülhető */
-function addCarouselArrows(container, step) {
+/* Léptető nyilak és „2 / 4” számláló a képlapozókra: így telefonon és gépen is egyértelmű, hogy több kép van.
+   Visszaad egy függvényt, amit a lapozáskor kell hívni az aktuális kép sorszámával. */
+function addCarouselArrows(container, step, total) {
   [['prev', -1, '15 6 9 12 15 18'], ['next', 1, '9 6 15 12 9 18']].forEach(([name, dir, points]) => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -104,6 +146,11 @@ function addCarouselArrows(container, step) {
     b.addEventListener('click', e => { e.stopPropagation(); step(dir); });
     container.appendChild(b);
   });
+  const count = document.createElement('span');
+  count.className = 'car-count';
+  count.setAttribute('aria-hidden', 'true');
+  container.appendChild(count);
+  return i => { count.textContent = `${i + 1} / ${total}`; };
 }
 
 /* ─── Stúdió szobák: pöttyökkel és ujjal lapozható képek ─────── */
@@ -111,15 +158,18 @@ document.querySelectorAll('.room').forEach(room => {
   const imgs = [...room.querySelectorAll('.room-shots img')];
   const dots = [...room.querySelectorAll('.room-dots button')];
   let current = Math.max(0, imgs.findIndex(img => img.classList.contains('is-active')));
+  let setCount = () => {};
   const show = i => {
     current = i;
     imgs.forEach((img, k) => img.classList.toggle('is-active', k === i));
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
+    setCount(i);
   };
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
 
   if (imgs.length > 1) {
-    addCarouselArrows(room.querySelector('.room-shots'), d => show((current + d + imgs.length) % imgs.length));
+    setCount = addCarouselArrows(room.querySelector('.room-shots'), d => show((current + d + imgs.length) % imgs.length), imgs.length);
+    setCount(current);
   }
 
   /* ujjal csak a szoba saját képei között lapoz, körbe — mint a portfóliónál */
@@ -970,27 +1020,32 @@ renderCalendar();
 renderSlots();
 setStep('mode', false);
 
-/* ─── "Csomagot foglalok" gomb ────────────────────────────────── */
+/* ─── "Stúdiófotózást foglalok" gomb: Fanni módba vált, és a foglaláshoz görget ─────
+   Az állapotot előbb állítjuk be, és csak utána görgetünk — így a cél már végleges
+   magasságú oldalon van, és nincs mit „ugrálnia” érkezéskor. */
 document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => {
   e.preventDefault();
-  document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => {
-    document.querySelectorAll('.bk-mode-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.mode === 'fanni');
-    });
-    bkWidget.dataset.chosen = '1';
-    st.withFanni = true;
-    Object.assign(st, { hours: null, price: null, label: null,
-                        date: null, dateStr: null, hour: null });
-    document.getElementById('bk-duration-bar').hidden = true;
-    document.getElementById('bk-packages').hidden     = false;
-    document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('bk-packages').classList.remove('has-selection');
-    hideForms();
-    renderCalendar();
-    renderSlots();
-    setStep('mode', false);
-  }, 600);
+  document.querySelectorAll('.bk-mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === 'fanni');
+  });
+  bkWidget.dataset.chosen = '1';
+  st.withFanni = true;
+  Object.assign(st, { hours: null, price: null, label: null,
+                      date: null, dateStr: null, hour: null });
+  document.getElementById('bk-duration-bar').hidden = true;
+  document.getElementById('bk-packages').hidden     = false;
+  document.getElementById('bk-pkg-note').hidden     = false;
+  document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bk-packages').classList.remove('has-selection');
+  hideForms();
+  updateFeltetelek();
+  renderCalendar();
+  renderSlots();
+  setStep('mode', false);
+
+  const cel = document.getElementById('foglalas');
+  if (mobilNezet()) gorgessIde(cel);
+  else cel.scrollIntoView({ behavior: 'smooth' });
 });
 
 /* ─── GYIK: mobilon az egész lista egy koppintással nyílik / záródik ─── */
@@ -1119,15 +1174,18 @@ document.addEventListener('keydown', (e) => {
       return b;
     });
 
+    let setCount = () => {};
     function show(idx) {
       items[current].classList.remove('is-active');
       buttons[current].classList.remove('is-active');
       current = idx;
       items[current].classList.add('is-active');
       buttons[current].classList.add('is-active');
+      setCount(current);
     }
 
-    addCarouselArrows(carousel, d => show((current + d + items.length) % items.length));
+    setCount = addCarouselArrows(carousel, d => show((current + d + items.length) % items.length), items.length);
+    setCount(current);
     onSwipe(carousel, dir => show((current + dir + items.length) % items.length));
   });
 })();

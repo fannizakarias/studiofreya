@@ -295,7 +295,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-height: 100dvh;
+  /* svh: a „kis” látómező magassága — nem változik, amikor a telefon címsora görgetéskor elrejtőzik.
+     A korábbi 100dvh ilyenkor átméretezte a herót, és a kép megugrott. */
+  min-height: 100svh;
   padding: var(--hero-keret) var(--hero-keret) 0;
   background: var(--c-bg);
   animation: hero-keretbe 1.6s cubic-bezier(.65, 0, .35, 1) .3s both;
@@ -1785,37 +1787,49 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   inset: -10px -3px;
 }
 
-/* léptető nyilak a képlapozókon — csak egérrel használt eszközön; telefonon az ujjas lapozás marad */
-.car-arrow { display: none; }
+/* léptető nyilak és „2 / 4” számláló a képlapozókon — telefonon és gépen is, hogy egyértelmű legyen a lapozhatóság */
+.car-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 56px;
+  padding: 0;
+  margin-top: -28px;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.car-arrow--prev { left: .3rem; }
+.car-arrow--next { right: .3rem; }
+.car-arrow svg {
+  width: 28px; height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,.55));   /* világos képen is olvasható marad */
+}
 @media (hover: hover) and (pointer: fine) {
-  .car-arrow {
-    position: absolute;
-    top: 50%;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px; height: 56px;
-    padding: 0;
-    margin-top: -28px;
-    border: 0;
-    background: none;
-    color: #fff;
-    cursor: pointer;
-    transition: transform .15s;
-  }
   .car-arrow:hover { transform: scale(1.15); }
-  .car-arrow--prev { left: .3rem; }
-  .car-arrow--next { right: .3rem; }
-  .car-arrow svg {
-    width: 28px; height: 28px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,.55));   /* világos képen is olvasható marad */
-  }
+}
+.car-count {
+  position: absolute;
+  right: .6rem;
+  bottom: .6rem;
+  z-index: 3;
+  padding: .2rem .6rem;
+  font-size: .72rem;
+  letter-spacing: .06em;
+  color: #fff;
+  background: rgba(20,18,15,.5);
+  border-radius: 999px;
+  pointer-events: none;
 }
 
 .room-name { font-size: 1.8rem; margin-bottom: .1rem; }
@@ -1936,13 +1950,17 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .room {
     display: flex;
     flex-direction: column;
-    padding: 2.2rem 0 2.6rem;
+    padding: 1.5rem 0 1.7rem;
     border-top: 1px solid var(--c-border);
   }
   .room:last-child { border-bottom: 1px solid var(--c-border); margin-bottom: 2.5rem; }
   .room-name, .room-myth, .room-text { order: -1; }
-  .room-text { margin-bottom: 1.2rem; }
-  .room-dots { margin: .8rem 0 0; justify-content: center; }
+  .room-name { font-size: 1.6rem; }
+  .room-myth { margin-bottom: .4rem; font-size: 1rem; }
+  .room-text { margin-bottom: 1rem; font-size: .88rem; line-height: 1.6; }
+  /* egy szoba (név, leírás, kép) elférjen egy telefonképernyőn: a kép magassága a képernyőhöz igazodik */
+  .room-shots { max-height: calc(100svh - 22rem); min-height: 200px; }
+  .room-dots { margin: .7rem 0 0; justify-content: center; }
   .room-dots:empty { display: none; }
   /* árak és nyitvatartás: egy sor = felirat balra, érték jobbra */
   .rent-box { margin-top: 0; padding: 1.8rem 1.4rem 1.6rem; max-width: 520px; }
