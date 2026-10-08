@@ -105,22 +105,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   line-height: 1.65;
 }
 
-/* Nyitvatartás-változás közleménye a foglalás fejlécében */
-.section-notice {
-  max-width: 46rem;
-  margin-top: 1.2rem;
-  padding: .8rem 1.1rem;
-  font-size: .92rem;
-  line-height: 1.6;
-  color: var(--c-dark);
-  background: var(--c-taken-bg);
-  border-left: 3px solid var(--c-taken);
-  border-radius: 0 4px 4px 0;
-  text-align: left;
-}
-.section-notice strong { display: block; font-weight: 500; color: var(--c-taken); }
-.section-notice a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-
 /* Céges / egyedi projekt: halk megjegyzés a foglalás fejlécében */
 .section-custom {
   max-width: 46rem;
@@ -570,15 +554,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   transition: color .2s;
 }
 .hero-notice:hover { color: #fff; }
-.hero-notice-dot {
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #e07a6a;
-}
 .hero-notice-fenyo { flex: none; width: 12px; height: 14px; }
-.hero-notice-nw { white-space: nowrap; }   /* az időpont ne törjön ketté */
 
 /* tableten és kisebb laptopon a három rész egymás mellett nem fér el (a cím 3–4 sorba törne),
    ezért itt is egymás alá kerülnek, mint telefonon */
@@ -606,9 +582,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .hero-foot { gap: .8rem; padding: 0 2.5rem 1.1rem; font-size: .66rem; }
   .hero-notices { margin-bottom: .4rem; }
   .hero-notice { display: block; text-align: center; font-size: .72rem; line-height: 1.5; }
-  .hero-notice-dot,
   .hero-notice-fenyo { display: inline-block; margin-right: .45rem; vertical-align: -.1em; }
-  .hero-notice-dot { vertical-align: .1em; }
 }
 
 /* alacsony telefonokon (pl. iPhone SE) még szorosabban, hogy a landing egy képernyő legyen */
