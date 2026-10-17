@@ -3434,6 +3434,22 @@ a, button, summary, label, .bk-cal-day, .bk-slot { touch-action: manipulation; }
   border-color: var(--c-accent);
   box-shadow: 0 0 0 2px var(--c-accent);
 }
+.bk-gift-zoom {
+  position: absolute;
+  top: .4rem; right: .4rem;
+  display: grid;
+  place-items: center;
+  width: 2rem; height: 2rem;
+  padding: 0;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  color: var(--c-dark);
+  cursor: zoom-in;
+  box-shadow: 0 2px 6px rgba(26,25,22,.12);
+}
+.bk-gift-zoom svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.bk-gift-zoom:hover { border-color: var(--c-accent); color: var(--c-accent); }
 .bk-gift-design input:focus-visible + img { outline: 2px solid var(--c-accent); outline-offset: 3px; }
 
 @media (max-width: 640px) {

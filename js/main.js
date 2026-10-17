@@ -1415,6 +1415,16 @@ document.addEventListener('keydown', (e) => {
     lbImg.alt = imgs[current].alt;
   }
 
+  /* ajándékutalvány kinézetei: a kép koppintásra kiválaszt, a sarokban lévő
+     nagyító gomb nyitja meg nagyban (telefonon a bélyegkép kicsi) */
+  const giftGroup = buildGroup(document.querySelectorAll('.bk-gift-design img'));
+  document.querySelectorAll('.bk-gift-zoom').forEach(btn => btn.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const idx = giftGroup.srcIndex.get(btn.closest('.bk-gift-design').querySelector('img').src);
+    if (idx !== undefined) lbOpen(giftGroup, idx);
+  }));
+
   [...roomGroups, ...portfolioGroups].forEach(group => {
     group.imgs.forEach(img => img.addEventListener('click', () => {
       const idx = group.srcIndex.get(img.src);
