@@ -249,6 +249,7 @@ const MAX_HOUR = 18;
 
 const st = {
   withFanni: false,
+  utalvany: false,  // ajándékutalvány: csomag van, időpont nincs — a csomag után rögtön az adatlap jön
   hours:   null,
   price:   null,
   label:   null,
@@ -277,7 +278,8 @@ const bkNextBar = document.getElementById('bk-next-bar');
 const bkNextBtn = document.getElementById('bk-next-btn');
 const kompakt   = () => window.matchMedia('(max-width: 640px)').matches;
 
-const bkKesz = () => !!bkWidget.dataset.chosen && (!st.withFanni || st.hours !== null);
+const bkKesz = () => !!bkWidget.dataset.chosen && !st.utalvany && (!st.withFanni || st.hours !== null);
+const csomagos = () => st.withFanni || st.utalvany;
 
 /* az állapotot (st) átvezeti a widget attribútumaira */
 function bkFrissit() {
@@ -297,8 +299,8 @@ function summaryRows() {
   const nap = st.date ? st.date.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric', weekday: 'long' }) : '';
   const rows = [{
     k: 'Típus',
-    v: st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
-    s: st.withFanni && st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '',
+    v: st.utalvany ? 'Ajándékutalvány' : st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
+    s: csomagos() && st.label ? `${st.label} · ${st.price.toLocaleString('hu-HU')} Ft` : '',
   }];
   if (st.hour !== null) {
     const hosszabbithato = !st.withFanni && (getSzabadOrak(st.dateStr, 1)
@@ -477,10 +479,8 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     btn.classList.add('active');
     bkWidget.dataset.chosen = '1';
     st.withFanni = btn.dataset.mode === 'fanni';
-
-    document.getElementById('bk-duration-bar').hidden = st.withFanni;
-    document.getElementById('bk-packages').hidden     = !st.withFanni;
-    document.getElementById('bk-pkg-note').hidden     = !st.withFanni;
+    st.utalvany  = btn.dataset.mode === 'utalvany';
+    modElemek();
 
     // Szelekció nullázása
     Object.assign(st, { hours: null, price: null, label: null, desc: null,
@@ -494,10 +494,53 @@ document.querySelectorAll('.bk-mode-btn').forEach(btn => {
     renderSlots();
     // a típus ott marad; stúdiónál rögtön lenyílik a naptár, Fanninál előbb a csomagok
     bkFrissit();
-    bkMutasd(document.querySelector(st.withFanni ? '.bk-pkg-note' : '.bk-main'));
+    bkMutasd(csomagos() ? document.getElementById(st.utalvany ? 'bk-gift-note' : 'bk-pkg-note') : document.querySelector('.bk-main'));
   });
 });
 
+
+/* A választott módhoz tartozó sávok és űrlapmezők. Utalványnál nincs
+   naptár, létszám és fizetési mód (előre, átutalással fizetik), viszont kell
+   a megajándékozott neve és az utalvány kinézete. A rejtett mezők required
+   jelzését is levesszük, különben a böngésző nem engedné elküldeni. */
+function modElemek() {
+  const $ = id => document.getElementById(id);
+  $('bk-duration-bar').hidden = csomagos();
+  $('bk-packages').hidden     = !csomagos();
+  $('bk-pkg-note').hidden     = !st.withFanni;
+  $('bk-gift-note').hidden    = !st.utalvany;
+
+  $('bk-field-szemelyek').hidden = st.utalvany;
+  $('b-szemelyek').required      = !st.utalvany;
+  $('bk-field-kod').hidden       = !st.withFanni;
+  $('bk-field-kitoltve').hidden  = !st.utalvany;
+  nevMezo();
+  $('bk-field-minta').hidden     = !st.utalvany;
+  $('bk-payment-group').hidden   = st.utalvany;
+  $('bk-gift-pay').hidden        = !st.utalvany;
+  document.querySelectorAll('input[name="fizetesi_mod"]').forEach(r => { r.required = !st.utalvany; });
+  $('b-megjegyzes').placeholder  = st.utalvany
+    ? 'Ha bármi kérdésed van, ide írhatod...'
+    : 'Egyéb kívánságok, kérdések...';
+  $('booking-submit').textContent = st.utalvany ? 'Utalvány megrendelése' : 'Foglalás elküldése';
+
+  /* karácsony előtt a karácsonyfás kivitel az alapértelmezett */
+  if (st.utalvany) {
+    const minta = new Date().getMonth() >= 9 ? '3' : '2';
+    const r = document.querySelector(`input[name="utalvany_minta"][value="${minta}"]`);
+    if (r) r.checked = true;
+  }
+}
+
+/* Utalványnál a név mező csak akkor kell, ha kitöltve kérik; üresen a
+   vásárló maga tölti ki (a kódot akkor is ráírjuk). Az üres utalványt az
+   üres név jelzi. */
+function nevMezo() {
+  const kitoltve = st.utalvany && document.getElementById('b-kitoltve-igen').checked;
+  document.getElementById('bk-field-cimzett').hidden = !kitoltve;
+  document.getElementById('b-utalvany-nev').required = kitoltve;
+}
+document.querySelectorAll('input[name="utalvany_kitoltve"]').forEach(r => r.addEventListener('change', nevMezo));
 
 /* ═══════════════════════════════════════════════════════════════════
    CSOMAG VÁLASZTÓ (Fanni módban)
@@ -512,6 +555,13 @@ document.querySelectorAll('.bk-pkg-btn').forEach(btn => {
     st.label = btn.dataset.label;
     st.desc  = btn.dataset.desc || null;
     st.hour  = null;
+    /* utalványnál nincs időpont: a csomag után rögtön az adatlap jön */
+    if (st.utalvany) {
+      bkFrissit();
+      showFormPanel();
+      setStep('form');
+      return;
+    }
     hideForms();
     updatePriceDisplay();
     renderCalendar();
@@ -804,7 +854,9 @@ function showFormPanel() {
     ? st.date.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
     : '—';
 
-  badge.innerHTML = `
+  badge.innerHTML = st.utalvany
+    ? `Ajándékutalvány<span class="bk-badge-sep"></span>${st.label || ''}`
+    : `
     ${dateLabel}
     <span class="bk-badge-sep"></span>
     ${timeLabel}
@@ -828,8 +880,8 @@ function updatePriceDisplay() {
   const labelEl  = document.getElementById('bk-price-label');
   const amountEl = document.getElementById('bk-price-amount');
 
-  if (st.withFanni && st.label) {
-    // Fanni mód: "2. csomag" + leírás
+  if (csomagos() && st.label) {
+    // Fanni / utalvány mód: "2. csomag" + leírás
     labelEl.innerHTML = `<strong>${st.label}</strong>${st.desc ? `<br><span>${st.desc}</span>` : ''}`;
   } else {
     // Stúdió mód: "X óra"
@@ -921,9 +973,9 @@ szemInput.addEventListener('input', () => {
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  if (!st.hours)        { alert(st.withFanni ? 'Kérlek válassz csomagot!' : 'Kérlek válassz időtartamot!'); return; }
-  if (!st.dateStr)      { alert('Kérlek válassz dátumot!');     return; }
-  if (st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
+  if (!st.hours)        { alert(csomagos() ? 'Kérlek válassz csomagot!' : 'Kérlek válassz időtartamot!'); return; }
+  if (!st.utalvany && !st.dateStr)      { alert('Kérlek válassz dátumot!');     return; }
+  if (!st.utalvany && st.hour === null) { alert('Kérlek válassz időpontot!');   return; }
 
   if (!validateEmail(emailInput.value)) {
     setFieldError(emailInput, emailErr, true);
@@ -935,7 +987,14 @@ bookingForm.addEventListener('submit', async (e) => {
     telefonInput.focus();
     return;
   }
-  if (!validateSzemelyek(document.getElementById('b-szemelyek').value)) {
+  const cimzettInput = document.getElementById('b-utalvany-nev');
+  const kitoltve = document.getElementById('b-kitoltve-igen').checked;
+  if (st.utalvany && kitoltve && !cimzettInput.value.trim()) {
+    cimzettInput.focus();
+    alert('Kérlek add meg, kinek szól az utalvány.');
+    return;
+  }
+  if (!st.utalvany && !validateSzemelyek(document.getElementById('b-szemelyek').value)) {
     document.getElementById('b-szemelyek').focus();
     alert('A résztvevők száma 1 és 7 között kell legyen.');
     return;
@@ -953,22 +1012,32 @@ bookingForm.addEventListener('submit', async (e) => {
 
   /* A foglalás adatai — ugyanaz megy a Workernek és a Web3Formsnak, hogy a
      kettő ne tudjon szétcsúszni. */
+  /* Utalványnál a dátum a megrendelés napja (a bevétel ehhez a naphoz
+     tartozik), időpont nincs. */
+  const ma = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Budapest' });
   const adatok = {
-    tipus:      st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
-    csomag:     st.withFanni ? (st.label || '') : '',
+    tipus:      st.utalvany ? 'Ajándékutalvány' : st.withFanni ? 'Stúdiófotózás' : 'Stúdióbérlés',
+    csomag:     csomagos() ? (st.label || '') : '',
     nev:        document.getElementById('b-nev').value,
     email:      document.getElementById('b-email').value,
     telefon:    document.getElementById('b-telefon').value,
-    szemelyek:  document.getElementById('b-szemelyek').value,
+    szemelyek:  st.utalvany ? '' : document.getElementById('b-szemelyek').value,
     megjegyzes: document.getElementById('b-megjegyzes').value,
-    fizetesi_mod:     document.querySelector('input[name="fizetesi_mod"]:checked')?.value || '',
+    fizetesi_mod:     st.utalvany ? 'Átutalás' : (document.querySelector('input[name="fizetesi_mod"]:checked')?.value || ''),
     szamlazasi_nev:   document.getElementById('b-szamla-nev').value,
     szamlazasi_cim:   `${document.getElementById('b-iranyitoszam').value} ${document.getElementById('b-telepules').value}, ${document.getElementById('b-kozterulet').value} ${document.getElementById('b-hazszam').value}.`,
     adoszam:    document.getElementById('b-adoszam').value,
-    idotartam:  `${st.hours} óra`,
+    idotartam:  st.utalvany ? '' : `${st.hours} óra`,
     ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
-    datum:      st.dateStr,
-    idopont:    `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
+    datum:      st.utalvany ? ma : st.dateStr,
+    idopont:    st.utalvany ? '' : `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
+    ...(st.utalvany ? {
+      utalvany_nev:   kitoltve ? cimzettInput.value.trim() : '',
+      utalvany_minta: document.querySelector('input[name="utalvany_minta"]:checked')?.value || '2',
+    } : {}),
+    ...(st.withFanni ? {
+      utalvany_kod: document.getElementById('b-utalvany-kod').value.trim().toUpperCase(),
+    } : {}),
   };
 
   /* A Worker rögzíti a foglalást, és közben ellenőrzi, hogy időközben nem
@@ -978,10 +1047,10 @@ bookingForm.addEventListener('submit', async (e) => {
   let workerHiba = WORKER_URL ? '' : null;
   if (WORKER_URL) {
     try {
-      const res = await fetch(`${WORKER_URL}/api/foglalas`, {
+      const res = await fetch(`${WORKER_URL}/api/${st.utalvany ? 'utalvany' : 'foglalas'}`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...adatok, ora: st.hour, orak: st.hours }),
+        body: JSON.stringify(st.utalvany ? adatok : { ...adatok, ora: st.hour, orak: st.hours }),
       });
       if (res.status === 409) {
         const valasz = await res.json().catch(() => ({}));
@@ -1010,11 +1079,13 @@ bookingForm.addEventListener('submit', async (e) => {
   }
 
   // Azonnali helyi frissítés (email és GitHub eredményétől függetlenül)
-  if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
-  const bookedHours = Array.from({ length: st.hours || 1 }, (_, i) => st.hour + i);
-  bookedHours.forEach(h => {
-    if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
-  });
+  if (!st.utalvany) {
+    if (!FOGLALT[st.dateStr]) FOGLALT[st.dateStr] = [];
+    const bookedHours = Array.from({ length: st.hours || 1 }, (_, i) => st.hour + i);
+    bookedHours.forEach(h => {
+      if (!FOGLALT[st.dateStr].includes(h)) FOGLALT[st.dateStr].push(h);
+    });
+  }
 
   // Email küldése (nem blokkoló — ha sikertelen, a foglalás akkor is elmegy)
   fetch('https://api.web3forms.com/submit', {
@@ -1022,7 +1093,9 @@ bookingForm.addEventListener('submit', async (e) => {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
       access_key: 'aba153bd-ed5e-4516-bfea-dc7e2ca838b4',
-      subject:    `${workerHiba ? '⚠️ NINCS AZ ADMINBAN – ' : ''}Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`,
+      subject:    `${workerHiba ? '⚠️ NINCS AZ ADMINBAN – ' : ''}` + (st.utalvany
+        ? `Új ajándékutalvány-rendelés – ${st.label} – ${adatok.utalvany_nev || 'üresen'}`
+        : `Új foglalás – ${st.dateStr} ${pad(st.hour)}:00`),
       ...(workerHiba ? { worker_hiba: workerHiba } : {}),
       from_name:  adatok.nev,
       ...adatok,
@@ -1033,6 +1106,11 @@ bookingForm.addEventListener('submit', async (e) => {
 });
 
 function showSuccess() {
+  document.getElementById('bk-success-title').textContent = st.utalvany ? 'Megrendelés elküldve!' : 'Foglalás elküldve!';
+  document.getElementById('bk-success-text').innerHTML = st.utalvany
+    ? 'Köszönjük! 1 munkanapon belül e-mailben elküldjük az átutalási adatokat.<br>A befizetés után PDF-ben küldjük az ajándékutalványt.'
+    : 'Köszönjük! 1 munkanapon belül e-mailben megerősítjük az időpontodat.<br>Találkozunk a stúdióban – 8200 Veszprém, Rákóczi Ferenc utca 4.';
+  document.getElementById('bk-gift-note').hidden     = true;
   document.querySelector('.bk-mode-bar').hidden      = true;
   document.querySelector('.bk-duration-bar').hidden  = true;
   document.getElementById('bk-packages').hidden      = true;
@@ -1050,7 +1128,7 @@ function showSuccess() {
 }
 
 document.getElementById('booking-reset').addEventListener('click', () => {
-  Object.assign(st, { withFanni: false, hours: null, price: null, label: null,
+  Object.assign(st, { withFanni: false, utalvany: false, hours: null, price: null, label: null,
                       date: null, dateStr: null, hour: null });
 
   document.querySelectorAll('.bk-mode-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
@@ -1064,10 +1142,10 @@ document.getElementById('booking-reset').addEventListener('click', () => {
   document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('bk-packages').classList.remove('has-selection');
   bookingForm.reset();
+  modElemek();
 
   const btn = document.getElementById('booking-submit');
   btn.disabled  = false;
-  btn.textContent = 'Foglalás elküldése';
 
   renderCalendar();
   renderSlots();
@@ -1086,18 +1164,17 @@ setStep('pick', false);
 /* ─── "Stúdiófotózást foglalok" gomb: Fanni módba vált, és a foglaláshoz görget ─────
    Az állapotot előbb állítjuk be, és csak utána görgetünk — így a cél már végleges
    magasságú oldalon van, és nincs mit „ugrálnia” érkezéskor. */
-document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => {
+function csomagosModraValt(e, mod) {
   e.preventDefault();
   document.querySelectorAll('.bk-mode-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.mode === 'fanni');
+    b.classList.toggle('active', b.dataset.mode === mod);
   });
   bkWidget.dataset.chosen = '1';
-  st.withFanni = true;
+  st.withFanni = mod === 'fanni';
+  st.utalvany  = mod === 'utalvany';
   Object.assign(st, { hours: null, price: null, label: null,
                       date: null, dateStr: null, hour: null });
-  document.getElementById('bk-duration-bar').hidden = true;
-  document.getElementById('bk-packages').hidden     = false;
-  document.getElementById('bk-pkg-note').hidden     = false;
+  modElemek();
   document.querySelectorAll('.bk-pkg-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('bk-packages').classList.remove('has-selection');
   hideForms();
@@ -1109,7 +1186,9 @@ document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', (e) => 
   const cel = document.getElementById('foglalas');
   if (mobilNezet()) gorgessIde(cel);
   else cel.scrollIntoView({ behavior: 'smooth' });
-});
+}
+document.getElementById('btn-with-fotos-pkg')?.addEventListener('click', e => csomagosModraValt(e, 'fanni'));
+document.getElementById('btn-utalvany')?.addEventListener('click', e => csomagosModraValt(e, 'utalvany'));
 
 /* ─── GYIK: mobilon az egész lista egy koppintással nyílik / záródik ─── */
 (function () {
@@ -1167,9 +1246,11 @@ function makeModal(overlayId, closeId, openIds) {
 const closeAszf       = makeModal('aszf-modal',       'close-aszf',       ['open-aszf']);
 const closeFootozas   = makeModal('fotozas-modal',    'close-fotozas',    ['open-fotozas']);
 const closeImpresszum = makeModal('impresszum-modal', 'close-impresszum', ['open-impresszum']);
+const closeUtalvany   = makeModal('utalvany-modal',   'close-utalvany',   ['open-utalvany-feltetelek']);
 
 /* A visszaigazoló e-mailekből linkelhető feltételek: studiofreya.hu/#berlesi-feltetelek, /#fotozasi-feltetelek */
-const HASH_MODALS = { '#berlesi-feltetelek': 'open-aszf', '#fotozasi-feltetelek': 'open-fotozas' };
+const HASH_MODALS = { '#berlesi-feltetelek': 'open-aszf', '#fotozasi-feltetelek': 'open-fotozas',
+                      '#ajandekutalvany-feltetelek': 'open-utalvany-feltetelek' };
 function openModalFromHash() {
   const btnId = HASH_MODALS[location.hash];
   if (btnId) document.getElementById(btnId)?.click();
@@ -1182,7 +1263,11 @@ function updateFeltetelek() {
   const btn  = document.getElementById('open-feltetelek-form');
   const cb   = document.getElementById('b-feltetelek');
   const err  = document.getElementById('b-feltetelek-err');
-  if (st.withFanni) {
+  if (st.utalvany) {
+    btn.textContent = 'Ajándékutalvány feltételeit';
+    btn.onclick = (e) => { e.preventDefault(); document.getElementById('utalvany-modal').hidden = false; document.body.style.overflow = 'hidden'; };
+    err.textContent = 'Kérlek fogadd el az ajándékutalvány feltételeit.';
+  } else if (st.withFanni) {
     btn.textContent = 'Fotózási feltételeket';
     btn.onclick = (e) => { e.preventDefault(); document.getElementById('fotozas-modal').hidden = false; document.body.style.overflow = 'hidden'; };
     err.textContent = 'Kérlek fogadd el a fotózási feltételeket.';
@@ -1201,6 +1286,7 @@ document.addEventListener('keydown', (e) => {
   if (!document.getElementById('aszf-modal').hidden)        closeAszf();
   if (!document.getElementById('fotozas-modal').hidden)     closeFootozas();
   if (!document.getElementById('impresszum-modal').hidden)  closeImpresszum();
+  if (!document.getElementById('utalvany-modal').hidden)    closeUtalvany();
   if (!document.getElementById('studio-lightbox').hidden)   lbClose();
 });
 

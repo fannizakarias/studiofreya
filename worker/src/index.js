@@ -10,6 +10,7 @@
      GET  /api/ping                     — életjel (teszthez)
      GET  /api/foglalt                  — nyilvános: mely órák foglaltak
      POST /api/foglalas                 — nyilvános: új foglalás rögzítése
+     POST /api/utalvany                 — nyilvános: ajándékutalvány-rendelés (időpont nélkül)
      GET  /api/foglalasok               — admin: az összes foglalás
      POST /api/foglalas/<id>/megerosit  — admin: véglegesítés (nem jár le)
      POST /api/foglalas/<id>/torol      — admin: időpont felszabadítása
@@ -218,6 +219,7 @@ async function ujFoglalas(request, env) {
     szamlazasi_nev: tisztit(b.szamlazasi_nev, 160),
     szamlazasi_cim: tisztit(b.szamlazasi_cim, 300),
     adoszam: tisztit(b.adoszam, 40),
+    utalvany_kod: tisztit(b.utalvany_kod, 20).toUpperCase(),
   };
 
   // Előbb az órák foglalása, utána az adatlap — így ha félúton elszáll,
@@ -230,6 +232,74 @@ async function ujFoglalas(request, env) {
   await env.FOGLALASOK.put(rlKulcs, String(eddig + 1), { expirationTtl: RL_WINDOW });
 
   return json({ ok: true, id, lejar: holdNap }, 201, request, env);
+}
+
+/* Az utalvánnyal megvehető csomagok ára — szándékosan itt, nem a kérésből:
+   az árat a vásárló böngészője nem írhatja át. A honlap foglalási
+   felületével és a fotózási feltételekkel egyezik. */
+const UTALVANY_CSOMAGOK = {
+  'Kis csomag': '25 000 Ft',
+  'Közepes csomag': '45 000 Ft',
+  'Nagy csomag': '65 000 Ft',
+};
+
+/* Nyilvános: ajándékutalvány-rendelés. Időpontot nem foglal, csak az
+   adatlapot rögzíti, hogy az admin letölthesse. A dátum a rendelés napja
+   (a bevétel ehhez tartozik). Ugyanaz a darabszám-korlát vonatkozik rá, mint
+   a foglalásra. */
+async function ujUtalvany(request, env) {
+  const meret = Number(request.headers.get('Content-Length') || 0);
+  if (meret > 16 * 1024) {
+    return json({ error: 'Túl nagy kérés.' }, 413, request, env);
+  }
+
+  let b;
+  try {
+    b = await request.json();
+  } catch {
+    return json({ error: 'Hibás kérés.' }, 400, request, env);
+  }
+
+  const csomag = tisztit(b.csomag, 120);
+  if (!UTALVANY_CSOMAGOK[csomag]) return json({ error: 'Hibás csomag.' }, 400, request, env);
+  if (!b.nev) return json({ error: 'A név megadása kötelező.' }, 400, request, env);
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email || '')) return json({ error: 'Hibás e-mail cím.' }, 400, request, env);
+
+  const ip = request.headers.get('CF-Connecting-IP') || 'ismeretlen';
+  const rlKulcs = `rl:${ip}`;
+  const eddig = Number(await env.FOGLALASOK.get(rlKulcs)) || 0;
+  if (eddig >= RL_MAX) {
+    return json({ error: 'Túl sok kísérlet. Próbáld később, vagy hívj minket.' }, 429, request, env);
+  }
+
+  const id = crypto.randomUUID();
+  const rekord = {
+    id,
+    submittedAt: new Date().toISOString(),
+    allapot: 'fuggo',
+    datum: ma(),
+    idopont: '',
+    idotartam: '',
+    tipus: 'Ajándékutalvány',
+    csomag,
+    ar: UTALVANY_CSOMAGOK[csomag],
+    nev: tisztit(b.nev, 120),
+    email: tisztit(b.email, 160),
+    telefon: tisztit(b.telefon, 40),
+    szemelyek: '',
+    megjegyzes: tisztit(b.megjegyzes, 2000),
+    fizetesi_mod: 'Átutalás',
+    szamlazasi_nev: tisztit(b.szamlazasi_nev, 160),
+    szamlazasi_cim: tisztit(b.szamlazasi_cim, 300),
+    adoszam: tisztit(b.adoszam, 40),
+    utalvany_nev: tisztit(b.utalvany_nev, 60),
+    utalvany_minta: /^[2-4]$/.test(String(b.utalvany_minta)) ? String(b.utalvany_minta) : '2',
+  };
+
+  await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
+  await env.FOGLALASOK.put(rlKulcs, String(eddig + 1), { expirationTtl: RL_WINDOW });
+
+  return json({ ok: true, id }, 201, request, env);
 }
 
 /* Admin: az összes foglalás adatlapja, legújabb elöl. */
@@ -300,7 +370,8 @@ async function visszaallit(request, env, id) {
   if (!nyers) return json({ error: 'Nincs ilyen foglalás.' }, 404, request, env);
 
   const rekord = JSON.parse(nyers);
-  if (rekord.datum < ma()) {
+  // Az utalványnál a dátum a rendelés napja, nem egy időpont — az nem "múlik el".
+  if (rekord.datum < ma() && rekord.tipus !== 'Ajándékutalvány') {
     return json({ error: 'A foglalás napja már elmúlt, nincs mit visszaállítani.' }, 400, request, env);
   }
 
@@ -349,6 +420,9 @@ export default {
       }
       if (ut === '/api/foglalas' && request.method === 'POST') {
         return ujFoglalas(request, env);
+      }
+      if (ut === '/api/utalvany' && request.method === 'POST') {
+        return ujUtalvany(request, env);
       }
 
       // Innentől admin jogosultság kell
