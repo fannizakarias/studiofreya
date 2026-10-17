@@ -1051,6 +1051,7 @@ bookingForm.addEventListener('submit', async (e) => {
     datum:      st.utalvany ? ma : st.dateStr,
     idopont:    st.utalvany ? '' : `${pad(st.hour)}:00 – ${pad(st.hour + st.hours)}:00`,
     ...(st.utalvany ? {
+      utalvany_kitoltes: kitoltve ? 'Kitöltve kéri' : 'Üresen kéri (kézzel tölti ki)',
       utalvany_nev:   kitoltve ? cimzettInput.value.trim() : '',
       utalvany_minta: document.querySelector('input[name="utalvany_minta"]:checked')?.value || '2',
     } : {}),
