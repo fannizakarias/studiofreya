@@ -1391,10 +1391,13 @@ document.addEventListener('keydown', (e) => {
   let activeGroup = roomGroups[0];
   let current = 0;
 
+  /* ha a bélyegképnek van nagyobb felbontású párja (data-nagy), a nagyításban az látszik */
+  const nagyKep = img => img.dataset.nagy || img.src;
+
   function lbOpen(group, idx) {
     activeGroup = group;
     current = idx;
-    lbImg.src = group.imgs[idx].src;
+    lbImg.src = nagyKep(group.imgs[idx]);
     lbImg.alt = group.imgs[idx].alt;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -1411,7 +1414,7 @@ document.addEventListener('keydown', (e) => {
   function lbStep(dir) {
     const imgs = activeGroup.imgs;
     current = (current + dir + imgs.length) % imgs.length;
-    lbImg.src = imgs[current].src;
+    lbImg.src = nagyKep(imgs[current]);
     lbImg.alt = imgs[current].alt;
   }
 
