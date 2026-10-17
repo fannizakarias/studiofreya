@@ -3380,7 +3380,11 @@ a, button, summary, label, .bk-cal-day, .bk-slot { touch-action: manipulation; }
 
 /* ── Foglalás: utalvány mód ── */
 .bk-field[hidden],
-.bk-radio-group[hidden] { display: none; }
+.bk-radio-group[hidden],
+.bk-radio-wrap[hidden] { display: none; }
+/* stúdiófotózásnál három fizetési mód: készpénz, átutalás, ajándékutalvány */
+.bk-radio-group--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bk-kod-field { margin-top: .9rem; }
 
 /* a .bk-field label kapitális stílusa ne öröklődjön a választógombokra */
 .bk-gift-nevvalaszto .bk-radio-wrap { text-transform: none; letter-spacing: normal; }
@@ -3430,9 +3434,11 @@ a, button, summary, label, .bk-cal-day, .bk-slot { touch-action: manipulation; }
   border-color: var(--c-accent);
   box-shadow: 0 0 0 2px var(--c-accent);
 }
-.bk-gift-design input:checked ~ span { color: var(--c-dark); font-weight: 400; }
 .bk-gift-design input:focus-visible + img { outline: 2px solid var(--c-accent); outline-offset: 3px; }
 
 @media (max-width: 640px) {
   .bk-gift-design-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+}
+@media (max-width: 640px) {
+  .bk-radio-group--3 { grid-template-columns: 1fr; }
 }

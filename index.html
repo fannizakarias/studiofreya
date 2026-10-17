@@ -526,10 +526,6 @@
                 <label for="b-szemelyek">Résztvevők száma <span class="bk-field-hint">(max. 7 fő)</span></label>
                 <input type="number" id="b-szemelyek" name="szemelyek" min="1" max="7" placeholder="1" inputmode="numeric" required />
               </div>
-              <div class="bk-field bk-field--full" id="bk-field-kod" hidden>
-                <label for="b-utalvany-kod">Ajándékutalvány kódja <span class="bk-field-hint">(ha utalvánnyal foglalsz)</span></label>
-                <input type="text" id="b-utalvany-kod" name="utalvany_kod" placeholder="SF-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" />
-              </div>
               <fieldset class="bk-field bk-field--full bk-gift-nevvalaszto" id="bk-field-kitoltve" hidden>
                 <legend>Kitöltve kéred az utalványt? *</legend>
                 <div class="bk-radio-group">
@@ -552,9 +548,9 @@
               <fieldset class="bk-field bk-field--full bk-gift-designs" id="bk-field-minta" hidden>
                 <legend>Az utalvány kinézete *</legend>
                 <div class="bk-gift-design-list">
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="2" checked /><img src="images/ajandekutalvany/web/utalvany-2.jpg" alt="Kamerakeretes utalvány" loading="lazy" /><span>Kamerakeret</span></label>
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="3" /><img src="images/ajandekutalvany/web/utalvany-3.jpg" alt="Karácsonyi, karácsonyfával" loading="lazy" /><span>Karácsonyfa</span></label>
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="4" /><img src="images/ajandekutalvany/web/utalvany-4.jpg" alt="Karácsonyi, fenyőágakkal" loading="lazy" /><span>Fenyőág</span></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="2" checked /><img src="images/ajandekutalvany/web/utalvany-2.jpg" alt="Kamerakeretes utalvány" loading="lazy" /></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="3" /><img src="images/ajandekutalvany/web/utalvany-3.jpg" alt="Karácsonyi, karácsonyfával" loading="lazy" /></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="4" /><img src="images/ajandekutalvany/web/utalvany-4.jpg" alt="Karácsonyi, fenyőágakkal" loading="lazy" /></label>
                 </div>
               </fieldset>
               <div class="bk-field bk-field--full">
@@ -576,6 +572,15 @@
                 <span class="bk-radio-box"></span>
                 <span class="bk-radio-text">Átutalás</span>
               </label>
+              <label class="bk-radio-wrap" for="b-fizetes-utalvany" id="bk-pay-utalvany" hidden>
+                <input type="radio" class="bk-radio-input" id="b-fizetes-utalvany" name="fizetesi_mod" value="Ajándékutalvány" required />
+                <span class="bk-radio-box"></span>
+                <span class="bk-radio-text">Ajándékutalvány</span>
+              </label>
+            </div>
+            <div class="bk-field bk-field--full bk-kod-field" id="bk-field-kod" hidden>
+              <label for="b-utalvany-kod">Ajándékutalvány kódja * <span class="bk-field-hint">(az utalványon találod)</span></label>
+              <input type="text" id="b-utalvany-kod" name="utalvany_kod" placeholder="SF-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" />
             </div>
 
             <p class="bk-form-section-title">Számlázási adatok</p>
@@ -669,7 +674,7 @@
         </details>
         <details class="faq-item">
           <summary><h3>Hogyan működik az ajándékutalvány?</h3></summary>
-          <p>A <a href="#foglalas">foglalási felületen</a> válaszd az Ajándékutalványt, jelöld ki Fanni egyik csomagját, és add meg, kitöltve vagy üresen kéred-e. Az árát előre, átutalással kell kifizetni; a befizetés után 1 munkanapon belül PDF-ben küldjük az utalványt. Az utalvány a vásárlástól számított 6 hónapig váltható be: a megajándékozott a szokásos módon foglal stúdiófotózást, és a foglalási űrlapon megadja az utalvány kódját.</p>
+          <p>A <a href="#foglalas">foglalási felületen</a> válaszd az Ajándékutalványt, jelöld ki Fanni egyik csomagját, és add meg, kitöltve vagy üresen kéred-e. Az árát előre, átutalással kell kifizetni; a befizetés után 1 munkanapon belül PDF-ben küldjük az utalványt. Az utalvány a vásárlástól számított 6 hónapig váltható be: a megajándékozott a szokásos módon foglal stúdiófotózást, fizetési módnak az Ajándékutalványt választja, és megadja a kódját.</p>
         </details>
         <details class="faq-item">
           <summary><h3>Mennyibe kerül a stúdióbérlés?</h3></summary>
@@ -1128,7 +1133,7 @@
         <p>Az utalvány a vásárlástól – az ára beérkezésének napjától – számított <strong>6 hónapig</strong> használható fel; a pontos lejárati dátum az utalványon szerepel. A fotózás időpontja legkésőbb ez a nap lehet. A lejárt utalvány nem váltható be, és az ára nem jár vissza.</p>
 
         <h3>5. Beváltás</h3>
-        <p>Az utalvány átruházható: bárki beválthatja, aki a kódját megadja. Beváltáshoz a weboldalon foglalj stúdiófotózást a kívánt csomagra, és a foglalási űrlapon add meg az utalvány kódját. Az időpont a foglalás visszaigazolásával válik érvényessé.</p>
+        <p>Az utalvány átruházható: bárki beválthatja, aki a kódját megadja. Beváltáshoz a weboldalon foglalj stúdiófotózást a kívánt csomagra, fizetési módnak válaszd az Ajándékutalványt, és add meg a kódját. Az időpont a foglalás visszaigazolásával válik érvényessé.</p>
         <p>Ha az utalványon szereplőnél nagyobb csomagot választasz, a különbözetet a fotózás napján kell megfizetni. Ha kisebbet, a különbözet nem jár vissza. Az utalvány készpénzre nem váltható. Az extra retusált képek díja nem része az utalványnak.</p>
 
         <h3>6. Lemondás, módosítás</h3>

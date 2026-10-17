@@ -512,7 +512,11 @@ function modElemek() {
 
   $('bk-field-szemelyek').hidden = st.utalvany;
   $('b-szemelyek').required      = !st.utalvany;
-  $('bk-field-kod').hidden       = !st.withFanni;
+  /* ajándékutalvánnyal csak stúdiófotózást lehet fizetni */
+  $('bk-pay-utalvany').hidden    = !st.withFanni;
+  $('bk-payment-group').classList.toggle('bk-radio-group--3', st.withFanni);
+  if (!st.withFanni) $('b-fizetes-utalvany').checked = false;
+  kodMezo();
   $('bk-field-kitoltve').hidden  = !st.utalvany;
   nevMezo();
   $('bk-field-minta').hidden     = !st.utalvany;
@@ -531,6 +535,14 @@ function modElemek() {
     if (r) r.checked = true;
   }
 }
+
+/* Az utalványkód mezője csak akkor kell, ha ajándékutalvánnyal fizetnek. */
+function kodMezo() {
+  const kell = st.withFanni && document.getElementById('b-fizetes-utalvany').checked;
+  document.getElementById('bk-field-kod').hidden = !kell;
+  document.getElementById('b-utalvany-kod').required = kell;
+}
+document.querySelectorAll('input[name="fizetesi_mod"]').forEach(r => r.addEventListener('change', kodMezo));
 
 /* Utalványnál a név mező csak akkor kell, ha kitöltve kérik; üresen a
    vásárló maga tölti ki (a kódot akkor is ráírjuk). Az üres utalványt az
@@ -994,6 +1006,13 @@ bookingForm.addEventListener('submit', async (e) => {
     alert('Kérlek add meg, kinek szól az utalvány.');
     return;
   }
+  const kodInput = document.getElementById('b-utalvany-kod');
+  const utalvannyal = st.withFanni && document.getElementById('b-fizetes-utalvany').checked;
+  if (utalvannyal && !kodInput.value.trim()) {
+    kodInput.focus();
+    alert('Kérlek add meg az ajándékutalvány kódját.');
+    return;
+  }
   if (!st.utalvany && !validateSzemelyek(document.getElementById('b-szemelyek').value)) {
     document.getElementById('b-szemelyek').focus();
     alert('A résztvevők száma 1 és 7 között kell legyen.');
@@ -1035,9 +1054,7 @@ bookingForm.addEventListener('submit', async (e) => {
       utalvany_nev:   kitoltve ? cimzettInput.value.trim() : '',
       utalvany_minta: document.querySelector('input[name="utalvany_minta"]:checked')?.value || '2',
     } : {}),
-    ...(st.withFanni ? {
-      utalvany_kod: document.getElementById('b-utalvany-kod').value.trim().toUpperCase(),
-    } : {}),
+    ...(utalvannyal ? { utalvany_kod: kodInput.value.trim().toUpperCase() } : {}),
   };
 
   /* A Worker rögzíti a foglalást, és közben ellenőrzi, hogy időközben nem
