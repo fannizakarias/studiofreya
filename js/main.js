@@ -180,6 +180,9 @@ let FOGLALT = {};
 /* Napok, amikor az adminban kikapcsolták a stúdiófotózást — ezeken csak
    stúdióbérlés foglalható. */
 let FOTOZAS_NELKUL = new Set();
+/* Napon belüli órák, amikor Fanni nem ér rá: { dátum: [órák] }. Ezekben az
+   órákban nem kezdődhet és nem is tarthat stúdiófotózás. */
+let FOTOZAS_NELKUL_ORAK = {};
 
 /* A foglalási Worker címe. A schedule.json csak azt tudja, mi volt foglalt a
    legutóbbi közzétételkor; a Worker azt tudja, mi foglalt *most*. Ha üresen
@@ -197,6 +200,7 @@ fetch('data/schedule.json', { cache: 'no-store' })
     SZABAD  = data.szabad  || {};
     FOGLALT = data.foglalt || {};
     FOTOZAS_NELKUL = new Set(data.fotozas_nelkul || []);
+    FOTOZAS_NELKUL_ORAK = data.fotozas_nelkul_orak || {};
     jumpToEarliestAvailable();
     renderCalendar();
     if (st.dateStr) renderSlots();
@@ -429,8 +433,10 @@ function calcStudioPrice(hours) {
 
 /* ── Szabad órák egy napra + időtartamra ──────────────────────── */
 function getSzabadOrak(dateStr, hours) {
+  // Fanni módban azok az órák, amikor Fanni nem ér rá, nem is léteznek
+  const nelkul = st.withFanni ? (FOTOZAS_NELKUL_ORAK[dateStr] || []) : [];
   const szabad  = (SZABAD[dateStr]  || [])
-    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR)
+    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR && !nelkul.includes(h))
     .slice().sort((a,b) => a-b);
   const foglalt = (FOGLALT[dateStr] || []);
 
