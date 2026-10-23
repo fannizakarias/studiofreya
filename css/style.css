@@ -2122,7 +2122,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .insta-poszt {
   position: relative;
   display: block;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 5;   /* álló csempe, mint az Instagram profilrácsa */
   overflow: hidden;
   border-radius: 4px;
   background: var(--c-soft);

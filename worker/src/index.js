@@ -479,7 +479,7 @@ async function igPosztok(env) {
 async function instagram(request, env) {
   const posztok = await igPosztok(env);
   const ki = posztok.map(({ id, tipus, link, szoveg, ido }) => ({
-    id, tipus, link, szoveg, ido, kep: `/api/instagram/kep/${id}`,
+    id, tipus, link, szoveg, ido, kep: `/api/instagram/kep/${id}?m=${IG_KEP_MERET}`,
   }));
   const res = json({ posztok: ki }, 200, request, env);
   res.headers.set('Cache-Control', 'public, max-age=600');
@@ -488,12 +488,14 @@ async function instagram(request, env) {
 
 /* Nyilvános: egy poszt képe. Az Instagram a teljes felbontást adja (egy
    képes poszt akár 4 MB), és a címe alá van írva, így kisebbet kérni sem
-   lehet. Ezért a Worker egyszer lekicsinyíti (Cloudflare Images: négyzetes,
-   600 px, WebP), és a KV-ba teszi — utána onnan adja, az Instagramhoz és az
+   lehet. Ezért a Worker egyszer lekicsinyíti (Cloudflare Images: álló 4:5,
+   600×750 px, mint az Instagram profilrácsa; WebP), és a KV-ba teszi — utána onnan adja, az Instagramhoz és az
    átméretezőhöz többet nem fordul.
    Csak a tárolt listában szereplő posztot hozzuk át — így ez nem nyitott
    proxy, amivel bármit le lehetne tölteni. */
-const IG_KEP_PX = 600;
+const IG_KEP_W = 600;
+const IG_KEP_H = 750;
+const IG_KEP_MERET = `${IG_KEP_W}x${IG_KEP_H}`;   // a kulcsban és a címben is: méretváltáskor nem a régi jön
 const IG_KEP_TTL = 60 * 60 * 24 * 60;   // a lekicsinyített kép 60 napig marad meg
 
 function kepValasz(body, tipus) {
@@ -503,7 +505,7 @@ function kepValasz(body, tipus) {
 }
 
 async function instagramKep(request, env, id) {
-  const kulcs = `ig:kep:${id}`;
+  const kulcs = `ig:kep:${IG_KEP_MERET}:${id}`;
   const tarolt = await env.FOGLALASOK.getWithMetadata(kulcs, 'arrayBuffer');
   if (tarolt.value) return kepValasz(tarolt.value, tarolt.metadata && tarolt.metadata.tipus);
 
@@ -519,7 +521,7 @@ async function instagramKep(request, env, id) {
   const eredeti = await res.arrayBuffer();
   try {
     const kesz = await env.IMAGES.input(new Blob([eredeti]).stream())
-      .transform({ width: IG_KEP_PX, height: IG_KEP_PX, fit: 'cover' })
+      .transform({ width: IG_KEP_W, height: IG_KEP_H, fit: 'cover' })
       .output({ format: 'image/webp', quality: 80 });
     const kep = await kesz.response().arrayBuffer();
     await env.FOGLALASOK.put(kulcs, kep, { expirationTtl: IG_KEP_TTL, metadata: { tipus: 'image/webp' } });
