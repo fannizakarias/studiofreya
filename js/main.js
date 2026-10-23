@@ -433,12 +433,12 @@ function calcStudioPrice(hours) {
 
 /* ── Szabad órák egy napra + időtartamra ──────────────────────── */
 function getSzabadOrak(dateStr, hours) {
-  // Fanni módban azok az órák, amikor Fanni nem ér rá, nem is léteznek
-  const nelkul = st.withFanni ? (FOTOZAS_NELKUL_ORAK[dateStr] || []) : [];
   const szabad  = (SZABAD[dateStr]  || [])
-    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR && !nelkul.includes(h))
+    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR)
     .slice().sort((a,b) => a-b);
-  const foglalt = (FOGLALT[dateStr] || []);
+  // Fanni módban azok az órák, amikor Fanni nem ér rá, foglaltnak látszanak
+  const foglalt = (FOGLALT[dateStr] || [])
+    .concat(st.withFanni ? (FOTOZAS_NELKUL_ORAK[dateStr] || []) : []);
 
   return szabad
     .filter(h => {
