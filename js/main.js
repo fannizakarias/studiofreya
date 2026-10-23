@@ -228,6 +228,49 @@ async function frissitFoglaltsagot() {
   }
 }
 
+/* ─── A stúdió Instagram-posztjai ─────────────────────────────────────
+   A Worker kéri le őket az Instagramtól, a képeket is ő hozza át — így a
+   látogató böngészője nem kapcsolódik a Metához. Ha nincs poszt vagy a
+   Worker nem válaszol, a sáv rejtve marad. */
+const INSTA_DB = 6;
+
+async function betoltInstagram() {
+  const doboz = document.getElementById('insta');
+  if (!WORKER_URL || !doboz) return;
+  try {
+    const r = await fetch(`${WORKER_URL}/api/instagram`);
+    if (!r.ok) return;
+    const { posztok } = await r.json();
+    if (!Array.isArray(posztok) || !posztok.length) return;
+
+    const grid = document.getElementById('insta-grid');
+    posztok.slice(0, INSTA_DB).forEach(p => {
+      const li  = document.createElement('li');
+      const a   = document.createElement('a');
+      const img = document.createElement('img');
+      a.href = p.link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.className = 'insta-poszt';
+      img.src = `${WORKER_URL}${p.kep}`;
+      img.alt = (p.szoveg || '').split('\n')[0].slice(0, 120) || 'Instagram-poszt';
+      img.loading = 'lazy';
+      a.appendChild(img);
+      if (p.tipus === 'VIDEO') {
+        a.insertAdjacentHTML('beforeend', '<svg class="insta-jel" viewBox="0 0 24 24" aria-hidden="true"><polygon points="8 5 19 12 8 19"/></svg>');
+      } else if (p.tipus === 'CAROUSEL_ALBUM') {
+        a.insertAdjacentHTML('beforeend', '<svg class="insta-jel" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg>');
+      }
+      li.appendChild(a);
+      grid.appendChild(li);
+    });
+    doboz.hidden = false;
+  } catch {
+    // Nincs kapcsolat — a sáv rejtve marad
+  }
+}
+betoltInstagram();
+
 /* ═══════════════════════════════════════════════════════════════════
    BELSŐ LOGIKA — ezt nem kell szerkeszteni
    ═══════════════════════════════════════════════════════════════════ */

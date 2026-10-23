@@ -2094,6 +2094,59 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 .paper-name { font-family: var(--f-serif); font-size: 1.15rem; font-weight: 500; }
 
+/* A stúdió Instagram-posztjai a stúdióbérlés-doboz alatt */
+.insta { margin-top: 4rem; }
+.insta[hidden] { display: none; }
+.insta-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+}
+.insta-profil {
+  font-size: .82rem;
+  letter-spacing: .04em;
+  color: var(--c-accent);
+  text-decoration: none;
+}
+.insta-profil:hover { text-decoration: underline; }
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.insta-poszt {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--c-soft);
+}
+.insta-poszt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+.insta-poszt:hover img { transform: scale(1.04); }
+.insta-jel {
+  position: absolute;
+  top: .45rem;
+  right: .45rem;
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.5));
+}
+.insta-jel rect, .insta-jel path { fill: none; }
+
 /* Ár- és infósáv a szobák alatt */
 .studio-bar {
   display: grid;
@@ -2177,6 +2230,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .room-text { font-size: .86rem; line-height: 1.6; }
   .rent-box { padding: 2rem 1.8rem 1.8rem; }
   .gear-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem 1rem; }
+  .insta-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .paper-list { gap: 1.5rem 2rem; }
   .studio-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: stretch; align-items: end; gap: 1.4rem 1.5rem; }
   .studio-bar strong { font-size: 1.3rem; }
@@ -2213,6 +2267,9 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .gear-text { font-size: .82rem; }
   .gear-subtitle { margin-top: 2rem; }
   .paper-roll { height: 104px; }
+  /* Instagram: három oszlop, mint az appban */
+  .insta { margin: 3rem 0 0; max-width: 520px; }
+  .insta-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .35rem; }
   /* árak és nyitvatartás: egy sor = felirat balra, érték jobbra */
   .rent-box { margin-top: 0; padding: 1.8rem 1.4rem 1.6rem; max-width: 520px; }
   .rent-title { margin-bottom: 1.2rem; }

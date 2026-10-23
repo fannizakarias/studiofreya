@@ -15,12 +15,16 @@
      POST /api/foglalas/<id>/megerosit  — admin: véglegesítés (nem jár le)
      POST /api/foglalas/<id>/torol      — admin: időpont felszabadítása
      POST /api/foglalas/<id>/visszaallit — admin: lemondás visszavonása
+     GET  /api/instagram                — nyilvános: a stúdió legutóbbi Instagram-posztjai
+     GET  /api/instagram/kep/<id>       — nyilvános: egy poszt képe (a Worker hozza át)
 
    Tárolás (Cloudflare KV):
      slot:<ÉÉÉÉ-HH-NN>:<ÓÓ>  → a foglalás azonosítója
                                (visszaigazolásig lejárati idővel)
      fog:<id>                → a foglalás teljes adatlapja
      rl:<ip>                 → percenkénti darabszám (spam ellen)
+     ig:token                → az Instagram-token, megújítva (lásd lent)
+     ig:posztok              → a legutóbb lekért posztok listája
    ═══════════════════════════════════════════════════════════════════ */
 
 const MIN_HOUR = 8;    // a honlap naptárával egyezik (js/main.js)
@@ -396,6 +400,136 @@ async function visszaallit(request, env, id) {
   return json({ ok: true }, 200, request, env);
 }
 
+/* ─── Instagram ──────────────────────────────────────────────────────
+   A stúdió posztjait az Instagram hivatalos API-ja adja (Instagram API with
+   Instagram Login). A honlap ezt a Workert kérdezi, nem az Instagramot: így
+   a látogató böngészője nem kapcsolódik a Metához (se süti, se IP-cím), és a
+   token sem kerül a honlapra.
+
+   A token 60 napig érvényes, és megújítható, amíg le nem jár. Az elsőt
+   titkosként kell megadni (npx wrangler secret put IG_TOKEN); a heti
+   ütemezett futás (wrangler.toml [triggers]) ezt megújítja, és a frisset a
+   KV-ba teszi. Ha később új tokent adsz meg titkosként, az felülírja a
+   KV-ban tárolt régit. */
+
+const IG_API = 'https://graph.instagram.com';
+const IG_MEZOK = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp';
+const IG_DB = 12;                 // ennyi posztot kérünk le
+const IG_FRISS = 8 * 60 * 60;     // ennyi másodpercig használjuk a tárolt listát (napi ~3 frissítés)
+
+/* A titkos token vége — ebből tudjuk, hogy a KV-ban tárolt megújított token
+   még ugyanabból a titkosból származik-e. */
+const tokenUjj = t => String(t || '').slice(-12);
+
+async function igToken(env) {
+  const alap = env.IG_TOKEN || '';
+  const tarolt = await env.FOGLALASOK.get('ig:token', 'json');
+  if (tarolt && tarolt.token && tarolt.alap === tokenUjj(alap)) return tarolt.token;
+  return alap;
+}
+
+/* Ütemezett: a token megújítása. Az Instagram csak a legalább 24 órás
+   tokent újítja meg — hetente futtatva ez mindig teljesül. */
+async function igTokenMegujit(env) {
+  const token = await igToken(env);
+  if (!token) return;
+  const res = await fetch(`${IG_API}/refresh_access_token?grant_type=ig_refresh_token&access_token=${encodeURIComponent(token)}`);
+  const v = await res.json().catch(() => ({}));
+  if (!res.ok || !v.access_token) {
+    console.error('Instagram-token megújítása nem sikerült:', res.status, JSON.stringify(v.error || v));
+    return;
+  }
+  await env.FOGLALASOK.put('ig:token', JSON.stringify({
+    token: v.access_token,
+    alap: tokenUjj(env.IG_TOKEN),
+    megujitva: new Date().toISOString(),
+  }));
+}
+
+/* A posztok listája: 8 óránként legfeljebb egyszer kérdezzük az Instagramot,
+   közben a KV-ban tárolt listát adjuk. Ha az Instagram nem válaszol, a
+   legutóbbi tárolt lista megy ki — inkább régi posztok, mint üres sáv. */
+async function igPosztok(env) {
+  const tarolt = await env.FOGLALASOK.get('ig:posztok', 'json');
+  if (tarolt && Date.now() - tarolt.ido < IG_FRISS * 1000) return tarolt.posztok;
+
+  const token = await igToken(env);
+  if (!token) return tarolt ? tarolt.posztok : [];
+  try {
+    const res = await fetch(`${IG_API}/me/media?fields=${IG_MEZOK}&limit=${IG_DB}&access_token=${encodeURIComponent(token)}`);
+    const v = await res.json();
+    if (!res.ok || !Array.isArray(v.data)) throw new Error(`${res.status} ${JSON.stringify(v.error || v)}`);
+    const posztok = v.data.map(m => ({
+      id: m.id,
+      tipus: m.media_type,                            // IMAGE | VIDEO | CAROUSEL_ALBUM
+      kep: m.media_type === 'VIDEO' ? m.thumbnail_url : m.media_url,
+      link: m.permalink,
+      szoveg: String(m.caption || '').slice(0, 300),
+      ido: m.timestamp,
+    })).filter(m => m.kep && /^\d+$/.test(m.id));
+    await env.FOGLALASOK.put('ig:posztok', JSON.stringify({ ido: Date.now(), posztok }));
+    return posztok;
+  } catch (err) {
+    console.error('Instagram-posztok lekérése nem sikerült:', err.message || err);
+    return tarolt ? tarolt.posztok : [];
+  }
+}
+
+/* Nyilvános: a posztok, a képek helyén a Worker saját címével. */
+async function instagram(request, env) {
+  const posztok = await igPosztok(env);
+  const ki = posztok.map(({ id, tipus, link, szoveg, ido }) => ({
+    id, tipus, link, szoveg, ido, kep: `/api/instagram/kep/${id}`,
+  }));
+  const res = json({ posztok: ki }, 200, request, env);
+  res.headers.set('Cache-Control', 'public, max-age=600');
+  return res;
+}
+
+/* Nyilvános: egy poszt képe. Az Instagram a teljes felbontást adja (egy
+   képes poszt akár 4 MB), és a címe alá van írva, így kisebbet kérni sem
+   lehet. Ezért a Worker egyszer lekicsinyíti (Cloudflare Images: négyzetes,
+   600 px, WebP), és a KV-ba teszi — utána onnan adja, az Instagramhoz és az
+   átméretezőhöz többet nem fordul.
+   Csak a tárolt listában szereplő posztot hozzuk át — így ez nem nyitott
+   proxy, amivel bármit le lehetne tölteni. */
+const IG_KEP_PX = 600;
+const IG_KEP_TTL = 60 * 60 * 24 * 60;   // a lekicsinyített kép 60 napig marad meg
+
+function kepValasz(body, tipus) {
+  return new Response(body, {
+    headers: { 'Content-Type': tipus || 'image/jpeg', 'Cache-Control': 'public, max-age=86400' },
+  });
+}
+
+async function instagramKep(request, env, id) {
+  const kulcs = `ig:kep:${id}`;
+  const tarolt = await env.FOGLALASOK.getWithMetadata(kulcs, 'arrayBuffer');
+  if (tarolt.value) return kepValasz(tarolt.value, tarolt.metadata && tarolt.metadata.tipus);
+
+  const posztok = await igPosztok(env);
+  const poszt = posztok.find(p => p.id === id);
+  if (!poszt) return new Response('Nincs ilyen kép.', { status: 404 });
+
+  const res = await fetch(poszt.kep);
+  if (!res.ok) return new Response('A kép nem érhető el.', { status: 502 });
+
+  // Átméretező nélkül (vagy ha hibázik) az eredeti megy ki, de nem tároljuk el.
+  if (!env.IMAGES) return kepValasz(res.body, res.headers.get('Content-Type'));
+  const eredeti = await res.arrayBuffer();
+  try {
+    const kesz = await env.IMAGES.input(new Blob([eredeti]).stream())
+      .transform({ width: IG_KEP_PX, height: IG_KEP_PX, fit: 'cover' })
+      .output({ format: 'image/webp', quality: 80 });
+    const kep = await kesz.response().arrayBuffer();
+    await env.FOGLALASOK.put(kulcs, kep, { expirationTtl: IG_KEP_TTL, metadata: { tipus: 'image/webp' } });
+    return kepValasz(kep, 'image/webp');
+  } catch (err) {
+    console.error('Instagram-kép átméretezése nem sikerült:', err.message || err);
+    return kepValasz(eredeti, res.headers.get('Content-Type'));
+  }
+}
+
 /* ─── Útvonalválasztás ───────────────────────────────────────────── */
 
 export default {
@@ -424,6 +558,13 @@ export default {
       if (ut === '/api/utalvany' && request.method === 'POST') {
         return ujUtalvany(request, env);
       }
+      if (ut === '/api/instagram' && request.method === 'GET') {
+        return instagram(request, env);
+      }
+      const ig = ut.match(/^\/api\/instagram\/kep\/(\d+)$/);
+      if (ig && request.method === 'GET') {
+        return instagramKep(request, env, ig[1]);
+      }
 
       // Innentől admin jogosultság kell
       const adminUt = /^\/api\/(foglalasok$|foglalas\/[^/]+\/(megerosit|torol|visszaallit)$)/.test(ut);
@@ -448,5 +589,11 @@ export default {
       console.error('Worker hiba:', err && err.stack ? err.stack : err);
       return json({ error: 'Szerverhiba.' }, 500, request, env);
     }
+  },
+
+  /* Heti ütemezett futás (wrangler.toml [triggers]): az Instagram-token
+     megújítása, mielőtt a 60 napos érvényessége lejárna. */
+  async scheduled(event, env, ctx) {
+    if (env.FOGLALASOK) ctx.waitUntil(igTokenMegujit(env));
   },
 };

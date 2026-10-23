@@ -8,6 +8,12 @@ compatibility_date = "2026-08-04"
 binding = "FOGLALASOK"
 id = "c6f489f75e544af6b4a0dfd927f700d4"
 
+# Képátméretező — az Instagram-posztok képeit kicsinyíti le (src/index.js,
+# instagramKep). Az ingyenes keretben havi 5000 átméretezés van; posztonként
+# egy kell.
+[images]
+binding = "IMAGES"
+
 [vars]
 # Mely honlapokról fogadunk kérést (vesszővel elválasztva).
 ALLOWED_ORIGINS = "https://www.studiofreya.hu,https://studiofreya.hu"
@@ -22,5 +28,11 @@ ALLOWED_ORIGINS = "https://www.studiofreya.hu,https://studiofreya.hu"
 # megígért határidő lejárna.
 HOLD_DAYS = "4"
 
-# Az admin jelszó NEM ide kerül, hanem titkosként:
+# Az admin jelszó és az Instagram-token NEM ide kerül, hanem titkosként:
 #   npx wrangler secret put ADMIN_TOKEN
+#   npx wrangler secret put IG_TOKEN
+
+# Hetente egyszer (hétfő hajnalban) megújítja az Instagram-tokent, hogy a
+# 60 napos érvényessége soha ne járjon le.
+[triggers]
+crons = ["0 3 * * 1"]
