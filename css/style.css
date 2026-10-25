@@ -15,7 +15,7 @@
   --c-deep:      #1a1916;      /* footer */
   --c-accent:    #4a6251;      /* muted nordic forest green */
   --c-accent-lt: #e8efe9;      /* very light green tint */
-  --c-muted:     #7a7873;
+  --c-muted:     #6a6864;
   --c-border:    #dddad4;
   --c-soft:      #eceae5;      /* section divider / soft bg */
 
@@ -56,7 +56,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }   /* a width/height attribútum csak az arányt adja, a méretet a CSS */
+/* a WebP-forrást adó <picture> ne változtasson az elrendezésen: a kép úgy viselkedik, mintha közvetlenül a szülőjében lenne */
+picture { display: contents; }
 a   { color: inherit; text-decoration: none; }
 ul  { list-style: none; }
 
@@ -121,6 +123,18 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+/* billentyűzetes fókusz mindenhol látható (az egyedi szabályok felülírhatják) */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+/* a nagyítható képeknél a keret belül van, mert a kép doboza levágja a kilógó részt */
+.room-shot img:focus-visible,
+.fanni-portfolio-viewport:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
 }
 
 /* ─── Buttons ───────────────────────────────────────────────────── */
@@ -534,7 +548,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   letter-spacing: .14em;
   text-transform: uppercase;
 }
-.hero-foot-insta { justify-self: end; color: inherit; transition: color .2s; }
+.hero-foot-insta { grid-column: 3; justify-self: end; color: inherit; transition: color .2s; }   /* közlemény nélkül is jobbra */
 .hero-foot-insta:hover { color: #fff; }
 
 .hero-notices {
@@ -562,7 +576,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .hero-stage { padding-bottom: 12rem; }
   .hero-scroll { bottom: 8.4rem; }
   .hero-foot { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: .5rem; padding: 0 3.5rem 1.2rem; }
-  .hero-foot-insta { justify-self: center; }
+  .hero-foot-insta { grid-column: auto; justify-self: center; }
   .hero-notices { order: -1; margin-bottom: .3rem; }
 }
 
@@ -583,6 +597,12 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .hero-notices { margin-bottom: .4rem; }
   .hero-notice { display: block; text-align: center; font-size: .72rem; line-height: 1.5; }
   .hero-notice-fenyo { display: inline-block; margin-right: .45rem; vertical-align: -.1em; }
+}
+
+/* nagyon keskeny telefonokon (320 px) a kapitális címek kisebb betűközzel, hogy az
+   „AJÁNDÉKUTALVÁNY” is kiférjen egy sorban */
+@media (max-width: 360px) {
+  .section-title--caps { font-size: 1.3rem; letter-spacing: .14em; }
 }
 
 /* alacsony telefonokon (pl. iPhone SE) még szorosabban, hogy a landing egy képernyő legyen */
@@ -1882,62 +1902,159 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 /* ═══════════════════════════════════════════════════════════════════
    STUDIO SHOWCASE — a három szoba
    ═══════════════════════════════════════════════════════════════════ */
-.studio-head { max-width: 46rem; }
-
-.rooms {
+/* bevezető: balra a cím és a nagy, dőlt mondat, jobbra a három adat és a két lehetőség */
+.studio-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2rem 5rem;
+  align-items: end;
+}
+.studio-lead {
+  margin: 1.6rem 0 0;
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 1.1;
+  color: var(--c-dark);
+}
+.studio-lead em { display: block; color: #7e6348; }   /* meleg barna, mint a hero „Veszprémben” sora */
+.studio-facts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+.studio-facts li {
+  padding: 0 1.2rem;
+  border-left: 1px solid var(--c-border);
+}
+.studio-facts li:first-child { padding-left: 0; border-left: 0; }
+.studio-facts strong {
+  display: block;
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 3.4vw, 2.8rem);
+  font-variant-numeric: lining-nums;   /* egyforma magas számok: az „1” ne látsszon I-nek */
+  line-height: 1;
+  color: var(--c-dark);
+}
+.studio-facts span {
+  display: block;
+  margin-top: .45rem;
+  font-size: .7rem;
+  letter-spacing: .14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.studio-note {
+  margin: 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--c-border);
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--c-muted);
+}
+.studio-note a {
+  color: var(--c-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--c-accent);
+  text-underline-offset: 3px;
+  transition: color .2s;
+}
+.studio-note a:hover { color: var(--c-accent); }
+
+/* időszakos közlemény a szobák fölött (pl. karácsonyi enteriőr): halványzöld sáv, piros pöttyel */
+.studio-season {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .2rem .45rem;
+  margin: -1.5rem 0 2.5rem;
+  padding: .95rem 1.3rem;
+  border-radius: 4px;
+  background: var(--c-accent-lt);
+  font-size: .95rem;
+  line-height: 1.55;
+  color: #1f3325;
+}
+.studio-season strong { font-weight: 500; }
+.studio-season strong::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  margin-right: .6rem;
+  border-radius: 50%;
+  background: #c8302b;
+  vertical-align: .08em;
 }
 
-.room-shots {
-  position: relative;
+/* minden szoba egy külön sáv: felül a név és a leírás, alatta a képek egy sorban, széltől szélig.
+   Egyszerre három 4:5-ös kép látszik, a többi vízszintesen görgethető (nyilakkal vagy húzással). */
+.rooms { display: grid; }
+.room {
+  --kepek: 3;          /* egyszerre látható képek száma */
+  --kep-koz: 1rem;     /* a képek közti hely */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.6rem var(--kep-koz);
+  padding: 3rem 0;
+  border-top: 1px solid var(--c-border);
+}
+.room:last-child { border-bottom: 1px solid var(--c-border); }
+
+/* fejléc: a terem neve és alcíme */
+.room-info { margin-bottom: .4rem; }
+
+.room-gallery { position: relative; min-width: 0; }
+.room-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--kepek) - 1) * var(--kep-koz)) / var(--kepek));
+  gap: var(--kep-koz);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.room-strip::-webkit-scrollbar { display: none; }
+.room-shot {
   margin: 0;
   aspect-ratio: 4 / 5;
   border-radius: 4px;
   overflow: hidden;
   background: var(--c-soft);
+  scroll-snap-align: start;
 }
-.room-shots img {
-  position: absolute;
-  inset: 0;
+.room-shot img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;   /* a doboz teljes egészében kitöltve, szükség szerint levágva */
+  object-fit: cover;
   cursor: zoom-in;
-  opacity: 0;
-  transition: opacity .6s ease, transform .6s ease;
+  transition: transform .6s ease;
 }
-.room-shots img.is-active { opacity: 1; }
-.room-shots img:not(.is-active) { pointer-events: none; }   /* a kattintás a látható képre menjen */
-.room-shots:hover img.is-active { transform: scale(1.03); }
+.room-shot:hover img { transform: scale(1.03); }
+/* a nyíl elbújik, ha arra már nincs több kép */
+.room-gallery .car-arrow[hidden] { display: none; }
+
+/* Saga: egy fekvő (3:2) kép, mellette a papírhátterek, fele-fele arányban */
+.room:has(.room-papers) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 3rem;
+}
+.room:has(.room-papers) .room-info { grid-column: 1 / -1; }
+.room:has(.room-papers) .room-gallery { --kepek: 1; }
+.room:has(.room-papers) .room-shot { aspect-ratio: 3 / 2; }
+
 /* ujjal lapozható képek: a vízszintes húzást a JS kezeli, függőlegesen görget az oldal */
-.room-shots,
 .fanni-portfolio-carousel,
 #studio-lightbox { touch-action: pan-y; }
 
-.room-dots {
-  display: flex;
-  min-height: 3px;   /* egyképes blokknál is ugyanott kezdődjön a cím */
-  gap: .4rem;
-  margin: .8rem 0 1.1rem;
-}
-.room-dots button {
-  width: 22px;
-  height: 3px;
-  padding: 0;
-  border: 0;
-  border-radius: 2px;
-  background: var(--c-border);
-  cursor: pointer;
-  transition: background .2s;
-}
-.room-dots button.is-active { background: var(--c-dark); }
-
 /* nagyobb kattintási felület a vékony csíkoknak (az elrendezést nem változtatja) */
-.room-dots button,
 .fanni-portfolio-dots button { position: relative; }
-.room-dots button::before,
 .fanni-portfolio-dots button::before {
   content: '';
   position: absolute;
@@ -1976,15 +2093,14 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .car-arrow:hover { transform: scale(1.15); }
 }
 
-.room-name { font-size: 1.8rem; margin-bottom: .1rem; }
+.room-name { font-size: clamp(2.4rem, 4vw, 3.2rem); line-height: 1; margin-bottom: .35rem; }
 .room-myth {
   font-family: var(--f-serif);
   font-style: italic;
   font-size: 1.05rem;
-  color: #8a6d4f;   /* meleg barna, mint a hero „Veszprémben” sora */
-  margin-bottom: .6rem;
+  color: #7e6348;   /* meleg barna, mint a hero „Veszprémben” sora */
+  margin-bottom: 0;
 }
-.room-text { font-size: .92rem; line-height: 1.7; color: var(--c-muted); }
 
 /* Stúdióbérlés: cím, árak és nyitvatartás egy háttérszínű dobozban */
 .rent-box {
@@ -2059,6 +2175,10 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   color: var(--c-muted);
 }
 .paper-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+/* a papírhátterek a Saga szoba sávjában, a kép mellett */
+.room-papers { align-self: center; }
+.room-papers .gear-subtitle { margin-top: 0; }
+.room-papers .paper-row:last-child { border-bottom: 0; padding-bottom: 0; }   /* alatta már a szoba lezáró vonala jön */
 /* a tekercsek egy mércén: a 2,72 m-es kétszer olyan széles, mint az 1,35 m-esek */
 /* soronként egy papírszélesség: balra a méret, jobbra a tekercsek */
 .paper-row {
@@ -2104,13 +2224,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   flex-wrap: wrap;
   gap: .5rem 1.5rem;
 }
+/* a cím maga a stúdió Instagram-neve, a profilra visz */
 .insta-profil {
-  font-size: .82rem;
-  letter-spacing: .04em;
-  color: var(--c-accent);
+  color: inherit;
   text-decoration: none;
+  transition: color .2s;
 }
-.insta-profil:hover { text-decoration: underline; }
+.insta-profil:hover { color: var(--c-accent); }
 .insta-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -2222,12 +2342,13 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .section-bridge-down svg { animation: none; }
 }
 
-/* tableten a szobák a gépes, háromoszlopos rácsban maradnak; az árak három oszlopban, a gomb alattuk */
+/* tableten a szobáknál két és fél kép látszik egyszerre (a kilógó fél jelzi, hogy van még);
+   az árak három oszlopban, a gomb alattuk */
 @media (min-width: 641px) and (max-width: 900px) {
-  .rooms { gap: 1rem; }
-  .room-name { font-size: 1.5rem; }
-  .room-myth { font-size: .95rem; }
-  .room-text { font-size: .86rem; line-height: 1.6; }
+  .room { --kepek: 2.4; padding: 2.2rem 0; }
+  .room:has(.room-papers) { grid-template-columns: 1fr; }   /* a papírhátterek itt a kép alá kerülnek */
+  .studio-head { grid-template-columns: 1fr; }
+  .room-name { font-size: 2.4rem; }
   .rent-box { padding: 2rem 1.8rem 1.8rem; }
   .gear-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem 1rem; }
   .insta-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -2238,24 +2359,21 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 @media (max-width: 640px) {
-  /* telefonon a szobák egymás alatt, jól elválasztva:
-     elöl a név és a leírás, alatta a szoba saját, lapozható képei */
-  .rooms { grid-template-columns: 1fr; gap: 0; max-width: 520px; }
-  .room {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0 1.7rem;
-    border-top: 1px solid var(--c-border);
-  }
-  .room:last-child { border-bottom: 1px solid var(--c-border); margin-bottom: 2.5rem; }
-  .room-name, .room-myth, .room-text { order: -1; }
-  .room-name { font-size: 1.6rem; }
-  .room-myth { margin-bottom: .4rem; font-size: 1rem; }
-  .room-text { margin-bottom: 1rem; font-size: .88rem; line-height: 1.6; }
-  /* egy szoba (név, leírás, kép) elférjen egy telefonképernyőn: a kép magassága a képernyőhöz igazodik */
-  .room-shots { max-height: calc(100svh - 22rem); min-height: 200px; }
-  .room-dots { margin: .7rem 0 0; justify-content: center; }
-  .room-dots:empty { display: none; }
+  /* telefonon a szobák egymás alatt, jól elválasztva: elöl a név és a leírás, alatta a képsor,
+     amiből egy kép és a következő széle látszik */
+  .rooms { max-width: 520px; }
+  .room { --kepek: 1.25; --kep-koz: .6rem; gap: 1rem; padding: 1.5rem 0 1.7rem; }
+  .room:last-child { margin-bottom: 2.5rem; }
+  .room:has(.room-papers) { grid-template-columns: 1fr; }
+  .room:has(.room-papers) .room-gallery { --kepek: 1; }
+  .studio-head { grid-template-columns: 1fr; gap: 1.8rem; }
+  .studio-lead { margin-top: 1.2rem; }
+  .studio-facts li { padding: 0 .8rem; }
+  .studio-facts span { font-size: .62rem; letter-spacing: .1em; }
+  .studio-season { margin: -1rem 0 1.5rem; padding: .85rem 1rem; font-size: .88rem; }
+  .room-papers { margin-top: .6rem; }
+  .room-name { font-size: 2.2rem; }
+  .room-myth { font-size: 1rem; }
   /* felszerelés: két oszlop, a papírok kettesével */
   .gear { margin: 0 0 3rem; max-width: 520px; }
   .gear-title { margin-bottom: 1.2rem; }
@@ -2293,7 +2411,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .room-shots img { transition: none; }
+  .room-shot img { transition: none; }
+  .room-strip { scroll-behavior: auto; }
 }
 
 /* ─── Studio lightbox ───────────────────────────────────────────── */
@@ -2567,20 +2686,8 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 .btn-cta:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(74,98,81,.3); }
 .btn-cta:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 3px; }
 
-/* világos változat a sötétzöld karácsonyi sávra */
-.btn-cta--light {
-  color: #1f3325;
-  background: var(--c-bg);
-  box-shadow: 0 6px 18px rgba(0,0,0,.28);
-}
-.btn-cta--light svg { background: rgba(31,51,37,.12); }
-.btn-cta--light:hover { background: #fff; box-shadow: 0 10px 24px rgba(0,0,0,.36); }
-.btn-cta--light:hover svg { background: rgba(31,51,37,.2); }
-.btn-cta--light:focus-visible { outline-color: var(--c-bg); }
-
 @media (max-width: 640px) {
-  .fanni-packages-foot .btn-cta,
-  .xmas-copy .btn-cta { display: flex; width: 100%; justify-content: space-between; }
+  .fanni-packages-foot .btn-cta { display: flex; width: 100%; justify-content: space-between; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2651,97 +2758,6 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   .fanni-portfolio-header { flex-direction: column; align-items: flex-start; gap: .75rem; }
 }
 
-/* ─── Karácsonyi beharangozó ────────────────────────────────────── */
-.xmas {
-  position: relative;
-  overflow: hidden;
-  background: #1f3325;          /* a karácsonyi grafikák sötétzöldje */
-  color: var(--c-bg);
-  padding: 7rem 0 5rem;   /* felül több hely: a koszorú a szöveg fölött ül a sarokban */
-}
-
-/* Koszorú a sáv bal felső sarkában: dísz, nem kattintható */
-.xmas-wreath {
-  position: absolute;
-  top: .7rem;
-  left: clamp(.9rem, 2.4vw, 2.2rem);
-  width: clamp(64px, 7vw, 96px);
-  height: auto;
-  pointer-events: none;
-}
-
-.xmas-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: 4rem;
-  align-items: center;
-}
-
-.xmas-eyebrow {
-  font-size: .75rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(246,245,242,.6);
-  margin-bottom: 1rem;
-}
-
-.xmas-title {
-  font-family: var(--f-serif);
-  font-weight: 300;
-  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
-  line-height: 1.2;
-  color: var(--c-bg);
-  margin-bottom: 1.25rem;
-}
-
-.xmas-title em { font-style: italic; }
-
-.xmas-text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(246,245,242,.78);
-  margin-bottom: 2rem;
-  max-width: 34rem;
-}
-
-.xmas-text--room { margin-top: -1rem; }
-.xmas-text strong { color: var(--c-bg); font-weight: 500; }
-
-
-.xmas-shots {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .75rem;
-}
-
-.xmas-shots figure { margin: 0; }
-
-.xmas-shots figcaption {
-  margin-top: .7rem;
-  font-family: var(--f-serif);
-  font-size: 1.25rem;
-  text-align: center;
-  color: var(--c-bg);
-}
-
-.xmas-shots img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-@media (max-width: 1024px) {
-  .xmas-layout { grid-template-columns: 1fr; gap: 2.5rem; }
-}
-
-@media (max-width: 768px) {
-  .xmas { padding: 5.6rem 0 3.5rem; }
-  .xmas-wreath { top: .6rem; }
-  .xmas-shots { gap: .5rem; }
-}
-
 /* ═══════════════════════════════════════════════════════════════════
    PHOTOGRAPHER SECTION
    ═══════════════════════════════════════════════════════════════════ */
@@ -2809,7 +2825,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
   font-weight: 300;
   font-style: italic;
   color: var(--c-dark);
-  color: #8a6d4f;   /* meleg barna, mint a szobák alcímei */
+  color: #7e6348;   /* meleg barna, mint a szobák alcímei */
   border-left: 1px solid var(--c-accent);
   padding-left: 1rem;
   margin: 0 0 1rem;
@@ -3526,7 +3542,7 @@ a, button, summary, label, .bk-cal-day, .bk-slot { touch-action: manipulation; }
 .gift-facts strong { font-weight: 500; }
 
 @media (max-width: 900px) {
-  .gift-layout { grid-template-columns: 1fr; }
+  .gift-layout { grid-template-columns: minmax(0, 1fr); }   /* a hosszú cím ne tolja szélesebbre a képernyőnél */
   .gift-cards { max-width: 560px; margin: 0 auto 2.5rem; width: calc(100% - 1rem); }
 }
 

@@ -36,38 +36,267 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": "https://www.studiofreya.hu/",
-    "name": "Studio Freya",
-    "description": "Professzionális fotóstúdió Veszprémben. Stúdióbérlés és stúdiófotózás.",
-    "url": "https://www.studiofreya.hu",
-    "telephone": "+36303066297",
-    "email": "info@studiofreya.hu",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Rákóczi Ferenc utca 4.",
-      "addressLocality": "Veszprém",
-      "postalCode": "8200",
-      "addressCountry": "HU"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 47.0935783,
-      "longitude": 17.907381
-    },
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "18:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday",  "opens": "08:00", "closes": "18:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday",    "opens": "08:00", "closes": "18:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday",  "opens": "08:00", "closes": "18:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday",    "opens": "08:00", "closes": "18:00" }
-    ],
-    "priceRange": "10 000 – 65 000 Ft",
-    "currenciesAccepted": "HUF",
-    "paymentAccepted": "Cash, Bank Transfer",
-    "image": "https://studiofreya.hu/images/studio/web/IMG_1930.jpg",
-    "hasMap": "https://maps.google.com/?cid=16630613908467048396",
-    "sameAs": ["https://www.instagram.com/studiofreyaveszprem/", "https://www.facebook.com/profile.php?id=61589286401992"]
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://www.studiofreya.hu/",
+        "name": "Studio Freya",
+        "description": "Berendezett fotóstúdió Veszprém belvárosában: három terem (Sol, Mani és Saga), összesen 85 m², amelyeket egy foglalással egyszerre használhatsz. A stúdió önállóan is bérelhető, vagy stúdiófotózás foglalható Zakariás Fannival.",
+        "url": "https://www.studiofreya.hu",
+        "telephone": "+36303066297",
+        "email": "info@studiofreya.hu",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rákóczi Ferenc utca 4.",
+          "addressLocality": "Veszprém",
+          "postalCode": "8200",
+          "addressCountry": "HU"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 47.0935783,
+          "longitude": 17.907381
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Wednesday",
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Thursday",
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Sunday",
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "priceRange": "10 000 – 65 000 Ft",
+        "currenciesAccepted": "HUF",
+        "paymentAccepted": "Cash, Bank Transfer",
+        "image": "https://studiofreya.hu/images/studio/web/IMG_1930.jpg",
+        "hasMap": "https://maps.google.com/?cid=16630613908467048396",
+        "sameAs": [
+          "https://www.instagram.com/studiofreyaveszprem/",
+          "https://www.facebook.com/profile.php?id=61589286401992"
+        ],
+        "employee": {
+          "@id": "https://www.studiofreya.hu/#zakarias-fanni"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Stúdióbérlés és stúdiófotózás",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Stúdióbérlés",
+              "description": "Az első óra 10 000 Ft, minden további megkezdett óra 8 000 Ft. Az ár a teljes felszerelés használatát is tartalmazza: világítás, hátterek, berendezett enteriőr.",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Stúdióbérlés"
+              },
+              "priceSpecification": [
+                {
+                  "@type": "UnitPriceSpecification",
+                  "name": "Első óra",
+                  "price": 10000,
+                  "priceCurrency": "HUF",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": 1,
+                    "unitCode": "HUR"
+                  }
+                },
+                {
+                  "@type": "UnitPriceSpecification",
+                  "name": "Minden további megkezdett óra",
+                  "price": 8000,
+                  "priceCurrency": "HUF",
+                  "referenceQuantity": {
+                    "@type": "QuantitativeValue",
+                    "value": 1,
+                    "unitCode": "HUR"
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "Offer",
+              "name": "Stúdiófotózás – Kis csomag",
+              "description": "30 perces fotózás · 10 retusált kép. A csomag a stúdió használatát is tartalmazza.",
+              "price": 25000,
+              "priceCurrency": "HUF",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Stúdiófotózás Zakariás Fannival – Kis csomag",
+                "provider": {
+                  "@id": "https://www.studiofreya.hu/#zakarias-fanni"
+                }
+              }
+            },
+            {
+              "@type": "Offer",
+              "name": "Stúdiófotózás – Közepes csomag",
+              "description": "60 perces fotózás · 20 retusált kép. A csomag a stúdió használatát is tartalmazza.",
+              "price": 45000,
+              "priceCurrency": "HUF",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Stúdiófotózás Zakariás Fannival – Közepes csomag",
+                "provider": {
+                  "@id": "https://www.studiofreya.hu/#zakarias-fanni"
+                }
+              }
+            },
+            {
+              "@type": "Offer",
+              "name": "Stúdiófotózás – Nagy csomag",
+              "description": "90 perces fotózás · 30 retusált kép. A csomag a stúdió használatát is tartalmazza.",
+              "price": 65000,
+              "priceCurrency": "HUF",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Stúdiófotózás Zakariás Fannival – Nagy csomag",
+                "provider": {
+                  "@id": "https://www.studiofreya.hu/#zakarias-fanni"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.studiofreya.hu/#zakarias-fanni",
+        "name": "Zakariás Fanni",
+        "jobTitle": "Fotós",
+        "description": "Veszprémi fotós, portré- és brand fotózással foglalkozik.",
+        "url": "https://www.studiofreya.hu/#fotos",
+        "worksFor": {
+          "@id": "https://www.studiofreya.hu/"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.studiofreya.hu/#gyik",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Hogyan foglalhatok időpontot?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A foglalási felületen válaszd ki, hogy csak a stúdiót szeretnéd bérelni, vagy fotózást kérsz Zakariás Fannitól, majd jelölj ki egy szabad időpontot a naptárban. A foglalás akkor válik érvényessé, amikor megkapod a visszaigazoló e-mailt – ezt 1 munkanapon belül elküldjük."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hogyan működik az ajándékutalvány?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A foglalási felületen válaszd az Ajándékutalványt, jelöld ki Fanni egyik csomagját, és add meg, kitöltve vagy üresen kéred-e. Az árát előre, átutalással kell kifizetni; a befizetés után 1 munkanapon belül PDF-ben küldjük az utalványt. Az utalvány a vásárlástól számított 6 hónapig váltható be: a megajándékozott a szokásos módon foglal stúdiófotózást, fizetési módnak az Ajándékutalványt választja, és megadja a kódját."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mennyibe kerül a stúdióbérlés?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Az első óra 10 000 Ft, minden további megkezdett óra 8 000 Ft. Az ár a teljes felszerelés használatát is tartalmazza: világítás, hátterek, berendezett enteriőr. Fizetni a foglalás napján lehet, készpénzben a helyszínen vagy banki átutalással."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mi a különbség a stúdióbérlés és a stúdiófotózás között?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Stúdióbérlésnél önállóan használod a teret: saját fényképezőgéppel vagy a saját fotósoddal érkezel. Stúdiófotózásnál Zakariás Fanni lesz a fotósod, és a csomag ára a stúdió használatát is tartalmazza, így külön bérleti díjat nem kell fizetned."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Le tudom mondani vagy módosítani a foglalást?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Igen. Az időpont előtt legalább 48 órával díjmentesen lemondhatod vagy módosíthatod, ha írsz nekünk az info@studiofreya.hu címre. Ha 48 órán belül mondod le, a díj 50%-át, ha nem jelensz meg, a teljes díjat felszámíthatjuk."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mikor kapom meg a retusált képeket?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A fotózás után Fanni előválogatja a képeket, és a nyers felvételeket online galériában (Pixieset) megosztja veled. Ebből a megosztástól számított 7 napon belül kiválasztod a csomagodnak megfelelő számú képet. A retusált képeket a választásodat követő 14 munkanapon belül kapod meg, szintén online galériában. Extra retusált képet 1000 Ft/db áron rendelhetsz."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hoznom kell saját ruhát vagy kelléket?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Igen, a ruhákat és a személyes kellékeket neked kell hoznod. Ha szeretnéd, előre átbeszéljük, mi illik leginkább a fotózáshoz."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mire figyeljek a stúdióban?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Kérünk, hozz váltócipőt: utcai cipőben nem lehet belépni a stúdióba. Stúdióbérlésnél 5–10 perccel a kezdés előtt érkezz. Minden foglalás utolsó 10 percében rendbe kell tenned a stúdiót (egy 2 órás bérlésből tehát 1 óra 50 perc a tényleges használat), a bérlés végén pedig pontosan távozz. Hosszabbítani csak akkor lehet, ha utánad nincs foglalás. A stúdióba legfeljebb 7 fő léphet be; dohányozni és alkoholt fogyasztani tilos. Állatot előzetes egyeztetés után hozhatsz."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mire bérelhető a stúdió?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Fotózásra (portré, termék, brand, divat stb.), videófelvételre, reklám- és tartalomgyártásra, valamint workshopra. Nem bérelhető viszont rendezvényre, bulira, összejövetelre vagy más, fotózáshoz nem kapcsolódó célra, illetve erotikus vagy aktfotózásra. Ha bizonytalan vagy, a foglalás előtt írj nekünk."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mi történik, ha késve érkezem a fotózásra?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A késés a fotózás idejéből megy el, a csomag ára viszont nem változik. Ha tudod, hogy késni fogsz, minél hamarabb jelezd nekünk."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Megjelennek a képeim Fanni portfóliójában?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Csak a hozzájárulásoddal. Ha Fanni vagy a stúdió szeretné felhasználni a rólad készült képeket (például a portfólióban, a weboldalon vagy a közösségi médiában), előtte egyeztetünk veled. A hozzájárulásod nélkül egyetlen képet sem teszünk közzé, és a már megadott hozzájárulást is bármikor visszavonhatod az info@studiofreya.hu címen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hol található a stúdió?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A Studio Freya Veszprém belvárosában, a Rákóczi Ferenc utca 4. szám alatt, a 2. emeleten van, egy percre az Óváros tértől. Szerdától vasárnapig 8:00 és 18:00 között vagyunk nyitva. Elérhetőségeinket a Kapcsolat részben találod."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="stylesheet" href="css/style.css" />
@@ -106,16 +335,22 @@
         <!-- Diavetítés: a js/main.js váltja a képeket, lassú ráközelítéssel -->
         <div class="hero-slides">
           <div class="hero-slide is-active"><picture>
+            <source type="image/webp" media="(max-width: 640px)" srcset="images/studio/hero/kanape-mobil.webp" />
+            <source type="image/webp" srcset="images/studio/hero/kanape-1280.webp 1280w, images/studio/hero/kanape.webp 2560w" sizes="100vw" />
             <source media="(max-width: 640px)" srcset="images/studio/hero/kanape-mobil.jpg" />
-            <img src="images/studio/hero/kanape.jpg" alt="Bézs kanapé boho párnákkal és növényekkel" fetchpriority="high" />
+            <img width="2560" height="1600" src="images/studio/hero/kanape.jpg" alt="Bézs kanapé boho párnákkal és növényekkel" fetchpriority="high" />
           </picture></div>
           <div class="hero-slide"><picture>
+            <source type="image/webp" media="(max-width: 640px)" srcset="images/studio/hero/fotel-mobil.webp" />
+            <source type="image/webp" srcset="images/studio/hero/fotel-1280.webp 1280w, images/studio/hero/fotel.webp 2560w" sizes="100vw" />
             <source media="(max-width: 640px)" srcset="images/studio/hero/fotel-mobil.jpg" />
-            <img src="images/studio/hero/fotel.jpg" alt="Bézs fotel, fehér asztalka eukaliptusszal az ablak előtt" loading="lazy" />
+            <img width="2560" height="1600" src="images/studio/hero/fotel.jpg" alt="Bézs fotel, fehér asztalka eukaliptusszal az ablak előtt" loading="lazy" />
           </picture></div>
           <div class="hero-slide"><picture>
+            <source type="image/webp" media="(max-width: 640px)" srcset="images/studio/hero/vilagitas-mobil.webp" />
+            <source type="image/webp" srcset="images/studio/hero/vilagitas-1280.webp 1280w, images/studio/hero/vilagitas.webp 2560w" sizes="100vw" />
             <source media="(max-width: 640px)" srcset="images/studio/hero/vilagitas-mobil.jpg" />
-            <img src="images/studio/hero/vilagitas.jpg" alt="Stúdióvaku softboxszal, papírháttér előtt" loading="lazy" />
+            <img width="2560" height="1600" src="images/studio/hero/vilagitas.jpg" alt="Stúdióvaku softboxszal, papírháttér előtt" loading="lazy" />
           </picture></div>
         </div>
         <!-- Keresősarkok: a keret belső sarkaiban, mint egy fényképezőgép keresőjében -->
@@ -144,48 +379,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5 9 12 16 19 9"/></svg>
         </a>
       </div>
-      <!-- A kép alja: balra a cím, középen a rövid közlemények (a data-eddig napja után maguktól eltűnnek), jobbra az Instagram -->
+      <!-- A kép alja: balra a cím, jobbra az Instagram (középre rövid közlemények tehetők: <div class="hero-notices">, data-eddig-gel) -->
       <div class="hero-foot">
         <span class="hero-foot-addr">Veszprém, Rákóczi Ferenc utca 4.</span>
-        <div class="hero-notices">
-          <a href="#karacsony" class="hero-notice" data-eddig="2026-12-31">
-            <svg class="hero-notice-fenyo" viewBox="0 0 12 14" aria-hidden="true">
-              <path d="M6 1.2 9.6 6.2H7.9L10.8 10.4H1.2L4.1 6.2H2.4Z" fill="#8cc08a"/>
-              <rect x="5.2" y="10.4" width="1.6" height="2.4" fill="#c9a36b"/>
-              <circle cx="6" cy="1.2" r="1.1" fill="#f3cf6f"/>
-            </svg>Október 19-től elérhető a karácsonyi dekoráció
-          </a>
-        </div>
         <a href="https://www.instagram.com/studiofreyaveszprem/" class="hero-foot-insta" target="_blank" rel="noopener" aria-label="Instagram – studiofreyaveszprem">@studiofreyaveszprem</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Karácsonyi beharangozó – data-eddig után magától eltűnik -->
-  <section class="xmas" id="karacsony" data-eddig="2026-12-31">
-    <!-- Dísz: magyalkoszorú a sáv bal felső sarkában -->
-    <svg class="xmas-wreath" viewBox="0 0 120 124" aria-hidden="true" focusable="false"><defs><g id="l"><path d="M0.0 0.0 L3.4 -4.0 L2.4 -6.6 L6.0 -9.5 L3.2 -12.2 L5.6 -15.0 L2.6 -17.5 L3.6 -20.0 L0.0 -26.0 L-3.6 -20.0 L-2.6 -17.5 L-5.6 -15.0 L-3.2 -12.2 L-6.0 -9.5 L-2.4 -6.6 L-3.4 -4.0 L0.0 0.0Z" stroke-linejoin="round" stroke-width=".9" stroke="currentColor"/><path d="M0 -1L0 -23" stroke="#b9dcb6" stroke-opacity=".5" stroke-width=".9" stroke-linecap="round" fill="none"/></g></defs><use href="#l" transform="translate(92.0 60.0) rotate(115) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(90.4 69.9) rotate(83) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(85.9 78.8) rotate(151) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(78.8 85.9) rotate(119) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(69.9 90.4) rotate(187) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(60.0 92.0) rotate(155) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(50.1 90.4) rotate(223) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(41.2 85.9) rotate(191) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(34.1 78.8) rotate(259) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(29.6 69.9) rotate(227) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(28.0 60.0) rotate(295) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(29.6 50.1) rotate(263) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(34.1 41.2) rotate(331) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(41.2 34.1) rotate(299) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(50.1 29.6) rotate(367) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(60.0 28.0) rotate(335) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(69.9 29.6) rotate(403) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(78.8 34.1) rotate(371) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(85.9 41.2) rotate(439) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(90.4 50.1) rotate(407) scale(0.75)" fill="#255a37" color="#255a37"/><use href="#l" transform="translate(97.0 60.0) rotate(116) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(95.9 68.9) rotate(78) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(92.8 77.2) rotate(144) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(87.7 84.5) rotate(106) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(81.0 90.5) rotate(171) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(73.1 94.6) rotate(133) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(64.5 96.7) rotate(199) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(55.5 96.7) rotate(161) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(46.9 94.6) rotate(227) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(39.0 90.5) rotate(189) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(32.3 84.5) rotate(254) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(27.2 77.2) rotate(216) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(24.1 68.9) rotate(282) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(23.0 60.0) rotate(244) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(24.1 51.1) rotate(310) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(27.2 42.8) rotate(272) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(32.3 35.5) rotate(338) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(39.0 29.5) rotate(299) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(46.9 25.4) rotate(365) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(55.5 23.3) rotate(327) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(64.5 23.3) rotate(393) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(73.1 25.4) rotate(355) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(81.0 29.5) rotate(421) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(87.7 35.5) rotate(382) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(92.8 42.8) rotate(448) scale(1)" fill="#2f6b43" color="#2f6b43"/><use href="#l" transform="translate(95.9 51.1) rotate(410) scale(1)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(96.7 64.4) rotate(71) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(94.6 73.1) rotate(137) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(90.5 81.0) rotate(99) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(84.5 87.7) rotate(164) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(77.2 92.8) rotate(126) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(68.9 95.9) rotate(192) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(60.0 97.0) rotate(154) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(51.2 95.9) rotate(220) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(42.8 92.8) rotate(182) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(35.5 87.7) rotate(248) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(29.6 81.0) rotate(209) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(25.4 73.1) rotate(275) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(23.3 64.5) rotate(237) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(23.3 55.6) rotate(303) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(25.4 46.9) rotate(265) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(29.5 39.0) rotate(331) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(35.5 32.3) rotate(292) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(42.8 27.2) rotate(358) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(51.1 24.1) rotate(320) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(60.0 23.0) rotate(386) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(68.8 24.1) rotate(348) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(77.2 27.2) rotate(414) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(84.5 32.3) rotate(376) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(90.4 39.0) rotate(441) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(94.6 46.9) rotate(403) scale(0.92)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(96.7 55.5) rotate(469) scale(0.92)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(95.6 65.6) rotate(103) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(92.1 76.3) rotate(113) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(85.5 85.5) rotate(139) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(76.3 92.1) rotate(149) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(65.6 95.6) rotate(175) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(54.4 95.6) rotate(185) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(43.7 92.1) rotate(211) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(34.5 85.5) rotate(221) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(27.9 76.3) rotate(247) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(24.4 65.6) rotate(257) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(24.4 54.4) rotate(283) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(27.9 43.7) rotate(293) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(34.5 34.5) rotate(319) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(43.7 27.9) rotate(329) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(54.4 24.4) rotate(355) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(65.6 24.4) rotate(365) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(76.3 27.9) rotate(391) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(85.5 34.5) rotate(401) scale(0.8)" fill="#3f8050" color="#3f8050"/><use href="#l" transform="translate(92.1 43.7) rotate(427) scale(0.8)" fill="#57a066" color="#57a066"/><use href="#l" transform="translate(95.6 54.4) rotate(437) scale(0.8)" fill="#3f8050" color="#3f8050"/><circle cx="71.1" cy="25.8" r="3.5" fill="#c8302b"/><circle cx="70.1" cy="24.7" r="1" fill="#f6b3aa"/><circle cx="76.3" cy="23.2" r="3.5" fill="#c8302b"/><circle cx="75.3" cy="22.1" r="1" fill="#f6b3aa"/><circle cx="69.3" cy="30.8" r="3.5" fill="#c8302b"/><circle cx="68.3" cy="29.7" r="1" fill="#f6b3aa"/><circle cx="93.4" cy="46.5" r="3.5" fill="#c8302b"/><circle cx="92.4" cy="45.4" r="1" fill="#f6b3aa"/><circle cx="98.6" cy="43.9" r="3.5" fill="#c8302b"/><circle cx="97.6" cy="42.8" r="1" fill="#f6b3aa"/><circle cx="91.6" cy="51.5" r="3.5" fill="#c8302b"/><circle cx="90.6" cy="50.4" r="1" fill="#f6b3aa"/><circle cx="88.4" cy="82.2" r="3.5" fill="#c8302b"/><circle cx="87.4" cy="81.1" r="1" fill="#f6b3aa"/><circle cx="93.6" cy="79.6" r="3.5" fill="#c8302b"/><circle cx="92.6" cy="78.5" r="1" fill="#f6b3aa"/><circle cx="86.6" cy="87.2" r="3.5" fill="#c8302b"/><circle cx="85.6" cy="86.1" r="1" fill="#f6b3aa"/><circle cx="28.8" cy="78.0" r="3.5" fill="#c8302b"/><circle cx="27.8" cy="76.9" r="1" fill="#f6b3aa"/><circle cx="34.0" cy="75.4" r="3.5" fill="#c8302b"/><circle cx="33.0" cy="74.3" r="1" fill="#f6b3aa"/><circle cx="27.0" cy="83.0" r="3.5" fill="#c8302b"/><circle cx="26.0" cy="81.9" r="1" fill="#f6b3aa"/><circle cx="28.2" cy="43.1" r="3.5" fill="#c8302b"/><circle cx="27.2" cy="42.0" r="1" fill="#f6b3aa"/><circle cx="33.4" cy="40.5" r="3.5" fill="#c8302b"/><circle cx="32.4" cy="39.4" r="1" fill="#f6b3aa"/><circle cx="26.4" cy="48.1" r="3.5" fill="#c8302b"/><circle cx="25.4" cy="47.0" r="1" fill="#f6b3aa"/><g transform="translate(0 2)"><path d="M60 96C46 84 33 93 39 104C44 111 55 105 60 96Z" fill="#c8302b"/><path d="M60 96C74 84 87 93 81 104C76 111 65 105 60 96Z" fill="#c8302b"/><path d="M60 97C56 106 51 114 46 119L54 116L58 121Z" fill="#a02822"/><path d="M60 97C64 106 69 114 74 119L66 116L62 121Z" fill="#a02822"/><circle cx="60" cy="97" r="4.2" fill="#dd4a42"/></g></svg>
-    <div class="container xmas-layout">
-      <div class="xmas-copy">
-        <p class="xmas-eyebrow">2026 · Karácsony</p>
-        <h2 class="xmas-title">Október 19-től elérhető<br>a <em>karácsonyi dekoráció</em></h2>
-        <p class="xmas-text">Két különböző hangulattal készülünk a karácsonyi fotózásokhoz:</p>
-        <p class="xmas-text xmas-text--room"><strong>Sol:</strong> Az igazi klasszikus karácsonyé lesz a főszerep: piros és zöld színek, meghitt hangulat.</p>
-        <p class="xmas-text xmas-text--room"><strong>Mani:</strong> Ezt a szobát elegáns, arany árnyalatokba öltöztetjük.</p>
-        <a href="#foglalas" class="btn-cta btn-cta--light">
-          <span>Foglalok</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-        </a>
-      </div>
-      <div class="xmas-shots">
-        <figure>
-          <img src="images/studio/web/karacsony-zokni.jpg" alt="Cukorpálca a fenyőágon, piros karácsonyi zokni a háttérben" loading="lazy" />
-          <figcaption>Sol</figcaption>
-        </figure>
-        <figure>
-          <img src="images/studio/web/karacsony-hintalo.jpg" alt="Fa hintaló karácsonyfa előtt – október 19-től karácsonyi dekoráció" loading="lazy" />
-          <figcaption>Mani</figcaption>
-        </figure>
       </div>
     </div>
   </section>
@@ -193,42 +390,96 @@
   <!-- Stúdió -->
   <section class="section section--studio" id="studio">
     <div class="container">
+      <!-- Bevezető: balra a cím és egy mondat, jobbra a stúdió három fő adata, alattuk a két lehetőség -->
       <header class="section-header studio-head">
-        <h2 class="section-title section-title--caps">A stúdió</h2>
-        <p class="section-sub">Berendezett fotóstúdió Veszprém belvárosában. Összesen három szoba van, és foglaláskor mindegyiket használhatod, nem kell előre választanod. Bérelhető önállóan, vagy foglalható stúdiófotózásra Zakariás Fannival. A bútorok, a fények és a hátterek már a helyükön várnak, neked csak a fényképezőgépet kell hoznod.</p>
+        <div class="studio-head-main">
+          <h2 class="section-title section-title--caps">A stúdió</h2>
+          <p class="studio-lead">Berendezett fotóstúdió <em>Veszprém belvárosában</em></p>
+        </div>
+        <div class="studio-head-side">
+          <ul class="studio-facts">
+            <li><strong>3</strong><span>terem</span></li>
+            <li><strong>85 m²</strong><span>alapterület</span></li>
+            <li><strong>1</strong><span>foglalás mindhárom teremre</span></li>
+          </ul>
+          <p class="studio-note">A termeket egyszerre használhatod, nem kell őket külön foglalni. A stúdió <a href="#foglalas">önállóan is bérelhető</a>, de <a href="#fotos">stúdiófotózást is foglalhatsz Zakariás Fannival</a>.</p>
+        </div>
       </header>
 
-      <!-- A három szoba; a pöttyökkel lapozható, a képre kattintva nagyítható -->
+      <!-- Időszakos közlemény a termek fölött — a data-eddig napja után magától eltűnik -->
+      <p class="studio-season" data-eddig="2026-12-31"><strong>Jelenleg a karácsonyi enteriőr érhető el.</strong> Sol és Mani ünnepi díszben vár, a papírhátteres Saga változatlan.</p>
+
+      <!-- A három terem, mindegyik egy külön sávban: felül a név és az alcím, alatta a terem képei
+           egy sorban, széltől szélig (egyszerre három látszik, a többi nyilakkal / húzással lapozható).
+           A képre kattintva nagyítható. Sagánál egy fekvő kép, mellette a papírhátterek.
+           Sol és Mani most a karácsonyi képeket mutatja — karácsony után kézzel cseréljük őket. -->
       <div class="rooms">
         <article class="room">
-          <figure class="room-shots">
-            <img src="images/studio/web/IMG_1930.jpg" alt="Bézs kanapé boho párnákkal, angol falpanel előtt" style="object-position:40% center" class="is-active" loading="lazy" />
-            <img src="images/studio/web/IMG_1920.jpg" alt="Mustár kanapé pampafűvel" style="object-position:30% center" loading="lazy" />
-            <img src="images/studio/web/IMG_1822.jpg" alt="Bambusz létra csíkos takaróval" style="object-position:center" loading="lazy" />
-            <img src="images/studio/web/IMG_1931.jpg" alt="Fehér buborék váza eukaliptusszal" style="object-position:center" loading="lazy" />
-          </figure>
-          <div class="room-dots"><button type="button" aria-label="1. kép" class="is-active"></button><button type="button" aria-label="2. kép"></button><button type="button" aria-label="3. kép"></button><button type="button" aria-label="4. kép"></button></div>
-          <h3 class="room-name">Sol</h3>
-          <p class="room-myth">A Nap istennője az északi mitológiában</p>
-          <p class="room-text">Meleg tónusú szoba angol falpanellel: bézs és mustár kanapé. Lifestyle-, családi és páros képekhez.</p>
+          <div class="room-info">
+            <div class="room-title">
+              <h3 class="room-name">Sol terem</h3>
+              <p class="room-myth">A Nap istennője az északi mitológiában</p>
+            </div>
+          </div>
+          <div class="room-gallery">
+            <div class="room-strip">
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5266-640.webp 640w, images/studio/karacsony/web/IMG_5266.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5266.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5266.jpg" alt="Karácsonyi dekoráció a Sol teremben: bézs kanapé piros és cukorpálcás párnákkal, fénylő díszfa a falpanel előtt" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5264-640.webp 640w, images/studio/karacsony/web/IMG_5264.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5264.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5264.jpg" alt="Piros hintaló a kandalló előtt, karácsonyi zoknikkal és fenyőfával" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5257-640.webp 640w, images/studio/karacsony/web/IMG_5257.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5257.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5257.jpg" alt="Piros „Letters to Santa” postaláda a feldíszített fenyőfán" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5255-640.webp 640w, images/studio/karacsony/web/IMG_5255.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5255.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5255.jpg" alt="Piros bőrönd rénszarvasfigurával, karácsonyi zokni a háttérben" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5258-640.webp 640w, images/studio/karacsony/web/IMG_5258.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5258.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5258.jpg" alt="Barna papírba csomagolt ajándékok piros-fehér zsinórral a fa alatt" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5260-640.webp 640w, images/studio/karacsony/web/IMG_5260.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5260.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5260.jpg" alt="Fénylő díszfa és norvégmintás takaró a kanapén" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_4812-640.webp 640w, images/studio/karacsony/web/IMG_4812.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_4812.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_4812.jpg" alt="Christmas Express zsák, cukorka alakú párna és zöld párnák" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_4814-640.webp 640w, images/studio/karacsony/web/IMG_4814.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_4814.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_4814.jpg" alt="Plüssmaci a fenyőfüzérrel díszített létra előtt" loading="lazy" /></picture></figure>
+            </div>
+          </div>
         </article>
         <article class="room">
-          <figure class="room-shots">
-            <img src="images/studio/web/fotel-eukaliptusz.jpg" alt="Bézs fotel eukaliptusszal az ablak előtt" style="object-position:center" class="is-active" loading="lazy" />
-          </figure>
-          <div class="room-dots"></div>
-          <h3 class="room-name">Mani</h3>
-          <p class="room-myth">A Hold istene, Sol testvére</p>
-          <p class="room-text">Letisztult, elegáns szoba, lamellás díszítéssel és limewash festéssel.</p>
+          <div class="room-info">
+            <div class="room-title">
+              <h3 class="room-name">Mani terem</h3>
+              <p class="room-myth">A Hold istene, Sol testvére</p>
+            </div>
+          </div>
+          <div class="room-gallery">
+            <div class="room-strip">
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5276-640.webp 640w, images/studio/karacsony/web/IMG_5276.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5276.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5276.jpg" alt="Karácsonyi dekoráció a Mani teremben: fényekkel díszített fenyőfa, fa hintaló és bézs fotel a lamellás fal előtt" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5239-640.webp 640w, images/studio/karacsony/web/IMG_5239.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5239.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5239.jpg" alt="Fa rénszarvas- és fenyőfigurák az ablakpárkányon" loading="lazy" /></picture></figure>
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/karacsony/web/IMG_5243-640.webp 640w, images/studio/karacsony/web/IMG_5243.webp 1080w" sizes="(max-width: 640px) 80vw, (max-width: 900px) 40vw, 380px" /><img width="1080" height="1350" src="images/studio/karacsony/web/IMG_5243.jpg" data-nagy="images/studio/karacsony/web/nagy/IMG_5243.jpg" alt="Arany díszgömbök a falon, bézs és barna párnák" loading="lazy" /></picture></figure>
+            </div>
+          </div>
         </article>
         <article class="room">
-          <figure class="room-shots">
-            <img src="images/studio/web/papirhatter-lampak.jpg" alt="Godox stúdiólámpák softboxszal, papírháttér előtt" style="object-position:center" class="is-active" loading="lazy" />
-          </figure>
-          <div class="room-dots"></div>
-          <h3 class="room-name">Saga</h3>
-          <p class="room-myth">A történetek és az emlékezés istennője</p>
-          <p class="room-text">A papírhátteres szoba: Colorama háttér super white, lemon és cappuccino színben, Godox vakuval és bi-color LED lámpával. Termék- és portréfotózáshoz.</p>
+          <div class="room-info">
+            <div class="room-title">
+              <h3 class="room-name">Saga terem</h3>
+              <p class="room-myth">A történetek és az emlékezés istennője</p>
+            </div>
+          </div>
+          <div class="room-gallery">
+            <div class="room-strip">
+              <figure class="room-shot"><picture><source type="image/webp" srcset="images/studio/web/IMG_1964-1200.webp 1200w, images/studio/web/IMG_1964.webp 1800w" sizes="(max-width: 900px) 100vw, 560px" /><img width="1800" height="1200" src="images/studio/web/IMG_1964.jpg" data-nagy="images/studio/web/nagy/IMG_1964.jpg" alt="Godox stúdiólámpák softboxszal, cappuccino színű papírháttér előtt" loading="lazy" /></picture></figure>
+            </div>
+          </div>
+          <!-- a Saga terem papírhátterei, a kép mellett -->
+          <div class="room-papers">
+            <h4 class="gear-subtitle">Papírhátterek</h4>
+            <svg width="0" height="0" class="paper-defs" aria-hidden="true"><defs><linearGradient id="paper-arnyek" x1="0" y1="0" x2="0" y2="1"><stop offset=".5" stop-color="#1a1916" stop-opacity="0"/><stop offset=".8" stop-color="#1a1916" stop-opacity=".12"/><stop offset="1" stop-color="#1a1916" stop-opacity=".02"/></linearGradient><linearGradient id="tekercs-arnyek" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1a1916" stop-opacity=".22"/></linearGradient></defs><symbol id="tekercs-keskeny" viewBox="0 0 66 100"><ellipse cx="33" cy="94" rx="36" ry="3" fill="#1a1916" opacity=".07"/><path d="M8 16H58V62Q58 82 64 92H2Q8 82 8 62Z" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><path d="M8 16H58V62Q58 82 64 92H2Q8 82 8 62Z" fill="url(#paper-arnyek)"/><rect x="4" y="6" width="58" height="12" rx="2" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><rect x="4" y="6" width="58" height="12" rx="2" fill="url(#tekercs-arnyek)"/><ellipse cx="62" cy="12" rx="2.4" ry="6" fill="var(--paper)" stroke="rgba(26,25,22,.2)" stroke-width=".6"/><ellipse cx="62" cy="12" rx="1.1" ry="2.6" fill="#8a6d4f"/></symbol><symbol id="tekercs-szeles" viewBox="0 0 116 100"><ellipse cx="58" cy="94" rx="61" ry="3" fill="#1a1916" opacity=".07"/><path d="M8 16H108V62Q108 82 114 92H2Q8 82 8 62Z" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><path d="M8 16H108V62Q108 82 114 92H2Q8 82 8 62Z" fill="url(#paper-arnyek)"/><rect x="4" y="6" width="108" height="12" rx="2" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><rect x="4" y="6" width="108" height="12" rx="2" fill="url(#tekercs-arnyek)"/><ellipse cx="112" cy="12" rx="2.4" ry="6" fill="var(--paper)" stroke="rgba(26,25,22,.2)" stroke-width=".6"/><ellipse cx="112" cy="12" rx="1.1" ry="2.6" fill="#8a6d4f"/></symbol></svg>
+            <div class="paper-row">
+              <p class="paper-row-size">2,72 m széles</p>
+              <ul class="paper-list">
+                <li class="paper" style="--paper:#c4a892"><svg class="paper-roll" viewBox="0 0 116 100" aria-hidden="true"><use href="#tekercs-szeles"/></svg><span class="paper-name">Cappuccino</span></li>
+              </ul>
+            </div>
+            <div class="paper-row">
+              <p class="paper-row-size">1,35 m széles</p>
+              <ul class="paper-list">
+                <li class="paper" style="--paper:#c4a892"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Cappuccino</span></li>
+                <li class="paper" style="--paper:#f8f6f7"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Super White</span></li>
+                <li class="paper" style="--paper:#ffec93"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Lemon</span></li>
+              </ul>
+            </div>
+          </div>
         </article>
       </div>
 
@@ -274,23 +525,6 @@
             <p class="gear-text">5 az 1-ben derítőlap, 110 cm</p>
           </li>
         </ul>
-
-        <h4 class="gear-subtitle">Papírhátterek</h4>
-        <svg width="0" height="0" class="paper-defs" aria-hidden="true"><defs><linearGradient id="paper-arnyek" x1="0" y1="0" x2="0" y2="1"><stop offset=".5" stop-color="#1a1916" stop-opacity="0"/><stop offset=".8" stop-color="#1a1916" stop-opacity=".12"/><stop offset="1" stop-color="#1a1916" stop-opacity=".02"/></linearGradient><linearGradient id="tekercs-arnyek" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1a1916" stop-opacity=".22"/></linearGradient></defs><symbol id="tekercs-keskeny" viewBox="0 0 66 100"><ellipse cx="33" cy="94" rx="36" ry="3" fill="#1a1916" opacity=".07"/><path d="M8 16H58V62Q58 82 64 92H2Q8 82 8 62Z" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><path d="M8 16H58V62Q58 82 64 92H2Q8 82 8 62Z" fill="url(#paper-arnyek)"/><rect x="4" y="6" width="58" height="12" rx="2" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><rect x="4" y="6" width="58" height="12" rx="2" fill="url(#tekercs-arnyek)"/><ellipse cx="62" cy="12" rx="2.4" ry="6" fill="var(--paper)" stroke="rgba(26,25,22,.2)" stroke-width=".6"/><ellipse cx="62" cy="12" rx="1.1" ry="2.6" fill="#8a6d4f"/></symbol><symbol id="tekercs-szeles" viewBox="0 0 116 100"><ellipse cx="58" cy="94" rx="61" ry="3" fill="#1a1916" opacity=".07"/><path d="M8 16H108V62Q108 82 114 92H2Q8 82 8 62Z" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><path d="M8 16H108V62Q108 82 114 92H2Q8 82 8 62Z" fill="url(#paper-arnyek)"/><rect x="4" y="6" width="108" height="12" rx="2" fill="var(--paper)" stroke="rgba(26,25,22,.14)" stroke-width=".6"/><rect x="4" y="6" width="108" height="12" rx="2" fill="url(#tekercs-arnyek)"/><ellipse cx="112" cy="12" rx="2.4" ry="6" fill="var(--paper)" stroke="rgba(26,25,22,.2)" stroke-width=".6"/><ellipse cx="112" cy="12" rx="1.1" ry="2.6" fill="#8a6d4f"/></symbol></svg>
-        <div class="paper-row">
-          <p class="paper-row-size">2,72 m széles</p>
-          <ul class="paper-list">
-            <li class="paper" style="--paper:#c4a892"><svg class="paper-roll" viewBox="0 0 116 100" aria-hidden="true"><use href="#tekercs-szeles"/></svg><span class="paper-name">Cappuccino</span></li>
-          </ul>
-        </div>
-        <div class="paper-row">
-          <p class="paper-row-size">1,35 m széles</p>
-          <ul class="paper-list">
-            <li class="paper" style="--paper:#c4a892"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Cappuccino</span></li>
-            <li class="paper" style="--paper:#f8f6f7"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Super White</span></li>
-            <li class="paper" style="--paper:#ffec93"><svg class="paper-roll" viewBox="0 0 66 100" aria-hidden="true"><use href="#tekercs-keskeny"/></svg><span class="paper-name">Lemon</span></li>
-          </ul>
-        </div>
       </div>
 
       <!-- Stúdióbérlés árai – a js/main.js calcStudioPrice() képletével egyezik -->
@@ -312,8 +546,7 @@
            foglalási Workeren át; amíg nincs mit mutatni, rejtve marad -->
       <div class="insta" id="insta" hidden>
         <div class="insta-head">
-          <h3 class="gear-title">Instagram</h3>
-          <a href="https://www.instagram.com/studiofreyaveszprem/" class="insta-profil" target="_blank" rel="noopener">@studiofreyaveszprem <span aria-hidden="true">→</span></a>
+          <h3 class="gear-title"><a href="https://www.instagram.com/studiofreyaveszprem/" class="insta-profil" target="_blank" rel="noopener">@studiofreyaveszprem</a></h3>
         </div>
         <ul class="insta-grid" id="insta-grid"></ul>
       </div>
@@ -335,7 +568,7 @@
       <div class="photographer-body">
           <div class="photographer-intro">
             <div class="photographer-portrait">
-              <img src="images/portfolio/web/IMG_0237.jpg" alt="Zakariás Fanni fotós portréja" loading="lazy" />
+              <picture><source type="image/webp" srcset="images/portfolio/web/IMG_0237-640.webp 640w, images/portfolio/web/IMG_0237.webp 1280w" sizes="(max-width: 900px) 90vw, 480px" /><img width="1280" height="1600" src="images/portfolio/web/IMG_0237.jpg" alt="Zakariás Fanni fotós portréja" loading="lazy" /></picture>
             </div>
             <div class="photographer-text">
               <h2 class="section-title section-title--caps">A fotós</h2>
@@ -352,11 +585,14 @@
                 <div class="fanni-portfolio-col">
                   <div class="fanni-portfolio-carousel">
                     <div class="fanni-portfolio-viewport">
-                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/portre/web/IMG_0066_4-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/web/IMG_0081-Edit-2-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/web/IMG_0182_1.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/web/IMG_2844-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/portre/zsofi1.jpeg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item is-active"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_0066_4-2-640.webp 640w, images/portfolio/portre/web/IMG_0066_4-2.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/portre/web/IMG_0066_4-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_0081-Edit-2-2-640.webp 640w, images/portfolio/portre/web/IMG_0081-Edit-2-2.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1600" src="images/portfolio/portre/web/IMG_0081-Edit-2-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_0182_1-640.webp 640w, images/portfolio/portre/web/IMG_0182_1.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/portre/web/IMG_0182_1.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_2844-2-640.webp 640w, images/portfolio/portre/web/IMG_2844-2.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1600" src="images/portfolio/portre/web/IMG_2844-2.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_4228-640.webp 640w, images/portfolio/portre/web/IMG_4228.webp 1600w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1600" height="2000" src="images/portfolio/portre/web/IMG_4228.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_4277-640.webp 640w, images/portfolio/portre/web/IMG_4277.webp 1600w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1600" height="2000" src="images/portfolio/portre/web/IMG_4277.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_4421-640.webp 640w, images/portfolio/portre/web/IMG_4421.webp 1600w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1600" height="2000" src="images/portfolio/portre/web/IMG_4421.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/portre/web/IMG_4446-640.webp 640w, images/portfolio/portre/web/IMG_4446.webp 1333w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1333" height="2000" src="images/portfolio/portre/web/IMG_4446.jpg" alt="Portré portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
                     </div>
                   </div>
                   <h4 class="fanni-portfolio-category-title">Portré</h4>
@@ -365,12 +601,12 @@
                 <div class="fanni-portfolio-col">
                   <div class="fanni-portfolio-carousel">
                     <div class="fanni-portfolio-viewport">
-                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/brand/web/IMG_0196_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/IMG_0233_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/IMG_0286.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/brand-04.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/brand-05.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/brand/web/brand-06.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item is-active"><picture><source type="image/webp" srcset="images/portfolio/brand/web/IMG_0196_1-640.webp 640w, images/portfolio/brand/web/IMG_0196_1.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1600" src="images/portfolio/brand/web/IMG_0196_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/brand/web/IMG_0233_1-640.webp 640w, images/portfolio/brand/web/IMG_0233_1.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1600" src="images/portfolio/brand/web/IMG_0233_1.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/brand/web/IMG_0286-640.webp 640w, images/portfolio/brand/web/IMG_0286.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1600" src="images/portfolio/brand/web/IMG_0286.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/brand/web/brand-04-640.webp 640w, images/portfolio/brand/web/brand-04.webp 1080w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1080" height="1350" src="images/portfolio/brand/web/brand-04.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/brand/web/brand-05-640.webp 640w, images/portfolio/brand/web/brand-05.webp 1080w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1080" height="1350" src="images/portfolio/brand/web/brand-05.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/brand/web/brand-06-640.webp 640w, images/portfolio/brand/web/brand-06.webp 1080w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1080" height="1350" src="images/portfolio/brand/web/brand-06.jpg" alt="Brand portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
                     </div>
                   </div>
                   <h4 class="fanni-portfolio-category-title">Brand</h4>
@@ -379,13 +615,13 @@
                 <div class="fanni-portfolio-col">
                   <div class="fanni-portfolio-carousel">
                     <div class="fanni-portfolio-viewport">
-                      <figure class="fanni-portfolio-item is-active"><img src="images/portfolio/kismama/IMG_2084.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2110.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/IMG_2295.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2563.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2574.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2621.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
-                      <figure class="fanni-portfolio-item"><img src="images/portfolio/kismama/web/IMG_2760.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></figure>
+                      <figure class="fanni-portfolio-item is-active"><picture><source type="image/webp" srcset="images/portfolio/kismama/IMG_2084-1200.webp 1200w, images/portfolio/kismama/IMG_2084.webp 1920w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1920" height="1280" src="images/portfolio/kismama/IMG_2084.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/IMG_2110-640.webp 640w, images/portfolio/kismama/IMG_2110.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1920" src="images/portfolio/kismama/IMG_2110.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/IMG_2295-640.webp 640w, images/portfolio/kismama/IMG_2295.webp 1280w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1280" height="1920" src="images/portfolio/kismama/IMG_2295.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/web/IMG_2563-640.webp 640w, images/portfolio/kismama/web/IMG_2563.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/kismama/web/IMG_2563.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/web/IMG_2574-640.webp 640w, images/portfolio/kismama/web/IMG_2574.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/kismama/web/IMG_2574.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/web/IMG_2621-640.webp 640w, images/portfolio/kismama/web/IMG_2621.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/kismama/web/IMG_2621.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
+                      <figure class="fanni-portfolio-item"><picture><source type="image/webp" srcset="images/portfolio/kismama/web/IMG_2760-640.webp 640w, images/portfolio/kismama/web/IMG_2760.webp 1066w" sizes="(max-width: 640px) 90vw, 360px" /><img width="1066" height="1600" src="images/portfolio/kismama/web/IMG_2760.jpg" alt="Kismama portfólió – Zakariás Fanni" loading="lazy" decoding="async" fetchpriority="low" /></picture></figure>
                     </div>
                   </div>
                   <h4 class="fanni-portfolio-category-title">Kismama</h4>
@@ -439,8 +675,8 @@
   <section class="section section--gift" id="ajandekutalvany">
     <div class="container gift-layout">
       <div class="gift-cards" aria-hidden="true">
-        <img class="gift-card gift-card--back" src="images/ajandekutalvany/web/utalvany-3.jpg" alt="" loading="lazy" />
-        <img class="gift-card gift-card--front" src="images/ajandekutalvany/web/utalvany-2.jpg" alt="" loading="lazy" />
+        <picture><source type="image/webp" srcset="images/ajandekutalvany/web/utalvany-3.webp" /><img width="720" height="510" class="gift-card gift-card--back" src="images/ajandekutalvany/web/utalvany-3.jpg" alt="" loading="lazy" /></picture>
+        <picture><source type="image/webp" srcset="images/ajandekutalvany/web/utalvany-2.webp" /><img width="720" height="510" class="gift-card gift-card--front" src="images/ajandekutalvany/web/utalvany-2.jpg" alt="" loading="lazy" /></picture>
       </div>
       <div class="gift-copy">
         <h2 class="section-title section-title--caps">Ajándékutalvány</h2>
@@ -619,9 +855,9 @@
               <fieldset class="bk-field bk-field--full bk-gift-designs" id="bk-field-minta" hidden>
                 <legend>Az utalvány kinézete *</legend>
                 <div class="bk-gift-design-list">
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="2" checked /><img src="images/ajandekutalvany/web/utalvany-2.jpg" data-nagy="images/ajandekutalvany/web/utalvany-2-nagy.jpg" alt="Kamerakeretes utalvány" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="3" /><img src="images/ajandekutalvany/web/utalvany-3.jpg" data-nagy="images/ajandekutalvany/web/utalvany-3-nagy.jpg" alt="Karácsonyi, karácsonyfával" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
-                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="4" /><img src="images/ajandekutalvany/web/utalvany-4.jpg" data-nagy="images/ajandekutalvany/web/utalvany-4-nagy.jpg" alt="Karácsonyi, fenyőágakkal" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="2" checked /><img width="720" height="510" src="images/ajandekutalvany/web/utalvany-2.jpg" data-nagy="images/ajandekutalvany/web/utalvany-2-nagy.jpg" alt="Kamerakeretes utalvány" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="3" /><img width="720" height="510" src="images/ajandekutalvany/web/utalvany-3.jpg" data-nagy="images/ajandekutalvany/web/utalvany-3-nagy.jpg" alt="Karácsonyi, karácsonyfával" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
+                  <label class="bk-gift-design"><input type="radio" name="utalvany_minta" value="4" /><img width="720" height="510" src="images/ajandekutalvany/web/utalvany-4.jpg" data-nagy="images/ajandekutalvany/web/utalvany-4-nagy.jpg" alt="Karácsonyi, fenyőágakkal" loading="lazy" /><button type="button" class="bk-gift-zoom" aria-label="Kép nagyítása"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg></button></label>
                 </div>
               </fieldset>
               <div class="bk-field bk-field--full">
@@ -736,8 +972,8 @@
       <div class="faq-list" id="faq-list">
         <!-- Karácsonyi díszlet – data-eddig után magától eltűnik -->
         <details class="faq-item" data-eddig="2026-12-31">
-          <summary><h3>Milyen díszlet lesz a stúdióban október 19-től?</h3></summary>
-          <p>2026. október 19-től karácsonyi díszlet lesz a stúdióban: fenyőfa, meleg fények, hintaló és piros zokni – ideális családi, gyerek- és páros fotózásokhoz. Ha nem karácsonyi környezetben szeretnél fotózni vagy fotózkodni, a foglalás előtt keress minket az <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> címen vagy a <a href="tel:+36303066297">+36 30 306 6297</a> számon, és megbeszéljük a lehetőségeket.</p>
+          <summary><h3>Milyen díszlet van most a stúdióban?</h3></summary>
+          <p>2026. október 19-től karácsonyi díszlet van a stúdióban: a Sol teremben klasszikus piros-zöld, a Mani teremben elegáns arany díszítés, fenyőfával, meleg fényekkel, hintalóval – ideális családi, gyerek- és páros fotózásokhoz. A papírhátteres Saga terem változatlan. Ha nem karácsonyi környezetben szeretnél fotózni vagy fotózkodni, a foglalás előtt keress minket az <a href="mailto:info@studiofreya.hu">info@studiofreya.hu</a> címen vagy a <a href="tel:+36303066297">+36 30 306 6297</a> számon, és megbeszéljük a lehetőségeket.</p>
         </details>
         <details class="faq-item">
           <summary><h3>Hogyan foglalhatok időpontot?</h3></summary>
