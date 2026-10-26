@@ -583,11 +583,15 @@ function modElemek() {
   }
 }
 
-/* Az utalványkód mezője csak akkor kell, ha ajándékutalvánnyal fizetnek. */
+/* Az utalványkód mezője csak akkor kell, ha ajándékutalvánnyal fizetnek.
+   Ilyenkor számlázási adat sem kell: az utalvány már ki van fizetve. */
 function kodMezo() {
   const kell = st.withFanni && document.getElementById('b-fizetes-utalvany').checked;
   document.getElementById('bk-field-kod').hidden = !kell;
   document.getElementById('b-utalvany-kod').required = kell;
+  document.getElementById('bk-billing').hidden = kell;
+  ['b-szamla-nev', 'b-iranyitoszam', 'b-telepules', 'b-kozterulet', 'b-hazszam']
+    .forEach(id => { document.getElementById(id).required = !kell; });
 }
 document.querySelectorAll('input[name="fizetesi_mod"]').forEach(r => r.addEventListener('change', kodMezo));
 
@@ -1090,9 +1094,9 @@ bookingForm.addEventListener('submit', async (e) => {
     szemelyek:  st.utalvany ? '' : document.getElementById('b-szemelyek').value,
     megjegyzes: document.getElementById('b-megjegyzes').value,
     fizetesi_mod:     st.utalvany ? 'Átutalás' : (document.querySelector('input[name="fizetesi_mod"]:checked')?.value || ''),
-    szamlazasi_nev:   document.getElementById('b-szamla-nev').value,
-    szamlazasi_cim:   `${document.getElementById('b-iranyitoszam').value} ${document.getElementById('b-telepules').value}, ${document.getElementById('b-kozterulet').value} ${document.getElementById('b-hazszam').value}.`,
-    adoszam:    document.getElementById('b-adoszam').value,
+    szamlazasi_nev:   utalvannyal ? '' : document.getElementById('b-szamla-nev').value,
+    szamlazasi_cim:   utalvannyal ? '' : `${document.getElementById('b-iranyitoszam').value} ${document.getElementById('b-telepules').value}, ${document.getElementById('b-kozterulet').value} ${document.getElementById('b-hazszam').value}.`,
+    adoszam:    utalvannyal ? '' : document.getElementById('b-adoszam').value,
     idotartam:  st.utalvany ? '' : `${st.hours} óra`,
     ar:         st.price ? st.price.toLocaleString('hu-HU') + ' Ft' : '',
     datum:      st.utalvany ? ma : st.dateStr,
