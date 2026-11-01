@@ -11,10 +11,11 @@
      GET  /api/foglalt                  — nyilvános: mely órák foglaltak
      POST /api/foglalas                 — nyilvános: új foglalás rögzítése
      POST /api/utalvany                 — nyilvános: ajándékutalvány-rendelés (időpont nélkül)
-     GET  /api/foglalasok               — admin: az összes foglalás
+     GET  /api/foglalasok               — admin: az összes foglalás (a tartott órákkal)
      POST /api/foglalas/<id>/megerosit  — admin: véglegesítés (nem jár le)
      POST /api/foglalas/<id>/torol      — admin: időpont felszabadítása
      POST /api/foglalas/<id>/visszaallit — admin: lemondás visszavonása
+     POST /api/foglalas/<id>/athelyez   — admin: átidőzítés (új nap / órák)
      GET  /api/instagram                — nyilvános: a stúdió legutóbbi Instagram-posztjai
      GET  /api/instagram/kep/<id>       — nyilvános: egy poszt képe (a Worker hozza át)
 
@@ -187,6 +188,9 @@ async function ujFoglalas(request, env) {
   const orak = Number(b.orak);
   const orakLista = orakListaja(ora, orak);
 
+  const ar = foglalasAra(b, orak);
+  if (ar.error) return json({ error: ar.error }, 400, request, env);
+
   // Ütközés-vizsgálat: foglalt-e már bármelyik érintett óra
   for (const h of orakLista) {
     if (await env.FOGLALASOK.get(slotKulcs(b.datum, h))) {
@@ -211,9 +215,9 @@ async function ujFoglalas(request, env) {
     orak,
     idopont: `${String(ora).padStart(2, '0')}:00 – ${String(ora + orak).padStart(2, '0')}:00`,
     idotartam: `${orak} óra`,
-    tipus: tisztit(b.tipus, 60),
-    csomag: tisztit(b.csomag, 120),
-    ar: tisztit(b.ar, 40),
+    tipus: ar.tipus,
+    csomag: ar.csomag,
+    ar: ar.ar,
     nev: tisztit(b.nev, 120),
     email: tisztit(b.email, 160),
     telefon: tisztit(b.telefon, 40),
@@ -230,7 +234,7 @@ async function ujFoglalas(request, env) {
   // inkább legyen egy foglalt óra adatlap nélkül (látod és felszabadíthatod),
   // mint egy adatlap, amit közben más lefoglalt.
   for (const h of orakLista) {
-    await env.FOGLALASOK.put(slotKulcs(b.datum, h), id, { expirationTtl: holdTtl });
+    await env.FOGLALASOK.put(slotKulcs(b.datum, h), id, { expirationTtl: holdTtl, metadata: { id } });
   }
   await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
   await env.FOGLALASOK.put(rlKulcs, String(eddig + 1), { expirationTtl: RL_WINDOW });
@@ -238,14 +242,37 @@ async function ujFoglalas(request, env) {
   return json({ ok: true, id, lejar: holdNap }, 201, request, env);
 }
 
-/* Az utalvánnyal megvehető csomagok ára — szándékosan itt, nem a kérésből:
-   az árat a vásárló böngészője nem írhatja át. A honlap foglalási
-   felületével és a fotózási feltételekkel egyezik. */
-const UTALVANY_CSOMAGOK = {
-  'Kis csomag': '25 000 Ft',
-  'Közepes csomag': '45 000 Ft',
-  'Nagy csomag': '65 000 Ft',
+/* Az árak — szándékosan itt, nem a kérésből: az árat a vásárló böngészője
+   nem írhatja át. A honlap foglalási felületével (index.html data-price és
+   data-hours, js/main.js calcStudioPrice) és a feltételekkel egyezik. Ha ott
+   változik — akció idején is —, itt is át kell írni, és újra közzétenni a
+   Workert (npx wrangler deploy), különben a foglalás a régi árral rögzül. */
+const CSOMAGOK = {
+  'Kis csomag':     { ar: 25000, orak: 1 },
+  'Közepes csomag': { ar: 45000, orak: 1 },
+  'Nagy csomag':    { ar: 65000, orak: 2 },
 };
+const berlesAra = orak => 10000 + (orak - 1) * 8000;
+
+// Ugyanabban az alakban, ahogy a honlap írja ki: "25 000 Ft", nem törő szóközzel.
+const forint = n => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} Ft`;
+
+/* A foglalás típusa, csomagja és ára a Worker saját árlistájából. A típus és
+   a csomag is csak a honlapon választható értékek egyike lehet. */
+function foglalasAra(b, orak) {
+  const tipus = tisztit(b.tipus, 60);
+  if (tipus === 'Stúdióbérlés') {
+    return { tipus, csomag: '', ar: forint(berlesAra(orak)) };
+  }
+  if (tipus === 'Stúdiófotózás') {
+    const csomag = tisztit(b.csomag, 120);
+    const cs = CSOMAGOK[csomag];
+    if (!cs) return { error: 'Hibás csomag.' };
+    if (cs.orak !== orak) return { error: 'Hibás időtartam.' };
+    return { tipus, csomag, ar: forint(cs.ar) };
+  }
+  return { error: 'Hibás foglalástípus.' };
+}
 
 /* Nyilvános: ajándékutalvány-rendelés. Időpontot nem foglal, csak az
    adatlapot rögzíti, hogy az admin letölthesse. A dátum a rendelés napja
@@ -265,7 +292,7 @@ async function ujUtalvany(request, env) {
   }
 
   const csomag = tisztit(b.csomag, 120);
-  if (!UTALVANY_CSOMAGOK[csomag]) return json({ error: 'Hibás csomag.' }, 400, request, env);
+  if (!CSOMAGOK[csomag]) return json({ error: 'Hibás csomag.' }, 400, request, env);
   if (!b.nev) return json({ error: 'A név megadása kötelező.' }, 400, request, env);
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email || '')) return json({ error: 'Hibás e-mail cím.' }, 400, request, env);
 
@@ -286,7 +313,7 @@ async function ujUtalvany(request, env) {
     idotartam: '',
     tipus: 'Ajándékutalvány',
     csomag,
-    ar: UTALVANY_CSOMAGOK[csomag],
+    ar: forint(CSOMAGOK[csomag].ar),
     nev: tisztit(b.nev, 120),
     email: tisztit(b.email, 160),
     telefon: tisztit(b.telefon, 40),
@@ -306,7 +333,30 @@ async function ujUtalvany(request, env) {
   return json({ ok: true, id }, 201, request, env);
 }
 
-/* Admin: az összes foglalás adatlapja, legújabb elöl. */
+/* Ki tartja most a mai és a jövőbeli órákat: foglalás-azonosító →
+   [{ datum, ora, lejar }]. A lejárat (Unix-másodperc) a listázásból jön; az
+   azonosító a kulcs metaadatából, a régebbi kulcsoknál az értékből. */
+async function tartottOrak(env) {
+  const mai = ma();
+  const ki = {};
+  let cursor;
+  do {
+    const res = await env.FOGLALASOK.list({ prefix: 'slot:', cursor, limit: 1000 });
+    for (const k of res.keys) {
+      const [, datum, ora] = k.name.split(':');
+      if (!datum || datum < mai) continue;
+      const id = (k.metadata && k.metadata.id) || await env.FOGLALASOK.get(k.name);
+      if (id) (ki[id] ||= []).push({ datum, ora: Number(ora), lejar: k.expiration || null });
+    }
+    cursor = res.list_complete ? null : res.cursor;
+  } while (cursor);
+  return ki;
+}
+
+/* Admin: az összes foglalás adatlapja, legújabb elöl. Mindegyikhez odaírjuk,
+   hogy most mely óráit tartja (tartott_orak) és mikor jár le a tartás
+   (tartas_lejar) — ebből veszi észre az admin, ha egy el nem fogadott
+   foglalás időpontja felszabadult, vagy az admin és a szerver szétcsúszott. */
 async function foglalasok(request, env) {
   const ki = [];
   let cursor;
@@ -321,26 +371,56 @@ async function foglalasok(request, env) {
     cursor = res.list_complete ? null : res.cursor;
   } while (cursor);
 
+  const tartott = await tartottOrak(env);
+  for (const f of ki) {
+    const sajat = (tartott[f.id] || []).filter(s => s.datum === f.datum);
+    f.tartott_orak = sajat.map(s => s.ora).sort((a, b) => a - b);
+    const lejaratok = sajat.map(s => s.lejar).filter(Boolean);
+    f.tartas_lejar = lejaratok.length ? Math.min(...lejaratok) : null;
+  }
+
   ki.sort((a, b) => (a.submittedAt < b.submittedAt ? 1 : -1));
   return json({ foglalasok: ki }, 200, request, env);
 }
 
+/* A véglegesített óra a foglalás napja után 90 nappal jár le. Nem TTL nélkül
+   tesszük el, mert a lejárat nélküli kulcsok évek alatt felhalmozódnának, és
+   a nyilvános /api/foglalt listázása egyre lassulna. A múltbeli foglaltság
+   senkit nem érdekel — a naptár úgyis csak a mai naptól felfelé néz. */
+function veglegesLejarat(datum) {
+  const most = Math.floor(Date.now() / 1000);
+  const napVege = Math.floor(new Date(`${datum}T23:59:59Z`).getTime() / 1000);
+  return Math.max(most + 86400, napVege + 90 * 86400);
+}
+
+/* Tartja-e más foglalás a megadott órák valamelyikét? */
+async function masTartja(env, datum, orak, id) {
+  for (const h of orak) {
+    const foglalo = await env.FOGLALASOK.get(slotKulcs(datum, h));
+    if (foglalo && foglalo !== id) return true;
+  }
+  return false;
+}
+
 /* Admin: véglegesítés — leveszi a lejárati időt az érintett órákról,
-   így a visszaigazolt foglalás nem szabadul fel magától. */
+   így a visszaigazolt foglalás nem szabadul fel magától. Ha egy órát
+   időközben más foglalás vett át (lejárt a tartás), nem írjuk felül:
+   az dupla foglalás, amiről az adminnak tudnia kell. */
 async function megerosit(request, env, id) {
   const nyers = await env.FOGLALASOK.get(`fog:${id}`);
   if (!nyers) return json({ error: 'Nincs ilyen foglalás.' }, 404, request, env);
 
   const rekord = JSON.parse(nyers);
-  /* A véglegesített óra a foglalás napja után 90 nappal jár le. Nem TTL nélkül
-     tesszük el, mert a lejárat nélküli kulcsok évek alatt felhalmozódnának, és
-     a nyilvános /api/foglalt listázása egyre lassulna. A múltbeli foglaltság
-     senkit nem érdekel — a naptár úgyis csak a mai naptól felfelé néz. */
-  const most = Math.floor(Date.now() / 1000);
-  const napVege = Math.floor(new Date(`${rekord.datum}T23:59:59Z`).getTime() / 1000);
-  const lejarat = Math.max(most + 86400, napVege + 90 * 86400);
-  for (const h of orakListaja(rekord.ora, rekord.orak)) {
-    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expiration: lejarat });
+  const orak = orakListaja(rekord.ora, rekord.orak);
+  if (await masTartja(env, rekord.datum, orak, id)) {
+    return json({
+      error: 'Az időpont egy részét időközben más foglalás vette át.',
+      utkozes: true,
+    }, 409, request, env);
+  }
+  const lejarat = veglegesLejarat(rekord.datum);
+  for (const h of orak) {
+    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expiration: lejarat, metadata: { id } });
   }
   rekord.allapot = 'megerositve';
   await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
@@ -392,9 +472,63 @@ async function visszaallit(request, env, id) {
 
   const holdTtl = Math.max(60, Math.round(Number(env.HOLD_DAYS || 4) * 24 * 60 * 60));
   for (const h of orak) {
-    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expirationTtl: holdTtl });
+    await env.FOGLALASOK.put(slotKulcs(rekord.datum, h), id, { expirationTtl: holdTtl, metadata: { id } });
   }
   rekord.allapot = 'fuggo';
+  await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
+
+  return json({ ok: true }, 200, request, env);
+}
+
+/* Admin: átidőzítés. Az adminban módosított napra / órákra teszi át a
+   foglalást: a régi órákat felszabadítja, az újakat ugyanúgy tartja, ahogy a
+   régieket (véglegesített foglalásnál lejárat nélkül, függőnél a tartási
+   idővel). Ha az új órák egyikét más foglalás tartja, semmi nem változik. */
+async function athelyez(request, env, id) {
+  const nyers = await env.FOGLALASOK.get(`fog:${id}`);
+  if (!nyers) return json({ error: 'Nincs ilyen foglalás.' }, 404, request, env);
+  const rekord = JSON.parse(nyers);
+  if (rekord.allapot === 'torolve' || !rekord.orak) {
+    return json({ error: 'Ennek a foglalásnak nincs tartott időpontja.' }, 400, request, env);
+  }
+
+  let b;
+  try {
+    b = await request.json();
+  } catch {
+    return json({ error: 'Hibás kérés.' }, 400, request, env);
+  }
+  const ora = Number(b.ora);
+  const orak = Number(b.orak);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(b.datum) || b.datum < ma()) return json({ error: 'Hibás dátum.' }, 400, request, env);
+  if (!Number.isInteger(ora) || !Number.isInteger(orak) || orak < 1 ||
+      ora < MIN_HOUR || ora + orak > MAX_HOUR) {
+    return json({ error: 'Hibás időpont.' }, 400, request, env);
+  }
+
+  const ujOrak = orakListaja(ora, orak);
+  if (await masTartja(env, b.datum, ujOrak, id)) {
+    return json({ error: 'Az új időpontot más foglalás tartja.', utkozes: true }, 409, request, env);
+  }
+
+  for (const h of orakListaja(rekord.ora, rekord.orak)) {
+    const kulcs = slotKulcs(rekord.datum, h);
+    if ((await env.FOGLALASOK.get(kulcs)) === id) await env.FOGLALASOK.delete(kulcs);
+  }
+  const tartas = rekord.allapot === 'megerositve'
+    ? { expiration: veglegesLejarat(b.datum) }
+    : { expirationTtl: Math.max(60, Math.round(Number(env.HOLD_DAYS || 4) * 24 * 60 * 60)) };
+  for (const h of ujOrak) {
+    await env.FOGLALASOK.put(slotKulcs(b.datum, h), id, { ...tartas, metadata: { id } });
+  }
+
+  Object.assign(rekord, {
+    datum: b.datum,
+    ora,
+    orak,
+    idopont: `${String(ora).padStart(2, '0')}:00 – ${String(ora + orak).padStart(2, '0')}:00`,
+    idotartam: `${orak} óra`,
+  });
   await env.FOGLALASOK.put(`fog:${id}`, JSON.stringify(rekord), { expirationTtl: REC_TTL });
 
   return json({ ok: true }, 200, request, env);
@@ -569,7 +703,7 @@ export default {
       }
 
       // Innentől admin jogosultság kell
-      const adminUt = /^\/api\/(foglalasok$|foglalas\/[^/]+\/(megerosit|torol|visszaallit)$)/.test(ut);
+      const adminUt = /^\/api\/(foglalasok$|foglalas\/[^/]+\/(megerosit|torol|visszaallit|athelyez)$)/.test(ut);
       if (adminUt && !adminE(request, env)) {
         return json({ error: 'Nincs jogosultság.' }, 401, request, env);
       }
@@ -577,10 +711,11 @@ export default {
       if (ut === '/api/foglalasok' && request.method === 'GET') {
         return foglalasok(request, env);
       }
-      const m = ut.match(/^\/api\/foglalas\/([^/]+)\/(megerosit|torol|visszaallit)$/);
+      const m = ut.match(/^\/api\/foglalas\/([^/]+)\/(megerosit|torol|visszaallit|athelyez)$/);
       if (m && request.method === 'POST') {
         if (m[2] === 'megerosit')   return megerosit(request, env, m[1]);
         if (m[2] === 'visszaallit') return visszaallit(request, env, m[1]);
+        if (m[2] === 'athelyez')    return athelyez(request, env, m[1]);
         return torol(request, env, m[1]);
       }
 
