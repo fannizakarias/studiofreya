@@ -30,6 +30,11 @@
 
 const MIN_HOUR = 8;    // a honlap naptárával egyezik (js/main.js)
 const MAX_HOUR = 18;
+/* Karácsonyi hosszabbított nyitvatartás (js/main.js KESOI_ZARAS-szal egyezik). */
+const KESOI_ZARAS = { tol: '2026-11-14', ig: '2026-12-31', ora: 20 };
+function zaroOra(datum) {
+  return datum >= KESOI_ZARAS.tol && datum <= KESOI_ZARAS.ig ? KESOI_ZARAS.ora : MAX_HOUR;
+}
 
 const REC_TTL = 60 * 60 * 24 * 730;   // a foglalás adatlapja 2 évig marad meg
 const RL_WINDOW = 60 * 60;            // spamszűrés ablaka: 1 óra
@@ -91,13 +96,13 @@ function ellenoriz(b) {
   if (b.datum < ma()) return 'A megadott nap már elmúlt.';
 
   const ora = Number(b.ora);
-  if (!Number.isInteger(ora) || ora < MIN_HOUR || ora >= MAX_HOUR) return 'Hibás időpont.';
+  if (!Number.isInteger(ora) || ora < MIN_HOUR || ora >= zaroOra(b.datum)) return 'Hibás időpont.';
 
   const orak = Number(b.orak);
   // A honlap stúdióbérlésnél 2 óránál hosszabb foglalást is enged (a
   // "+ bővítés" gombbal) — a felső határ itt csak a nyitvatartás.
   if (!Number.isInteger(orak) || orak < 1) return 'Hibás időtartam.';
-  if (ora + orak > MAX_HOUR) return 'A foglalás túlnyúlik a nyitvatartáson.';
+  if (ora + orak > zaroOra(b.datum)) return 'A foglalás túlnyúlik a nyitvatartáson.';
 
   if (!b.nev) return 'A név megadása kötelező.';
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email || '')) return 'Hibás e-mail cím.';
@@ -502,7 +507,7 @@ async function athelyez(request, env, id) {
   const orak = Number(b.orak);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(b.datum) || b.datum < ma()) return json({ error: 'Hibás dátum.' }, 400, request, env);
   if (!Number.isInteger(ora) || !Number.isInteger(orak) || orak < 1 ||
-      ora < MIN_HOUR || ora + orak > MAX_HOUR) {
+      ora < MIN_HOUR || ora + orak > zaroOra(b.datum)) {
     return json({ error: 'Hibás időpont.' }, 400, request, env);
   }
 

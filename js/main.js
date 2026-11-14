@@ -291,6 +291,12 @@ function napEngedelyezett(date) {
 }
 const MIN_HOUR = 8;
 const MAX_HOUR = 18;
+/* Karácsonyi hosszabbított nyitvatartás: ebben az időszakban este 20:00-ig
+   lehet foglalni. Ugyanez a worker/src/index.js-ben és a js/admin.js-ben. */
+const KESOI_ZARAS = { tol: '2026-11-14', ig: '2026-12-31', ora: 20 };
+function zaroOra(dateStr) {
+  return dateStr >= KESOI_ZARAS.tol && dateStr <= KESOI_ZARAS.ig ? KESOI_ZARAS.ora : MAX_HOUR;
+}
 
 const st = {
   withFanni: false,
@@ -475,7 +481,7 @@ function calcStudioPrice(hours) {
 /* ── Szabad órák egy napra + időtartamra ──────────────────────── */
 function getSzabadOrak(dateStr, hours) {
   const szabad  = (SZABAD[dateStr]  || [])
-    .filter(h => h >= MIN_HOUR && h + hours <= MAX_HOUR)
+    .filter(h => h >= MIN_HOUR && h + hours <= zaroOra(dateStr))
     .slice().sort((a,b) => a-b);
   // Fanni módban azok az órák, amikor Fanni nem ér rá, foglaltnak látszanak
   const foglalt = (FOGLALT[dateStr] || [])
