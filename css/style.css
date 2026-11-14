@@ -569,6 +569,7 @@ h3 { font-size: 1.35rem; margin-bottom: .4rem; }
 }
 .hero-notice:hover { color: #fff; }
 .hero-notice-fenyo { flex: none; width: 12px; height: 14px; }
+.hero-notice-nw { white-space: nowrap; }
 
 /* tableten és kisebb laptopon a három rész egymás mellett nem fér el (a cím 3–4 sorba törne),
    ezért itt is egymás alá kerülnek, mint telefonon */
